@@ -1,0 +1,26 @@
+nav {
+    padding: 2vw 4em;
+    justify-content: space-between;
+    display: flex;
+    background-color: #CCDDBD;
+    color: rgb(216, 216, 216);
+    font-family: SBG;
+}
+  
+nav a {
+color: #FFFFFF;
+text-decoration: none;
+}
+
+nav ul {
+list-style: none;
+display: flex;
+}
+
+nav li {
+margin-left: 20px;
+}
+
+nav h1 {
+font-size: large;
+}
