@@ -1,5 +1,5 @@
 nav {
-    padding: 2vw 4em;
+    padding: 2em 2em;
     justify-content: space-between;
     display: flex;
     background-color: #CCDDBD;
@@ -12,15 +12,32 @@ color: #FFFFFF;
 text-decoration: none;
 }
 
-nav ul {
-list-style: none;
-display: flex;
+.navFlex {
+    display: flex;
 }
 
-nav li {
-margin-left: 20px;
+#align-nav-left {
+    align-self: center;
+    padding-top: 1em;
+    padding-left: 0.65em;
+    color: #FFFFFF;
+    font-size: 2em;
+    font-weight: 400;
 }
 
-nav h1 {
-font-size: large;
+#align-nav-right {
+    align-self: center;
+    padding-top: 1em;
+    padding-left: 1.2em;
+    color: #FFFFFF;
+    font-size: 2em;
+    font-weight: 400;
+}
+
+#user-icon {
+    padding-top: 1em;
+    color: #FFFFFF;
+    font-size: 2em;
+    padding-left: 0.5em;
+    align-self: center;
 }
