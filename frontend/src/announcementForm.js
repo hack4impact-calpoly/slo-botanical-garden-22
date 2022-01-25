@@ -9,10 +9,7 @@ function announcementForm()
         document.getElementById("littlerbox").value = "";
     }
 
-
-    render()
-    {
-        return(
+  return(
             <div>
             <head>
             <title>SLO Botanical Garden</title>
@@ -39,8 +36,6 @@ function announcementForm()
         </body>
         </div>
         );
-    }
-
 }
 
 export default announcementForm;
