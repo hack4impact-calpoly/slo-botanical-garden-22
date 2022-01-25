@@ -1,0 +1,104 @@
+body
+{
+    background: #f8edeb;
+    font-family: "Century Gothic", Verdana, monospace;
+    color: #1e502f;
+    margin: 0px;
+    font-weight: bold;
+    line-height: 1;
+}
+#top
+{
+    display: flex;
+    justify-content: left;
+    padding: 10px;
+    background-color: #CCDDBE;
+
+    
+}
+
+#slobg
+{
+    max-width: 200px;
+    align-items: flex-end;
+    justify-content: end;
+    flex-basis: 50px;
+    flex-grow: 1;
+}
+
+#formtitle
+{
+    margin: 10px;
+}
+
+#lilbox
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    padding: 0px;
+    border-radius: 5%;
+    background-color: #E3E3E3;
+    max-width: 250px;
+    color: #556453;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #9c9c9c;
+    box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
+}
+
+#littlerbox
+{
+    box-sizing: border-box;
+    background-color: #E3E3E3;
+    border-radius: 8%;
+    padding: 10px;
+    margin: 6px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-width: 1px;
+    color: #686868;
+    font-family: "Century Gothic", Verdana, monospace;
+    font-weight: bold;
+    height: 250px;
+    max-width: 238px;
+    box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
+}
+
+#lilbuttons
+{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    flex-basis: 10px;
+    justify-content: space-evenly;
+}
+
+input[type = "submit"]
+{
+    font-family: "Century Gothic", Verdana, monospace;
+    font-weight: bold;
+}
+
+#cancel {
+    background-color: #E3E3E3;
+    border-radius: 8px;
+    border-width: 1px;
+    color: #686868;
+    font-size: 16px;
+    line-height: 10x;
+    padding: 10px;
+    width: 110px;
+}
+
+
+#publish {
+    background-color: #556453;
+    border-radius: 8px;
+    border-width: 1px;
+    color: #FFFFFF;
+    font-size: 16px;
+    line-height: 10x;
+    padding: 10px;
+    width: 110px;
+  }
