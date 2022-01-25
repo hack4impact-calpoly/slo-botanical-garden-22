@@ -1,7 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const MongooseConnector = require("./db-helper");
-const announcement = require("./routes/announcement");
 const app = express();
 
 dotenv.config();
@@ -31,7 +30,8 @@ function helloHandler(request, response) {
   response.send("Hello, World!");
 }
 
-app.use("/announcements", announcement);
+//app.use("/announcements", announcement);
+require("./routes/announcement-api.route")(app);
 
 app.get("/", helloHandler);
 
