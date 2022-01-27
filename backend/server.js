@@ -30,6 +30,9 @@ function helloHandler(request, response) {
   response.send("Hello, World!");
 }
 
+//app.use("/announcements", announcement);
+require("./routes/announcement-api.route")(app);
+
 app.get("/", helloHandler);
 
 app.get("*", (req, res) => {
