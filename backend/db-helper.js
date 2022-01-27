@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const {
+  announcementFns,
+  Announcement,
+} = require("./routes/announcements-db.js");
 /* const { calendarEventFns, CalendarEvent } = require('./calendar/calendar-db');
 const { announcementFns, Announcement} = require('./announcement/announcement-db')
 const { volunteerFns, Volunteer } = require("./volunteer/volunteer-db");
@@ -116,9 +120,9 @@ const MongooseConnector = (() => {
                 "...convert(givenFNs)"
         ,*/,
     /*...convertFns(calendarEventFns),
-        ...convertFns(volunteerFns),
-        ...convertFns(announcementFns),
-        ...convertFns(userFns),*/
+        ...convertFns(volunteerFns),*/
+    ...convertFns(announcementFns),
+    /*...convertFns(userFns),*/
   };
 })();
 
