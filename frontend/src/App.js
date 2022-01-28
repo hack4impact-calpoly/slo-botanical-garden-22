@@ -1,9 +1,10 @@
-import announcementForm from "./announcementForm.js";
+import React from "react";
+import AnnouncementForm from "./AnnouncementForm.js";
 
 function App() {
   return (
     <div>
-      <announcementForm/>
+      <AnnouncementForm />
     </div>
   );
 }
