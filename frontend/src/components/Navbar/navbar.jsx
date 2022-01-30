@@ -9,7 +9,7 @@ export default function Navbar() {
   return (
     <nav>
       <div class="navFlex">
-          <Link to="/"><img src={logo} alt='logo'/></Link>
+          <Link to="/"><img src={logo} width="231.22px" height="119px" alt='logo'/></Link>
           <img id="align-nav-left" src={vector} />
           <h1 id="align-nav-left">Volunteer Database</h1>
       </div>

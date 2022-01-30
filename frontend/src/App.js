@@ -1,5 +1,6 @@
 import './App.css';
 import Navbar from './components/Navbar/navbar';
+import Home from './components/Home/home';
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,25 +11,13 @@ function App() {
   return (
     <Router>
       <Navbar/>
-      <div>
-        {/* <Routes>
+      
+        
+        <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-
-          {recipes.map(recipe =>
-              <Route exact path={recipe.link} element={
-                <RecipePage 
-                  image={recipe.recipeImage}
-                  name={recipe.recipeName} 
-                  desc={recipe.recipeDesc}
-                  ingredients={recipe.ingredients}
-                  steps={recipe.steps}
-                />
-              }
-              />
-          )}
-        </Routes> */}
-      </div>
+          {/* <Route path="/about" element={<About />} /> */}
+        </Routes>
+      
     </Router>
   );
 }
