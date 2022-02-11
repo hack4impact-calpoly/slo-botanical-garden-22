@@ -13,7 +13,7 @@ const { userFns } = require('./user-auth/user-auth-db'); */
 dotenv.config();
 
 /* Ensure DB_LINK exists */
-const url = process.env.DB_LINK;
+const url = process.env.REACT_APP_SERVER_URL;
 if (!url) {
   console.error(
     "No DB_LINK environment var found... add it to your .env file!"
