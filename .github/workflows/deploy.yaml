@@ -18,12 +18,12 @@ jobs:
           aws-region: us-west-1
 
       - id: backend-deployment
-        uses: hack4impact-calpoly/express-deployment-aws@v0.1.1
+        uses: hack4impact-calpoly/express-deployment-aws@v0.1.0
         with:
           s3-bucket: "slo-bg"
           stack-name: "slo-bg"
         env:
-          DB_LINK: ${{ secrets.DB_LINK }}
+          REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
 
       - run: echo API is at ${{ steps.backend-deployment.outputs.api-url }}
         shell: bash
