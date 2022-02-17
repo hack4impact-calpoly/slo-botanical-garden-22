@@ -21,7 +21,8 @@ const SignUpForm = () => {
 
   const handleSubmit = async () => {
     if (group) {
-      const resp = await fetch("", { // Backend URL goes here
+      const resp = await fetch("", {
+        // Backend URL goes here
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -30,7 +31,8 @@ const SignUpForm = () => {
         body: JSON.stringify(signUpGroup),
       });
     } else {
-      const resp = await fetch("", { // Backend URL goes here
+      const resp = await fetch("", {
+        // Backend URL goes here
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -83,7 +85,7 @@ const SignUpForm = () => {
         </div>
         <hr style={{ backgroundColor: "green", width: "100%" }} />
         {indiv && (
-          <Form>
+          <div>
             <Form.Group widths="equal">
               <Form.Input
                 label="First Name"
@@ -128,7 +130,6 @@ const SignUpForm = () => {
               name="hourGoal"
               value={signUp.hourGoal}
               onChange={handleChange}
-              required
             />
             <Checkbox
               className="photo-label"
@@ -158,25 +159,34 @@ const SignUpForm = () => {
               label="Birth Date:"
               control={DatePicker}
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={(date) => {
+                setStartDate(date);
+                setSignUp({ ...signUp, birthDate: date });
+              }}
             />
             <br />
-            <Form.Input
-              label="Safety Training Status"
-              name="trainingStatus"
-              value={signUp.trainingStatus}
-              onChange={handleChange}
-              required
-            />
             <Form.TextArea label="Medical Conditions" required />
-            <h3 style={{ textAlign: "left" }}>Area of Interest:</h3>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              {[...Array(7)].map((_, i) => (
-                <Checkbox key={i} label="Interest" />
-              ))}
-            </div>
-          </Form>
+            <Checkbox
+              label="Safety Training Status Complete?"
+              onChange={(e, data) => setSignUp({ ...signUp, safetyStatus: data.checked })}
+            />
+            <Checkbox
+              label="Volunteer Waiver and Release Complete?"
+              onChange={(e, data) => setSignUp({ ...signUp, volunteerWaiver: data.checked })}
+            />
+            <Checkbox
+              label="Covid Waiver and Release Complete?"
+              onChange={(e, data) => setSignUp({ ...signUp, covidWaiver: data.checked })}
+            />
+            <Checkbox
+              label="Community Service?"
+              onChange={(e, data) => setSignUp({ ...signUp, commService: data.checked })}
+            />
+            <br />
+            <br />
+          </div>
         )}
+        {console.log(signUp)}
         {group && (
           <Form>
             <Form.Input
@@ -214,14 +224,11 @@ const SignUpForm = () => {
               name="hourGoal"
               value={signUp.hourGoal}
               onChange={handleChange}
-              required
             />
-            <h3 style={{ textAlign: "left" }}>Area of Interest:</h3>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              {[...Array(7)].map((_, i) => (
-                <Checkbox key={i} label="Interest" />
-              ))}
-            </div>
+            <Checkbox
+              label="Safety Training Status Complete?"
+              onChange={(e, data) => setSignUp({ ...signUp, safetyStatus: data.checked })}
+            />
           </Form>
         )}
         <br />
