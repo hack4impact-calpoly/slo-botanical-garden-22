@@ -23,3 +23,12 @@
 .photo-label {
     margin: 0px auto;
 }
+
+.heading {
+  margin: 0 0 .28571429rem 0;
+  color: rgba(0,0,0,.87);
+  font-size: .92857143em;
+  font-weight: 700;
+  text-transform: none;
+  display: inline;
+}
