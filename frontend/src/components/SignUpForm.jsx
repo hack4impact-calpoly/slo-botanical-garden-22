@@ -11,7 +11,7 @@ const SignUpForm = () => {
   const [signUpGroup, setSignUpGroup] = useState({});
   const [startDate, setStartDate] = useState();
   const [group, setGroup] = useState(false);
-  const [indiv, setIndiv] = useState(false);
+  const [indiv, setIndiv] = useState(true);
 
   const handleChange = (e, { name, value }) =>
     setSignUp({ ...signUp, [name]: value });
@@ -222,8 +222,8 @@ const SignUpForm = () => {
             <Form.Input
               label="Hour Goal"
               name="hourGoal"
-              value={signUp.hourGoal}
-              onChange={handleChange}
+              value={signUpGroup.hourGoal}
+              onChange={handleChangeGroup}
             />
             <Checkbox
               label="Safety Training Status Complete?"
