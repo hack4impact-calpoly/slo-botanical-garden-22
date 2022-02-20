@@ -8,19 +8,6 @@
   font-family: SBG;
 }
 
-::-webkit-scrollbar {
-  width: 15px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #f3c44e;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #eeab00;
-}
-
 #announcements {
   margin-right: 1.5em;
   width: 25vw;
