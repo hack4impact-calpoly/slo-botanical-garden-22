@@ -1,0 +1,11 @@
+.navFlex {
+    display: flex;
+}
+
+#love{
+    padding-top: 1em;
+    padding-left: 0.65em;
+    color: #FFFFFF;
+    font-size: 2em;
+    font-weight: 400;
+}
