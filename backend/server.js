@@ -2,7 +2,6 @@ const express = require("express");
 const dotenv = require("dotenv");
 const MongooseConnector = require("./db-helper");
 const app = express();
-const cors = require("cors");
 
 app.use(cors());
 
