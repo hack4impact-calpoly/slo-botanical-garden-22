@@ -9,6 +9,7 @@ const Announcement = (props) => {
         {props.name} | {props.date}
       </p>
       <p id="body">{props.body}</p>
+      <p id="body">-{props.poster}</p>
     </div>
   );
 };

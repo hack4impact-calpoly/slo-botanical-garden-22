@@ -2,6 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const MongooseConnector = require("./db-helper");
 const app = express();
+const cors = require("cors");
+
+app.use(cors());
 
 dotenv.config();
 
@@ -39,8 +42,30 @@ app.get("*", (req, res) => {
   res.status(400).send("Page not found");
 });
 
+app.get("/fetchAnnouncements", async (req, res) => {
+  console.log("IN BACKEND");
+  var request = fetch(
+    "https://yb75zu2sq6.execute-api.us-west-2.amazonaws.com/default",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "TJLRudRqUI8N22JHVUQDo2Ok3L7YoSbm7ikBSyAp",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => console.log("Error while fetching:", error));
+  return {
+    // eslint-disable-next-line no-undef
+    payload: request,
+  };
+});
+
 (async () => {
-  await MongooseConnector.connect();
   // Satisfy react default port
   const PORT = Number(process.env.PORT);
   if (process.argv.includes("dev")) {
