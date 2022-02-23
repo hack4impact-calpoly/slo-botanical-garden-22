@@ -2,8 +2,8 @@ import * as AWS from "aws-sdk";
 
 const configuration = {
   region: "us-west-2",
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  accessKeyId: process.env.SECRET_ACCESS_ID,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.REACT_APP_SECRET_ACCESS_ID,
 };
 
 AWS.config.update(configuration);
