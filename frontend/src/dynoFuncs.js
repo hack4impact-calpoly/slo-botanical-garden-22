@@ -2,8 +2,8 @@ import * as AWS from "aws-sdk";
 
 const configuration = {
   region: "us-west-2",
-  secretAccessKey: "Ce+3UgDRtqrLiow0Es0+b9GGx2wl2K6n9gBM3QeE",
-  accessKeyId: "AKIAZHFOZOFY2OHMMXN6",
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  accessKeyId: process.env.SECRET_ACCESS_ID,
 };
 
 AWS.config.update(configuration);
@@ -11,6 +11,7 @@ AWS.config.update(configuration);
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 export const fetchData = async (tableName) => {
+  console.log(process.env.SECRET_ACCESS_KEY);
   console.log("in fetch data");
   var params = {
     TableName: tableName,
