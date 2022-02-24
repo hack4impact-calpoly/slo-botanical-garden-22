@@ -22,21 +22,6 @@ class AnnouncementBar extends React.Component {
     };
   }
 
-  /*componentDidMount() {
-    console.log("IN MOUNT");
-    fetch("http://localhost:3001/fetchAnnouncements")
-      .then((results) => {
-        console.log("HERE");
-        results.json();
-      })
-      .then((data) => {
-        console.log("RESULTS");
-        console.log(data);
-        this.setState({ messages: data });
-      });
-    console.log(this.state.messages);
-  }*/
-
   componentDidMount() {
     console.log("IN MOUNT");
     this.setState({ loading: true });
@@ -45,7 +30,6 @@ class AnnouncementBar extends React.Component {
       console.log(result);
       this.setState({ messages: result, loading: false });
       console.log(this.state.messages);
-      // this.setState({ loading: false });
     });
   }
 
