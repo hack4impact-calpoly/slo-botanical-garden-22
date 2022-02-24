@@ -24,6 +24,8 @@ jobs:
           stack-name: "slo-bg"
         env:
           DB_LINK: ${{ secrets.DB_LINK }}
+          REACT_APP_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          REACT_APP_SECRET_ACCESS_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
 
       - run: echo API is at ${{ steps.backend-deployment.outputs.api-url }}
         shell: bash
