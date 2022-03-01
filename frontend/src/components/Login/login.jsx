@@ -17,13 +17,13 @@ const components = {
     },
   }, 
   Footer() {
-    const { toResetPassword } = useAuthenticator();
-
-    return (
+    const { route } = useAuthenticator(context => [context.route]);
+    return route === 'resetPassword' ? null :
+    (
       <View textAlign="center">
         <Button className="signUpButton"
           fontWeight="normal"
-          onClick={() => alert('hello')}
+          onClick={() => alert('route to sign up')}
           variation="primary"
           size="Large"
           isFullWidth={true}

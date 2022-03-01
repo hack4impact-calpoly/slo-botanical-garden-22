@@ -13,6 +13,7 @@
     --amplify-components-tabs-item-color: var(--amplify-colors-white);
     --amplify-components-tabs-item-focus-color: var(--amplify-colors-white);
     --amplify-components-text-color: var(--amplify-colors-font-interactive);
+    --amplify-components-card-outlined-border-radius: 50%;
     border-radius:10%;
 }
 
