@@ -13,13 +13,13 @@
     --amplify-components-tabs-item-color: var(--amplify-colors-white);
     --amplify-components-tabs-item-focus-color: var(--amplify-colors-white);
     --amplify-components-text-color: var(--amplify-colors-font-interactive);
-    --amplify-components-card-outlined-border-radius: 50%;
-    border-radius:10%;
 }
 
   .amplify-button[data-variation='primary'] {
     background: #576754;
-
+    width: 50%;
+    align-self: center;
+    padding-bottom: none;
   }
 
   .signInHeading {
@@ -27,13 +27,24 @@
     text-align: center;
   }
 
-  .signIn {
-    border-radius:10%;
-  }
 
-  .signUpButton{
-      background: #aeb5ad;
-      text-background: #
+  [data-amplify-authenticator] [data-amplify-container]{
+    height: 105%;
+    background-color: white;
+    box-shadow: none;
+    border-radius: 5%;
+  } 
+
+[data-amplify-authenticator] [data-amplify-router] {
+    background-color: var(--amplify-colors-background-primary);
+    box-shadow: none;
+    border-radius: 5%;
+}
+
+  .signIn {
+    background: white;
+    padding: 0% 0% 1%;
+    border-radius: 5%;
   }
 
   .signInPage{
@@ -48,7 +59,3 @@
     justify-content: center;
     align-items: center;
   }
-
-[data-amplify-authenticator] [data-amplify-container] {
-    border-radius:50%;
-}

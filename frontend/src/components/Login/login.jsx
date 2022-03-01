@@ -21,13 +21,13 @@ const components = {
     return route === 'resetPassword' ? null :
     (
       <View textAlign="center">
-        <Button className="signUpButton"
+        <Button
           fontWeight="normal"
           onClick={() => alert('route to sign up')}
           variation="primary"
           size="Large"
           isFullWidth={true}
-          style={{background: "#aeb5ad", color: "#576754", fontFamily: "SBG"}}
+          style={{width: '45%', background: "#aeb5ad", color: "#576754", fontFamily: "SBG"}}
         >
           Sign Up
         </Button>
