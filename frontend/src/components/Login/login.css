@@ -1,0 +1,53 @@
+[data-amplify-authenticator] {
+    --amplify-colors-background-primary: white;
+    --amplify-colors-border-primary: var(--amplify-colors-neutral-20);
+    --amplify-colors-border-secondary: var(--amplify-colors-neutral-40);
+    --amplify-colors-border-tertiary: var(--amplify-colors-neutral-60);
+    --amplify-colors-brand-primary-100: var(--amplify-colors-green-10);
+    --amplify-colors-font-interactive: var(--amplify-colors-white);
+    --amplify-components-heading-color: #576754;
+    --amplify-components-tabs-item-active-border-color: var(
+      --amplify-colors-white
+    );
+    --amplify-components-tabs-item-active-color: var(--amplify-colors-white);
+    --amplify-components-tabs-item-color: var(--amplify-colors-white);
+    --amplify-components-tabs-item-focus-color: var(--amplify-colors-white);
+    --amplify-components-text-color: var(--amplify-colors-font-interactive);
+    border-radius:10%;
+}
+
+  .amplify-button[data-variation='primary'] {
+    background: #576754;
+
+  }
+
+  .signInHeading {
+    font-family: SBG;
+    text-align: center;
+  }
+
+  .signIn {
+    border-radius:10%;
+  }
+
+  .signUpButton{
+      background: #aeb5ad;
+      text-background: #
+  }
+
+  .signInPage{
+    display: flex;
+    padding: 2.6em;
+    background-image: url("../../assets/garden.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    font-family: SBG;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+[data-amplify-authenticator] [data-amplify-container] {
+    border-radius:50%;
+}
