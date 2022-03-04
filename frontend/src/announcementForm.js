@@ -2,9 +2,11 @@ import React from "react";
 import styles from "./AnnouncementForm.module.css";
 
 export default function AnnouncementForm(props) {
+  /*
   function eraseText() {
     document.getElementById("littlerbox").value = "";
   }
+  */
 
   return (
     <div>
@@ -51,7 +53,7 @@ export default function AnnouncementForm(props) {
               id="publish"
               type="submit"
               value="Publish"
-              onClick={eraseText()}
+              //onClick={eraseText()}
             />
           </div>
         </form>
