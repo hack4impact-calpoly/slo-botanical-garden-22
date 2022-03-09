@@ -7,27 +7,27 @@ import { Box, Text, Flex, Image, Spacer, HStack, Heading, Button, Link} from '@c
 
 export default function Navbar() {
   return (
-      <Flex bg='#CCDDBD'>
-        <HStack>
-            <Box p={2}>
-                <Image src={ logo } />
+      <Flex pt={5} pb={5} bg='#CCDDBD'>
+        <HStack pl={10}>
+            <Box>
+                <Image objectFit='cover' src={ logo } />
             </Box>
-            <Box mr={2}>
+            <Box>
                 <Image src={ vector } />
             </Box>
             <Box p={2}>
-                <Heading size='xl'> Volunteer Database </Heading>
+                <Heading color='white' size='lg'> Volunteer Database </Heading>
             </Box>
         </HStack>
         <Spacer />
-        <HStack>
+        <HStack pr={10}>
             <Box mr={2}>
-                <Link as={ ReactLink } _activeLink={{fontWeight:"bold"}} to='/'> <Heading size='xl' color='white'> Home </Heading> </Link>
+                <Link as={ ReactLink } _activeLink={{fontWeight:"bold"}} to='/'> <Heading size='lg' color='white'> Home </Heading> </Link>
             </Box>
             <Box>
-                <Link as={ ReactLink } to='/profile'> <Heading size='xl' color='white'> Profile </Heading> </Link>
+                <Link as={ ReactLink } to='/profile'> <Heading size='lg' color='white'> Profile </Heading> </Link>
             </Box>
-            <Box p={2}>
+            <Box>
                 <Image src={ userIcon } />
             </Box>
         </HStack>

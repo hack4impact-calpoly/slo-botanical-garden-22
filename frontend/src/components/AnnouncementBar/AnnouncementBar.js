@@ -39,7 +39,6 @@ class AnnouncementBar extends React.Component {
 
     return (
       <>
-        <h2>Admin Announcements</h2>
         {this.state.loading ? (
           <div></div>
         ) : (

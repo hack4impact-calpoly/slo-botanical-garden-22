@@ -15,7 +15,6 @@ function App() {
             <Route exact path="/" element={<Home />} />
             {/* <Route path="/about" element={<About />} /> */}
           </Routes>
-          <Footer />
         </Router>
       </ChakraProvider>
   );
