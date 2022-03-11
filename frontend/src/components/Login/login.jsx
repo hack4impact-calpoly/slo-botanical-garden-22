@@ -21,6 +21,7 @@ const components = {
     return route === 'resetPassword' ? null :
     (
       <View textAlign="center">
+        <h2 className="OR"><span>OR</span></h2>
         <Button
           fontWeight="normal"
           onClick={() => alert('route to sign up')}

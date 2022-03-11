@@ -15,6 +15,23 @@
     --amplify-components-text-color: var(--amplify-colors-font-interactive);
 }
 
+.OR {
+  border-bottom: 2px solid #576754; 
+  line-height: 0.1em;
+  align-self: center;
+  width: 75%;
+  text-align: center;
+} 
+
+.OR span { 
+  width: 60%;
+  align-self: center;
+  background:#fff; 
+  padding:0 10px; 
+  font-family: SBG;
+  color: #aeb5ad;
+}
+
   .amplify-button[data-variation='primary'] {
     background: #576754;
     width: 50%;
