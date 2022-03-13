@@ -21,14 +21,14 @@ const components = {
     return route === 'resetPassword' ? null :
     (
       <View textAlign="center">
-        <h2 className="OR"><span>OR</span></h2>
+        <h2 style={{marginTop: '.5em'}} className="OR"><span>OR</span></h2>
         <Button
           fontWeight="normal"
           onClick={() => alert('route to sign up')}
           variation="primary"
           size="Large"
           isFullWidth={true}
-          style={{width: '45%', background: "#aeb5ad", color: "#576754", fontFamily: "SBG"}}
+          style={{width: '45%', marginTop: '1em', background: "#aeb5ad", color: "#576754", fontFamily: "SBG"}}
         >
           Sign Up
         </Button>
