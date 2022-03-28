@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/ui-react": "^2.6.2",
+    "@chakra-ui/react": "^1.8.6",
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
     "@semantic-ui-react/css-patch": "^1.0.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -11,6 +13,7 @@
     "aws-amplify": "^4.3.14",
     "aws-sdk": "^2.1077.0",
     "cors": "^2.8.5",
+    "framer-motion": "^6.2.8",
     "fs": "0.0.1-security",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

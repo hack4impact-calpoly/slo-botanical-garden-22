@@ -5,19 +5,21 @@ import Footer from "./components/Footer/footer";
 import Home from "./components/Home/home";
 import awsconfig from "./aws-exports";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ChakraProvider } from '@chakra-ui/react';
 
 function App() {
   return (
-    //<Login></Login>
-    <Router>
-      <Navbar />
+      //<Login></Login>
+      <ChakraProvider>
+        <Router>
+          <Navbar />
 
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        {/* <Route path="/about" element={<About />} /> */}
-      </Routes>
-      <Footer />
-    </Router>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            {/* <Route path="/about" element={<About />} /> */}
+          </Routes>
+        </Router>
+      </ChakraProvider>
   );
 }
 
