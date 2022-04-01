@@ -5,7 +5,7 @@ import Footer from "./components/Footer/footer";
 import Home from "./components/Home/home";
 import SignUpForm from "./components/SignUpForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { useState, useEffect, useLocation } from 'react';
+import React, { useState } from 'react';
 
 function App(props) {
   var [isNavbarHidden, setIsNavbarHidden] = useState(false);
