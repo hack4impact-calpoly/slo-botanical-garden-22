@@ -9,16 +9,13 @@ import React, { useState, useEffect, useLocation } from 'react';
 
 function App(props) {
   var [isNavbarHidden, setIsNavbarHidden] = useState(false);
-  useEffect(() => {
-      setIsNavbarHidden(false);
-  }, []);
   return (
     <Router>
       {isNavbarHidden ? null : <Navbar />}
       <Routes>
         <Route exact path="/" element={<Home />} />
         {/* <Route path="/about" element={<About />} /> */}
-        <Route path="signup" element={<SignUpForm />} />
+        <Route path="signup" element={<SignUpForm setNavbar={setIsNavbarHidden}/>} />
         <Route path='/login'  element={<Login setNavbar={setIsNavbarHidden} />} />
       </Routes>
       <Footer />
