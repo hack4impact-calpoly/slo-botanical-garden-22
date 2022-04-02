@@ -11,7 +11,6 @@ import { ChakraProvider } from '@chakra-ui/react';
 function App(props) {
   var [isNavbarHidden, setIsNavbarHidden] = useState(false);
   return (
-
     <ChakraProvider>
       <Router>
         {isNavbarHidden ? null : <Navbar />}
@@ -22,7 +21,6 @@ function App(props) {
           <Route path='/login' element={<Login setNavbar={setIsNavbarHidden} />} />
         </Routes>
         {isNavbarHidden ? null : <Footer />}
-
       </Router>
     </ChakraProvider>
   );

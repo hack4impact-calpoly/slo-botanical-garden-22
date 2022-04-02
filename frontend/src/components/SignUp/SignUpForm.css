@@ -41,11 +41,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
 .signUpForm {
   border-radius: 5%;
-  height: 80%;
   background-color: white;
   margin: 5%;
 }
