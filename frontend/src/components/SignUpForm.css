@@ -37,16 +37,15 @@
   background-image: url("../assets/garden.png");
   background-repeat: no-repeat;
   background-size: cover;
-  height: 120vh;
   font-family: SBG;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.signUpForm{
+.signUpForm {
   border-radius: 5%;
-  padding: 2.6em;
+  height: 80%;
   background-color: white;
-  height: 112vh;
+  margin: 5%;
 }
