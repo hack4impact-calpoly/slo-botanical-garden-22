@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Checkbox } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 
@@ -6,7 +6,10 @@ import "./SignUpForm.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const SignUpForm = () => {
+const SignUpForm = ({ setNavbar }) => {
+  useEffect(() => {
+    setNavbar(true);
+  }, []);
   const [signUp, setSignUp] = useState({});
   const [signUpGroup, setSignUpGroup] = useState({});
   const [startDate, setStartDate] = useState();
@@ -44,8 +47,8 @@ const SignUpForm = () => {
   };
 
   return (
-    <div>
-      <Form
+    <div className="signUpPage">
+      <Form className="signUpForm"
         style={{ padding: "40px", display: "flex", flexDirection: "column" }}
         onSubmit={handleSubmit}
       >
@@ -168,19 +171,27 @@ const SignUpForm = () => {
             <Form.TextArea label="Medical Conditions" required />
             <Checkbox
               label="Safety Training Status Complete?"
-              onChange={(e, data) => setSignUp({ ...signUp, safetyStatus: data.checked })}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, safetyStatus: data.checked })
+              }
             />
             <Checkbox
               label="Volunteer Waiver and Release Complete?"
-              onChange={(e, data) => setSignUp({ ...signUp, volunteerWaiver: data.checked })}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, volunteerWaiver: data.checked })
+              }
             />
             <Checkbox
               label="Covid Waiver and Release Complete?"
-              onChange={(e, data) => setSignUp({ ...signUp, covidWaiver: data.checked })}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, covidWaiver: data.checked })
+              }
             />
             <Checkbox
               label="Community Service?"
-              onChange={(e, data) => setSignUp({ ...signUp, commService: data.checked })}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, commService: data.checked })
+              }
             />
             <br />
             <br />
@@ -227,7 +238,9 @@ const SignUpForm = () => {
             />
             <Checkbox
               label="Safety Training Status Complete?"
-              onChange={(e, data) => setSignUp({ ...signUp, safetyStatus: data.checked })}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, safetyStatus: data.checked })
+              }
             />
           </Form>
         )}
