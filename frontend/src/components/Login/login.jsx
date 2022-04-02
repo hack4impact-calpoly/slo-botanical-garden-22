@@ -10,7 +10,6 @@ import {
 import "@aws-amplify/ui-react/styles.css";
 import "./login.css";
 import { Link } from "react-router-dom";
-import SignUpForm from "../SignUpForm";
 
 const components = {
   SignIn: {
