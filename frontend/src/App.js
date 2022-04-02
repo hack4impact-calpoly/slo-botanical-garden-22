@@ -18,7 +18,8 @@ function App(props) {
         <Route path="signup" element={<SignUpForm setNavbar={setIsNavbarHidden}/>} />
         <Route path='/login'  element={<Login setNavbar={setIsNavbarHidden} />} />
       </Routes>
-      <Footer />
+      {isNavbarHidden ? null : <Footer />}
+      
     </Router>
   );
 }
