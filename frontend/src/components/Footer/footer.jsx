@@ -13,9 +13,7 @@ export default function Footer() {
           <h2 id="love">Made with ♥ by Hack4Impact</h2>
         </div>
         <div class="navFlex">
-          <Link to="/">
-            <img src={logo} width="173.415px" height="89.25px" alt="logo" />
-          </Link>
+          <img src={logo} width="173.415px" height="89.25px" alt="logo" />
         </div>
       </div>
     </nav>
