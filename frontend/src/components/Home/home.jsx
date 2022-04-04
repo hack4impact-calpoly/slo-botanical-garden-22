@@ -25,7 +25,7 @@ export default function Home() {
       bgImage={bgimage}
       bgPosition="center"
       bgSize="cover"
-      bgRepeat="no-repeat"
+      bgRepeat="yes-repeat"
     >
       <Flex w="100%">
         <Box
