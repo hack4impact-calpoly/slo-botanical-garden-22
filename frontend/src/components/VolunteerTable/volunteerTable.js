@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTable } from "react-table";
 import "./volunteerTable.css";
+import { fetchData } from "../../dynoFuncs";
 
-const VolunteerTable = () => {
+const fetchDataFormDynamoDb = async () => {
+  console.log("IN FETCH DATA VOLUNTEERS");
+  return await fetchData("volunteers_individual").then((data) => {
+    return data.Items;
+  });
+};
+
+function VolunteerTable() {
   const data = React.useMemo(
     () => [
       {
@@ -42,8 +50,19 @@ const VolunteerTable = () => {
     []
   );
 
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    fetchDataFormDynamoDb().then((result) => {
+      setMessages(result);
+    });
+    console.log("IN FETCH IN VOLUNTEER");
+    console.log(messages);
+    console.log("PADDING");
+  });
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+    useTable({ columns, messages });
 
   return (
     <table
@@ -91,6 +110,6 @@ const VolunteerTable = () => {
       </tbody>
     </table>
   );
-};
+}
 
 export default VolunteerTable;
