@@ -32,3 +32,20 @@
   text-transform: none;
   display: inline;
 }
+
+.signUpPage{
+  background-image: url("../../assets/garden.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: SBG;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.signUpForm {
+  border-radius: 5%;
+  background-color: white;
+  margin: 5%;
+}

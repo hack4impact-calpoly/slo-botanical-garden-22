@@ -16,3 +16,29 @@ td, th {
     clip-path: inset(-10px 0px -10px 0px);
     box-shadow: 0 0 5px rgba(0,0,0,0.4);
 }
+
+.vol-table {
+    background-image: url("../../assets/garden.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: SBG;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+.pagination {
+    background-color:#CCDDBD;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.export {
+    border-radius: 15px;
+    color: rgb(6, 70, 6);
+    background: white;
+    padding: 20px;
+    margin-right: 10px;
+}
