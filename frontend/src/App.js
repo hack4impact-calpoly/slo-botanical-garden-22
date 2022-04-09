@@ -8,24 +8,27 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import awsconfig from './aws-exports';
+import { Auth } from 'aws-amplify';
 
 function App(props) {
-  var [isNavbarHidden, setIsNavbarHidden] = useState(false);
+  const [username, setUsername] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
   return (
     <>
       <ChakraProvider>
+        <div>username: {username}    isAdmin: {isAdmin ? "true" : "false"}</div>
         <Router>
-          {isNavbarHidden ? null : <Navbar />}
           <Routes>
             <Route exact path="/" element={<Home />} />
             {/* <Route path="/about" element={<About />} /> */}
             <Route
               path="signup"
-              element={<SignUpForm setNavbar={setIsNavbarHidden} />}
+              element={<SignUpForm/>}
             />
             <Route
               path="/login"
-              element={<Login setNavbar={setIsNavbarHidden} />}
+              element={<Login setUsername = {setUsername}/>}
             />
           </Routes>
         </Router>

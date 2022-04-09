@@ -16,9 +16,13 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import VolunteerTable from "../VolunteerTable/volunteerTable.js";
+import Navbar from "../Navbar/navbar";
+
 
 export default function Home() {
   return (
+    <>
+    <Navbar/>
     <Flex
       p={10}
       w="100%"
@@ -160,5 +164,6 @@ export default function Home() {
         </Box>
       </Flex>
     </Flex>
+    </>
   );
 }

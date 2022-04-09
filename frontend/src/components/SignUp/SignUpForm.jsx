@@ -6,10 +6,8 @@ import "./SignUpForm.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const SignUpForm = ({ setNavbar }) => {
-  useEffect(() => {
-    setNavbar(true);
-  }, []);
+const SignUpForm = () => {
+
   const [signUp, setSignUp] = useState({});
   const [signUpGroup, setSignUpGroup] = useState({});
   const [startDate, setStartDate] = useState();

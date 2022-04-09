@@ -55,10 +55,7 @@ const components = {
   },
 };
 
-export default function Login({ setNavbar }) {
-  useEffect(() => {
-    setNavbar(true);
-  }, []);
+export default function Login({ setUsername }) {
   return (
     <div className="signInPage">
       <Authenticator
@@ -66,14 +63,15 @@ export default function Login({ setNavbar }) {
         hideSignUp={true}
         components={components}
       >
-        
-     {   useEffect(() => {
-    setNavbar(false);
-  }, [])}
-        {({ signOut, user, setNavbar }) => (
+
+
+
+        {({ signOut, user }) => (
           
           <main>
-            {/* condsole.log(Auth.currentUserInfo()) */}
+           
+{           setUsername(user.username)
+}            
             <Navigate replace to="/" />
             
             {/* <h1>Hello {user.username}</h1>
