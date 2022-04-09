@@ -1,6 +1,7 @@
 .check-status {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: -8px;
     margin-bottom: -50px;
 }
@@ -33,19 +34,32 @@
   display: inline;
 }
 
-.signUpPage{
+
+
+html {
   background-image: url("../../assets/garden.png");
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  font-family: SBG;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+
 }
 
+
+ body {
+
+} 
+
 .signUpForm {
-  border-radius: 5%;
+  border-radius: 50px;
   background-color: white;
+  margin:auto;
   margin: 5%;
+  resize: both;
+}
+
+.chakra-ui-light {
+  background-color: transparent;
+  background: transparent;
+
 }

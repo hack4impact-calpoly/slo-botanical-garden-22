@@ -5,8 +5,9 @@ import Footer from "./components/Footer/footer";
 import Home from "./components/Home/home";
 import SignUpForm from "./components/SignUp/SignUpForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { useState } from "react";
-import { ChakraProvider } from "@chakra-ui/react";
+import React, { useState } from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+import awsconfig from './aws-exports';
 
 function App(props) {
   var [isNavbarHidden, setIsNavbarHidden] = useState(false);
