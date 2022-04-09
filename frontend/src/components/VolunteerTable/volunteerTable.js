@@ -78,7 +78,7 @@ function VolunteerTable() {
   });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, users });
+    useTable({ columns, data });
 
   return (
     <table
