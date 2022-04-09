@@ -1,0 +1,25 @@
+.announcement-container {
+  background-color: #576754;
+  border-radius: 25px;
+  padding: 30px;
+  margin: 10px;
+}
+
+#title {
+  color: #cee4bb;
+  font-weight: bold;
+}
+
+#date {
+  font-size: 14px;
+  font-style: italic;
+  color: #a6b699;
+  line-height: 0.5px;
+  font-weight: bold;
+  overflow-wrap: break-word;
+}
+
+#body {
+  color: #fff;
+  font-size: 14px;
+}
