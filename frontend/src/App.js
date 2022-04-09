@@ -1,10 +1,10 @@
 import React from "react";
-import AnnouncementForm from "./AnnouncementForm.js";
+import LogHours from "./logHours.js";
 
 function App() {
   return (
     <div>
-      <AnnouncementForm />
+      <LogHours/>
     </div>
   );
 }
