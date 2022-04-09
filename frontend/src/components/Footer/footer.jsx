@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <nav>
-      <div class="footer">
+      <div className="footer">
         <div>
           <h2 id="love">Made with ♥ by Hack4Impact</h2>
         </div>

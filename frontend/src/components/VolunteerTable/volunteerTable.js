@@ -50,19 +50,35 @@ function VolunteerTable() {
     []
   );
 
-  const [messages, setMessages] = useState([]);
+  const [users, setUsers] = useState(
+    [
+      {
+        name: "some name",
+        contact: "name@mail.com",
+      },
+      {
+        name: "other name",
+        contact: "other@mail.com",
+      },
+      {
+        name: "pi",
+        contact: "sss@mail.com",
+      },
+    ],
+    []
+  );
 
   useEffect(() => {
     fetchDataFormDynamoDb().then((result) => {
-      setMessages(result);
+      setUsers(result);
     });
     console.log("IN FETCH IN VOLUNTEER");
-    console.log(messages);
+    console.log(users);
     console.log("PADDING");
   });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, messages });
+    useTable({ columns, users });
 
   return (
     <table
