@@ -66,9 +66,14 @@ export default function Login({ setNavbar }) {
         hideSignUp={true}
         components={components}
       >
+        
+     {   useEffect(() => {
+    setNavbar(false);
+  }, [])}
         {({ signOut, user, setNavbar }) => (
+          
           <main>
-            setNavbar(false);
+            {/* condsole.log(Auth.currentUserInfo()) */}
             <Navigate replace to="/" />
             
             {/* <h1>Hello {user.username}</h1>
@@ -79,3 +84,4 @@ export default function Login({ setNavbar }) {
     </div>
   );
 }
+
