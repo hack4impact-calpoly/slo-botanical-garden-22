@@ -47,7 +47,7 @@ const SignUpForm = ({ setNavbar }) => {
   };
 
   return (
-    <div className="signUpPage">
+    
       <Form className="signUpForm"
         style={{ padding: "40px", display: "flex", flexDirection: "column" }}
         onSubmit={handleSubmit}
@@ -69,10 +69,10 @@ const SignUpForm = ({ setNavbar }) => {
             }}
             checked={indiv}
           />
-          <div
+          {/* <div
             className="check-status line"
             style={{ borderLeft: "1px solid green", height: "30px" }}
-          />
+          /> */}
           <Checkbox
             className="check-status group"
             label="Group"
@@ -249,7 +249,6 @@ const SignUpForm = ({ setNavbar }) => {
           <Form.Button content="Submit" onSubmit={handleSubmit} />
         )}
       </Form>
-    </div>
   );
 };
 

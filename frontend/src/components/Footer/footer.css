@@ -4,6 +4,8 @@
 
 #love {
   padding-top: 3em;
+  padding-left: 1em;
+  padding-bottom: 0.5em;
   color: #ffffff;
   font-size: 1.75em;
   font-weight: 400;
@@ -12,4 +14,5 @@
 .footer {
   display: flex;
   justify-content: space-between;
+  background-color: #ccddbd;
 }

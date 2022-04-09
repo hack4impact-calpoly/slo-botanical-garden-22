@@ -25,7 +25,7 @@ export default function Home() {
       bgImage={bgimage}
       bgPosition="center"
       bgSize="cover"
-      bgRepeat="no-repeat"
+      bgRepeat="yes-repeat"
     >
       <Flex w="100%">
         <Box
@@ -37,7 +37,7 @@ export default function Home() {
         >
           <Heading size="lg" color="#576754">
             {" "}
-            Admin Annoucements:{" "}
+            Admin Announcements:{" "}
           </Heading>
           <Box>
             <AnnouncementBar />
