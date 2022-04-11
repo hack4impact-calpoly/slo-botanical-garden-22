@@ -42,7 +42,8 @@ class AnnouncementBar extends React.Component {
       //console.log("ITEMS");
       //console.log(result);
       this.setState({ messages: result, loading: false });
-      //console.log(this.state.messages);
+      console.log("ANNOUNCEMENT ITEMS");
+      console.log(this.state.messages);
     });
   }
 

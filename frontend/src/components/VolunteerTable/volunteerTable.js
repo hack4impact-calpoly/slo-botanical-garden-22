@@ -11,29 +11,21 @@ const fetchDataFormDynamoDb = async () => {
 };
 
 function VolunteerTable() {
-  const data = React.useMemo(
-    () => [
-      {
-        name: "some name",
-        contact: "name@mail.com",
-      },
-      {
-        name: "other name",
-        contact: "other@mail.com",
-      },
-      {
-        name: "pi",
-        contact: "sss@mail.com",
-      },
-    ],
-    []
-  );
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchDataFormDynamoDb().then((result) => {
+      setUsers(result);
+    });
+  }, []);
+
+  const data = React.useMemo(() => users, []);
 
   const columns = React.useMemo(
     () => [
       {
-        Header: "Name",
-        accessor: "name", // accessor is the "key" in the data
+        Header: "Last Name",
+        accessor: "Last Name", // accessor is the "key" in the data
         getProps: () => {
           return {
             headerStyle: {
@@ -43,88 +35,71 @@ function VolunteerTable() {
         },
       },
       {
-        Header: "Contact",
-        accessor: "contact",
+        Header: "Email",
+        accessor: "Email",
       },
     ],
     []
   );
-
-  const [users, setUsers] = useState(
-    [
-      {
-        name: "some name",
-        contact: "name@mail.com",
-      },
-      {
-        name: "other name",
-        contact: "other@mail.com",
-      },
-      {
-        name: "pi",
-        contact: "sss@mail.com",
-      },
-    ],
-    []
-  );
-
-  useEffect(() => {
-    fetchDataFormDynamoDb().then((result) => {
-      setUsers(result);
-    });
-    console.log("IN FETCH IN VOLUNTEER");
-    console.log(users);
-    console.log("PADDING");
-  });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
   return (
-    <table
-      {...getTableProps()}
-      style={{ boxShadow: "0 0 20px rgba(0,0,0,0.8)", background: "#CCDDBD" }}
-    >
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th
-                {...column.getHeaderProps()}
-                style={{
-                  borderRight: "none",
-                  background: "#576754",
-                  color: "white",
-                }}
-              >
-                {column.render("Header")}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
+    <div>
+      {console.log(users)}
+      {users && (
+        <table
+          {...getTableProps()}
+          style={{
+            boxShadow: "0 0 20px rgba(0,0,0,0.8)",
+            background: "#CCDDBD",
+          }}
+        >
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps()}
                     style={{
-                      background: "#e6f2d9",
+                      borderRight: "none",
+                      background: "#576754",
+                      color: "white",
                     }}
                   >
-                    {cell.render("Cell")}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {console.log("ROW")}
+            {console.log(rows)}
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td
+                        {...cell.getCellProps()}
+                        style={{
+                          background: "#e6f2d9",
+                        }}
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </div>
   );
 }
 

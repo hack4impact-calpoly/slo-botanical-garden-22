@@ -2,10 +2,8 @@ import * as AWS from "aws-sdk";
 
 const configuration = {
   region: "us-east-1",
-  secretAccessKey: "rxdwWuZyDTi5r/q6UG0l3+1Xw4lIcTSUa+7tePL/",
-  accessKeyId: "AKIAZHFOZOFY5MXDBL5L",
-  //secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
-  //accessKeyId: process.env.REACT_APP_SECRET_ACCESS_ID,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.REACT_APP_SECRET_ACCESS_ID,
 };
 
 AWS.config.update(configuration);
@@ -21,21 +19,21 @@ export const getRandomId = () => {
 //Where tableName is "admin_announcements", "users", or "hoursLog"
 //Grabs all of the data in the table
 export const fetchData = async (tableName) => {
-  var params = {
-    TableName: tableName,
-  };
+  try {
+    var params = {
+      TableName: tableName,
+    };
 
-  let result = await docClient
-    .scan(params, function (err, data) {
-      if (!err) {
-        return data.Items;
-      }
-    })
-    .promise()
-    .then((data) => {
-      return data;
-    });
-  return result;
+    let result = await docClient
+      .scan(params)
+      .promise()
+      .then((data) => {
+        return data;
+      });
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 //Where tableName is "admin_announcements", "users", or "hoursLog"
