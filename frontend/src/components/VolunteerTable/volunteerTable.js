@@ -1,11 +1,30 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { useSortBy, useTable, usePagination } from "react-table";
 import "./volunteerTable.css";
 import bgimage from "../../assets/garden.png";
 import { Flex, Box } from "@chakra-ui/react";
 import { CSVLink } from "react-csv";
+import { fetchData } from "../../dynoFuncs";
+
+const fetchDataFormDynamoDb = async () => {
+  console.log("IN FETCH DATA VOLUNTEERS");
+  return await fetchData("volunteers_individual").then((data) => {
+    return data.Items;
+  });
+}
 
 const VolunteerTable = () => {
+
+  const [users, setUsers] = useState()
+
+  useEffect(() => {
+    fetchDataFormDynamoDb().then((result) => {
+      console.log(result.httpResponse);
+    });
+    console.log("IN FETCH IN VOLUNTEER");
+    console.log(users);
+    console.log("PADDING");
+  });
 
   const csvData = [
     {
@@ -216,6 +235,7 @@ const VolunteerTable = () => {
         firstName: "other",
         lastName: "ffon",
         contact: "other@mail.com",
+        sietj: "sfsdf",
       },
       {
         firstName: "pi",
@@ -447,6 +467,7 @@ const VolunteerTable = () => {
                       borderRight: "none",
                       background: "#576754",
                       color: "white",
+                      cursor: "pointer"
                     }}
                   >
                     {column.render("Header")}
@@ -504,8 +525,9 @@ const VolunteerTable = () => {
               {pageIndex + 1} of {pageOptions.length}
             </strong>{' '}
           </span>
+          <span> | </span>
           <span>
-            | Go to page:{' '}
+            Go to page:{' '}
             <input
               type="number"
               defaultValue={pageIndex + 1}
@@ -513,21 +535,15 @@ const VolunteerTable = () => {
                 const page = e.target.value ? Number(e.target.value) - 1 : 0
                 gotoPage(page)
               }}
-              style={{ width: '100px' }}
+              style={{ paddingLeft: '10px', width: '40px' }}
             />
           </span>{' '}
-          <select
-            value={pageSize}
+          <span
+            value={15}
             onChange={e => {
               setPageSize(Number(e.target.value))
             }}
-          >
-            {[10, 20, 30, 40, 50].map(pageSize => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
+          />
         </div>
       </Box>
     </Flex>
