@@ -40,6 +40,8 @@ const Table = (props) => {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
+        {console.log("ROW")}
+        {console.log(rows)}
         {rows.map((row) => {
           prepareRow(row);
           return (
