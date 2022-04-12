@@ -1,76 +1,31 @@
-import React from "react";
-import "./AnnouncementBar.css";
-import Announcement from "./Announcement";
+import React, { useState, useEffect } from "react";
 import { fetchData } from "../../dynoFuncs";
-import {
-  Box,
-  Text,
-  Flex,
-  Image,
-  Center,
-  Spacer,
-  HStack,
-  Heading,
-  Button,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import Announcement from "./Announcement";
+import { Box } from "@chakra-ui/react";
+import "./AnnouncementBar.css";
 
-const fetchDataFormDynamoDb = async () => {
-  const item = await fetchData("admin_announcements").then((data) => {
-    //console.log(data);
-    return data.Items;
-  });
-  //console.log("FETCHDATAFORM");
-  //console.log(item);
-  return item;
-};
+const AnnouncementBar = () => {
+  const [messages, setMessages] = useState();
 
-class AnnouncementBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      messages: [],
-    };
-  }
+  useEffect(() => {
+    fetchData("admin_announcements").then(data => setMessages(data));
+  }, []);
 
-  componentDidMount() {
-    //console.log("IN MOUNT");
-    this.setState({ loading: true });
-    fetchDataFormDynamoDb().then((result) => {
-      //console.log("ITEMS");
-      //console.log(result);
-      this.setState({ messages: result, loading: false });
-      console.log("ANNOUNCEMENT ITEMS");
-      console.log(this.state.messages);
-    });
-  }
+  if (!messages) return null;
 
-  render() {
-    //console.log(this.state.messages);
-    //console.log(this.state.loading);
-
-    return (
-      <>
-        {this.state.loading ? (
-          <div></div>
-        ) : (
-          <Box>
-            {this.state.messages.map((announcement) => (
-              <Announcement
-                name={announcement.name}
-                date={announcement.date}
-                title={announcement.title}
-                body={announcement.content}
-                poster={announcement.poster}
-              />
-            ))}
-          </Box>
-        )}
-      </>
-    );
-  }
+  return (
+    <Box>
+      {messages.map((announcement) => (
+        <Announcement
+          name={announcement.name}
+          date={announcement.date}
+          title={announcement.title}
+          body={announcement.content}
+          poster={announcement.poster}
+        />
+      ))}
+    </Box>
+  );
 }
 
 export default AnnouncementBar;

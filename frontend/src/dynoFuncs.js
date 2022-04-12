@@ -1,4 +1,4 @@
-import * as AWS from "aws-sdk";
+const AWS = require('aws-sdk');
 
 const configuration = {
   region: "us-east-1",
@@ -10,34 +10,25 @@ AWS.config.update(configuration);
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-export const getRandomId = () => {
-  const ret = (Math.random() * Date.now()).toString(36);
-  console.log(ret);
-  return (Math.random() * Date.now()).toString(36);
-};
+export const getRandomId = () => (Math.random() * Date.now()).toString(36);
 
-//Where tableName is "admin_announcements", "users", or "hoursLog"
-//Grabs all of the data in the table
+// Grab all data from a table
+//  tableName: admin_announcements | users | hoursLog
 export const fetchData = async (tableName) => {
-  try {
-    var params = {
-      TableName: tableName,
-    };
+  var params = { TableName: tableName };
 
-    let result = await docClient
-      .scan(params)
-      .promise()
-      .then((data) => {
-        return data;
-      });
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
+  const entries = await new Promise((resolve, reject) => {
+    docClient.scan(params, function (err, data) {
+      if (err) reject(err);
+      else resolve(data.Items);
+    });
+  });
+
+  return entries;
 };
 
-//Where tableName is "admin_announcements", "users", or "hoursLog"
-//data is the item to be stored in the database
+// Store `data` in `tableName`
+//  tableName: admin_announcements | users | hoursLog
 export const putData = (tableName, data) => {
   console.log("PUTDATA");
   console.log(data);
