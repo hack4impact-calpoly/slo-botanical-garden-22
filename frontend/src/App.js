@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import awsconfig from './aws-exports';
+import VolunteerTable from "./components/VolunteerTable/volunteerTable";
 
 function App(props) {
   var [isNavbarHidden, setIsNavbarHidden] = useState(false);
@@ -18,6 +19,7 @@ function App(props) {
           {isNavbarHidden ? null : <Navbar />}
           <Routes>
             <Route exact path="/" element={<Home />} />
+            <Route path="/volunteer" element={<VolunteerTable />} />
             {/* <Route path="/about" element={<About />} /> */}
             <Route
               path="signup"
