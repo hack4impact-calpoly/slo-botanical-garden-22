@@ -9,7 +9,7 @@ import {
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import "./login.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const components = {
   SignIn: {
@@ -66,10 +66,18 @@ export default function Login({ setNavbar }) {
         hideSignUp={true}
         components={components}
       >
-        {({ signOut, user }) => (
+        
+     {   useEffect(() => {
+    setNavbar(false);
+  }, [])}
+        {({ signOut, user, setNavbar }) => (
+          
           <main>
-            <h1>Hello {user.username}</h1>
-            <button onClick={signOut}>Sign out</button>
+            {/* condsole.log(Auth.currentUserInfo()) */}
+            <Navigate replace to="/" />
+            
+            {/* <h1>Hello {user.username}</h1>
+            <button onClick={signOut}>Sign out</button> */}
           </main>
         )}
       </Authenticator>

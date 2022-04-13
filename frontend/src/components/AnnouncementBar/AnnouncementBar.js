@@ -1,58 +1,31 @@
-import React from "react";
-import "./AnnouncementBar.css";
+import React, { useState, useEffect } from "react";
+import { fetchData } from "../../dynoFuncs";
 import Announcement from "./Announcement";
-import { fetchData, putData } from "../../dynoFuncs";
+import { Box } from "@chakra-ui/react";
+import "./AnnouncementBar.css";
 
-const fetchDataFormDynamoDb = async () => {
-  console.log("IN FETCH");
-  const item = await fetchData("admin_announcements").then((data) => {
-    return data.Items;
-  });
-  return item;
-};
+const AnnouncementBar = () => {
+  const [messages, setMessages] = useState();
 
-const postAnnouncement = (item) => {
-  console.log("In postAnnouncement");
-  return putData("admin_announcements", item);
-};
+  useEffect(() => {
+    fetchData("admin_announcements").then(data => setMessages(data));
+  }, []);
 
-class AnnouncementBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      messages: [],
-    };
-  }
+  if (!messages) return null;
 
-  componentDidMount() {
-    this.setState({ loading: true });
-    fetchDataFormDynamoDb().then((result) => {
-      this.setState({ messages: result, loading: false });
-    });
-  }
-
-  render() {
-    return (
-      <>
-        {this.state.loading ? (
-          <div></div>
-        ) : (
-          <div className="bar-container">
-            {this.state.messages.map((announcement) => (
-              <Announcement
-                name={announcement.name}
-                date={announcement.date}
-                title={announcement.title}
-                body={announcement.content}
-                poster={announcement.poster}
-              />
-            ))}
-          </div>
-        )}
-      </>
-    );
-  }
+  return (
+    <Box>
+      {messages.map((announcement) => (
+        <Announcement
+          name={announcement.name}
+          date={announcement.date}
+          title={announcement.title}
+          body={announcement.content}
+          poster={announcement.poster}
+        />
+      ))}
+    </Box>
+  );
 }
 
 export default AnnouncementBar;
