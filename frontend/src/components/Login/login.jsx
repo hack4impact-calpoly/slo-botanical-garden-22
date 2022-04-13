@@ -70,8 +70,7 @@ export default function Login({ setUsername }) {
           
           <main>
            
-{           setUsername(user.username)
-}            
+            {setUsername(user.username)}        
             <Navigate replace to="/" />
             
             {/* <h1>Hello {user.username}</h1>
