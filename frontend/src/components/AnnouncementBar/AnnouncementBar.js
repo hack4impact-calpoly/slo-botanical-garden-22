@@ -58,6 +58,8 @@ class AnnouncementBar extends React.Component {
           <div></div>
         ) : (
           <Box>
+            <AnnouncementForm />
+
             {console.log(this.state.messages)}
             {this.state.messages.map((announcement) => (
               <Announcement
@@ -68,7 +70,6 @@ class AnnouncementBar extends React.Component {
                 poster={announcement.poster}
               />
             ))}
-            <AnnouncementForm />
           </Box>
         )}
       </>

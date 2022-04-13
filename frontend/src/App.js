@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import LogHours from "./logHours.js";
-=======
 import "./App.css";
 import Navbar from "./components/Navbar/navbar";
 import Login from "./components/Login/login";
@@ -11,16 +7,10 @@ import SignUpForm from "./components/SignUp/SignUpForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
->>>>>>> 551fc36a1d6676b66ab3ef4dcc977dcb7386d3b4
 
 function App(props) {
   var [isNavbarHidden, setIsNavbarHidden] = useState(false);
   return (
-<<<<<<< HEAD
-    <div>
-      <LogHours/>
-    </div>
-=======
     <>
       <ChakraProvider>
         <Router>
@@ -41,7 +31,6 @@ function App(props) {
       </ChakraProvider>
       <Footer />
     </>
->>>>>>> 551fc36a1d6676b66ab3ef4dcc977dcb7386d3b4
   );
 }
 
