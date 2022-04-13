@@ -71,7 +71,7 @@ export default function Login({ setUsername }) {
           <main>
            
             {setUsername(user.username)}        
-            <Navigate replace to="/" />
+            <Navigate replace to="/"/>
             
             {/* <h1>Hello {user.username}</h1>
             <button onClick={signOut}>Sign out</button> */}
