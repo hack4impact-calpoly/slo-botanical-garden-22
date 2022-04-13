@@ -1,4 +1,6 @@
-const AWS = require('aws-sdk');
+import { ConsoleLogger } from "@aws-amplify/core";
+
+const AWS = require("aws-sdk");
 
 const configuration = {
   region: "us-east-1",
@@ -21,6 +23,26 @@ export const fetchData = async (tableName) => {
     docClient.scan(params, function (err, data) {
       if (err) reject(err);
       else resolve(data.Items);
+    });
+  });
+
+  return entries;
+};
+
+export const fetchUser = async (tableName, user) => {
+  const person = user;
+  console.log(person.user);
+  var params = {
+    Key: {
+      username: person.user,
+    },
+    TableName: tableName,
+  };
+  console.log(user);
+  const entries = await new Promise((resolve, reject) => {
+    docClient.get(params, function (err, data) {
+      if (err) reject(err);
+      else resolve(data.Item);
     });
   });
 
