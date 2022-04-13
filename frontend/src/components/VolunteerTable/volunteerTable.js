@@ -6,219 +6,48 @@ import { Flex, Box } from "@chakra-ui/react";
 import { CSVLink } from "react-csv";
 import { fetchData } from "../../dynoFuncs";
 
+const VolunteerTable = () => {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    fetchData("volunteers_individual").then((result) => setData(result));
+  }, []);
+
+  if (data) {
+    console.log(data);
+    return <Table data={data} />;
+  }
+  return null;
+};
+
 const Table = (props) => {
-  const { users } = props;
+  const { data } = props;
+  console.log(data);
 
-  console.log("USERS IN TABLE");
-  console.log(users);
-
-  const data = React.useMemo(
+  const columns = React.useMemo(
     () => [
       {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
+        Header: "Name",
+        accessor: "First Name", // accessor is the "key" in the data
+        Cell: (row) => {
+          return (
+            <div>
+              <span>
+                {row.row.original["First Name"] +
+                  " " +
+                  row.row.original["Last Name"]}
+              </span>
+            </div>
+          );
+        },
       },
       {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-        sietj: "sfsdf",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
-      },
-      {
-        firstName: "some",
-        lastName: "pon",
-        contact: "name@mail.com",
-      },
-      {
-        firstName: "other",
-        lastName: "ffon",
-        contact: "other@mail.com",
-      },
-      {
-        firstName: "pi",
-        lastName: "aa",
-        contact: "sss@mail.com",
+        Header: "Email",
+        accessor: "Email",
       },
     ],
     []
   );
-
-  const columns = [
-    {
-      Header: "First Name",
-      accessor: "First Name", // accessor is the "key" in the data
-      Cell: (row) => {
-        //sus of "firstName" and "lastName"
-        return (
-          <div>
-            <span>
-              {row.row.original.firstName + " " + row.row.original.lastName}
-            </span>
-          </div>
-        );
-      },
-    },
-    {
-      Header: "Email",
-      accessor: "Email",
-    },
-  ];
 
   const {
     getTableProps,
@@ -370,18 +199,6 @@ const Table = (props) => {
       </Flex>
     </div>
   );
-};
-
-const VolunteerTable = () => {
-  const [users, setUsers] = useState();
-
-  useEffect(() => {
-    fetchData("volunteers_individual").then((data) => {
-      setUsers(data);
-    });
-  }, []);
-  if (users) return <Table users={users} />;
-  return null;
 };
 
 export default VolunteerTable;
