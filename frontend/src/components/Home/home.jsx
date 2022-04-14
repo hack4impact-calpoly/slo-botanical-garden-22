@@ -167,7 +167,6 @@ export default function Home(props) {
           </Box>
           <Flex p={10}>
             <Heading size="lg"> Volunteering History: </Heading>
-            <VolunteerTable />
           </Flex>
         </Box>
       </Flex>
