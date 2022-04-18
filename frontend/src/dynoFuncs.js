@@ -1,5 +1,3 @@
-import { ConsoleLogger } from "@aws-amplify/core";
-
 const AWS = require("aws-sdk");
 
 const configuration = {
@@ -29,6 +27,7 @@ export const fetchData = async (tableName) => {
   return entries;
 };
 
+//Make it so dont hard code my username
 export const fetchUser = async (tableName, user) => {
   const person = "kennar12";
   console.log(person.user);

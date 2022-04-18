@@ -1,5 +1,6 @@
 import React from "react";
 //import styles from "./AnnouncementForm.module.css";
+import { putData, getRandomId } from "../../dynoFuncs";
 
 export default function AnnouncementForm(props) {
   var styles = `
@@ -93,35 +94,49 @@ export default function AnnouncementForm(props) {
       width: 238px;
       box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
     } 
-  `
+  `;
 
-var styleSheet = document.createElement("style")
-styleSheet.innerText = styles
-document.head.appendChild(styleSheet)
+  var styleSheet = document.createElement("style");
+  styleSheet.innerText = styles;
+  document.head.appendChild(styleSheet);
   /*
   function eraseText() {
     document.getElementById("littlerbox").value = "";
   }
   */
+  //admin_announcements
+
+  function submitAnnouncement() {
+    const form = document.getElementById("announcemetForm");
+    const item = {
+      primary_id: getRandomId(),
+      content: form.elements["content"].value,
+      date: new Date(),
+      poster: form.elements["poster"].value,
+      title: form.elements["title"].value,
+    };
+    console.log(item);
+    putData("admin_announcements", item);
+  }
 
   return (
     <div>
-      <div id = "lilbox" className={styles.lilbox}>
-        <h3 id= "formtitle" >New Announcement </h3>
-        <form action="/form/submit" method="GET">
-          <div className= "textboxes">
+      <div id="lilbox" className={styles.lilbox}>
+        <h3 id="formtitle">New Announcement </h3>
+        <form id="announcementForm" onsubmit="submitAnnouncement()">
+          <div className="textboxes">
             <textarea
               id="littlestbox"
               rows="1"
               cols="100%"
-              name="text"
+              name="title"
               placeholder="Title"
             ></textarea>
             <textarea
               id="littlestbox"
               rows="1"
               cols="100%"
-              name="text"
+              name="poster"
               placeholder="Poster"
             ></textarea>
             <textarea
@@ -129,12 +144,12 @@ document.head.appendChild(styleSheet)
               id="littlerbox"
               rows="3"
               cols="100%"
-              name="text"
+              name="content"
               placeholder="Message"
             ></textarea>
             <br />
           </div>
-          <div id = "lilbuttons" className={styles.lilbuttons}>
+          <div id="lilbuttons" className={styles.lilbuttons}>
             <input
               className={styles.publish}
               id="publish"
