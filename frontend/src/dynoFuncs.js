@@ -30,11 +30,11 @@ export const fetchData = async (tableName) => {
 };
 
 export const fetchUser = async (tableName, user) => {
-  const person = user;
+  const person = "kennar12";
   console.log(person.user);
   var params = {
     Key: {
-      username: person.user,
+      username: person,
     },
     TableName: tableName,
   };
