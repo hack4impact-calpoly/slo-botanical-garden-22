@@ -26,7 +26,6 @@ function App(props) {
             <Route path="signup" element={<SignUpForm />} />
             <Route path="/" element={<Login setUsername={setUsername} />} />
             <Route path="/volunteer" element={<VolunteerTable />} />
-            <Route path="signup" element={<SignUpForm />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
