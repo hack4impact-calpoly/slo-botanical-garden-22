@@ -1,49 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTable } from "react-table";
+import { fetchData } from "../../dynoFuncs";
 import "./volunteerTable.css";
 
-const VolunteerTable = () => {
-  const data = React.useMemo(
-    () => [
-      {
-        name: "some name",
-        contact: "name@mail.com",
-      },
-      {
-        name: "other name",
-        contact: "other@mail.com",
-      },
-      {
-        name: "pi",
-        contact: "sss@mail.com",
-      },
-    ],
-    []
-  );
+const Table = (props) => {
+  const { users } = props;
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: "name", // accessor is the "key" in the data
-        getProps: () => {
-          return {
-            headerStyle: {
-              color: "red",
-            },
-          };
-        },
-      },
-      {
-        Header: "Contact",
-        accessor: "contact",
-      },
-    ],
-    []
-  );
+  // accessor is the "key" in the data
+  const columns = [
+    { Header: "Name", accessor: "First Name" },
+    { Header: "Email", accessor: "Email" },
+  ];
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+  const {
+    getTableProps, getTableBodyProps, headerGroups, rows, prepareRow
+  } = useTable({ columns, data: users });
 
   return (
     <table
@@ -69,6 +40,8 @@ const VolunteerTable = () => {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
+        {console.log("ROW")}
+        {console.log(rows)}
         {rows.map((row) => {
           prepareRow(row);
           return (
@@ -91,6 +64,17 @@ const VolunteerTable = () => {
       </tbody>
     </table>
   );
-};
+}
+
+const VolunteerTable = () => {
+  const [users, setUsers] = useState();
+
+  useEffect(() => {
+    fetchData("volunteers_individual").then(data => setUsers(data));
+  }, []);
+
+  if (users) return <Table users={users} />;
+  return null;
+}
 
 export default VolunteerTable;
