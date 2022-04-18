@@ -1,7 +1,9 @@
-import React from "react";
 import "../../App.css";
 import bgimage from "../../assets/garden.png";
 import AnnouncementBar from "../AnnouncementBar/AnnouncementBar.js";
+import React, { useState, useEffect } from "react";
+import { fetchUser } from "../../dynoFuncs";
+
 import {
   Box,
   Text,
@@ -17,7 +19,16 @@ import {
 } from "@chakra-ui/react";
 import VolunteerTable from "../VolunteerTable/volunteerTable.js";
 
-export default function Home() {
+export default function Home(props) {
+  console.log(props);
+  const [userInfo, setUserInfo] = useState();
+
+  useEffect(() => {
+    fetchUser("volunteers_individual", props).then((data) => setUserInfo(data));
+  }, []);
+
+  if (!userInfo) return null;
+
   return (
     <Flex
       p={10}
@@ -35,7 +46,7 @@ export default function Home() {
           boxShadow="dark-lg"
           backdropFilter="blur(60px)"
         >
-          <Heading size="lg" color="#576754">
+          <Heading size="lg" color="#cee4bb">
             {" "}
             Admin Announcements:{" "}
           </Heading>
@@ -77,6 +88,7 @@ export default function Home() {
           </Box>
           <Box>
             <Flex p={10}>
+              {console.log(userInfo)}
               <Box
                 bg="#576754"
                 w="30%"
@@ -155,7 +167,6 @@ export default function Home() {
           </Box>
           <Flex p={10}>
             <Heading size="lg"> Volunteering History: </Heading>
-            <VolunteerTable />
           </Flex>
         </Box>
       </Flex>

@@ -1,4 +1,6 @@
-import * as AWS from "aws-sdk";
+import { ConsoleLogger } from "@aws-amplify/core";
+
+const AWS = require("aws-sdk");
 
 const configuration = {
   region: "us-east-1",
@@ -10,34 +12,45 @@ AWS.config.update(configuration);
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-export const getRandomId = () => {
-  const ret = (Math.random() * Date.now()).toString(36);
-  console.log(ret);
-  return (Math.random() * Date.now()).toString(36);
+export const getRandomId = () => (Math.random() * Date.now()).toString(36);
+
+// Grab all data from a table
+//  tableName: admin_announcements | users | hoursLog
+export const fetchData = async (tableName) => {
+  var params = { TableName: tableName };
+
+  const entries = await new Promise((resolve, reject) => {
+    docClient.scan(params, function (err, data) {
+      if (err) reject(err);
+      else resolve(data.Items);
+    });
+  });
+
+  return entries;
 };
 
-//Where tableName is "admin_announcements", "users", or "hoursLog"
-//Grabs all of the data in the table
-export const fetchData = async (tableName) => {
+export const fetchUser = async (tableName, user) => {
+  const person = user;
+  console.log(person.user);
   var params = {
+    Key: {
+      username: person.user,
+    },
     TableName: tableName,
   };
-
-  let result = await docClient
-    .scan(params, function (err, data) {
-      if (!err) {
-        return data.Items;
-      }
-    })
-    .promise()
-    .then((data) => {
-      return data;
+  console.log(user);
+  const entries = await new Promise((resolve, reject) => {
+    docClient.get(params, function (err, data) {
+      if (err) reject(err);
+      else resolve(data.Item);
     });
-  return result;
+  });
+
+  return entries;
 };
 
-//Where tableName is "admin_announcements", "users", or "hoursLog"
-//data is the item to be stored in the database
+// Store `data` in `tableName`
+//  tableName: admin_announcements | users | hoursLog
 export const putData = (tableName, data) => {
   console.log("PUTDATA");
   console.log(data);

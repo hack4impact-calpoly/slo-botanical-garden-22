@@ -1,4 +1,4 @@
-import React, { useEffect }  from "react";
+import React, { useEffect } from "react";
 import {
   Authenticator,
   useTheme,
@@ -9,7 +9,7 @@ import {
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import "./login.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const components = {
   SignIn: {
@@ -54,11 +54,7 @@ const components = {
     );
   },
 };
-
-export default function Login({ setNavbar }) {
-  useEffect(() => {
-    setNavbar(true);
-  }, []);
+export default function Login({ setUsername }) {
   return (
     <div className="signInPage">
       <Authenticator
@@ -68,8 +64,11 @@ export default function Login({ setNavbar }) {
       >
         {({ signOut, user }) => (
           <main>
-            <h1>Hello {user.username}</h1>
-            <button onClick={signOut}>Sign out</button>
+            {setUsername(user.username)}
+            <Navigate replace to="/home" />
+
+            {/* <h1>Hello {user.username}</h1>
+            <button onClick={signOut}>Sign out</button> */}
           </main>
         )}
       </Authenticator>
