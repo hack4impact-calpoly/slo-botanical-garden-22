@@ -5,10 +5,11 @@ import Footer from "./components/Footer/footer";
 import Home from "./components/Home/home";
 import SignUpForm from "./components/SignUp/SignUpForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { useState } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
-import awsconfig from './aws-exports';
-import { Auth } from 'aws-amplify';
+import awsconfig from "./aws-exports";
+import { Auth } from "aws-amplify";
+import React, { useState } from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import VolunteerTable from "./components/VolunteerTable/volunteerTable";
 
 function App(props) {
   const [username, setUsername] = useState(null);
@@ -17,19 +18,15 @@ function App(props) {
   return (
     <>
       <ChakraProvider>
-        <div>username: {username}    isAdmin: {isAdmin ? "true" : "false"}</div>
         <Router>
+          <Navbar user={username} />
           <Routes>
-            <Route exact path="/" element={<Home />} />
-            {/* <Route path="/about" element={<About />} /> */}
-            <Route
-              path="signup"
-              element={<SignUpForm/>}
-            />
-            <Route
-              path="/login"
-              element={<Login setUsername = {setUsername}/>}
-            />
+            <Route exact path="/home" element={<Home user={username} />} />
+            <Route exact path="/profile" element={<Home user={username} />} />
+            <Route path="signup" element={<SignUpForm />} />
+            <Route path="/" element={<Login setUsername={setUsername} />} />
+            <Route path="/volunteer" element={<VolunteerTable />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
       </ChakraProvider>

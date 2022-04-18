@@ -1,4 +1,4 @@
-import React, { useEffect }  from "react";
+import React, { useEffect } from "react";
 import {
   Authenticator,
   useTheme,
@@ -54,7 +54,6 @@ const components = {
     );
   },
 };
-
 export default function Login({ setUsername }) {
   return (
     <div className="signInPage">
@@ -63,16 +62,11 @@ export default function Login({ setUsername }) {
         hideSignUp={true}
         components={components}
       >
-
-
-
         {({ signOut, user }) => (
-          
           <main>
-           
-            {setUsername(user.username)}        
-            <Navigate replace to="/"/>
-            
+            {setUsername(user.username)}
+            <Navigate replace to="/home" />
+
             {/* <h1>Hello {user.username}</h1>
             <button onClick={signOut}>Sign out</button> */}
           </main>
@@ -81,4 +75,3 @@ export default function Login({ setUsername }) {
     </div>
   );
 }
-

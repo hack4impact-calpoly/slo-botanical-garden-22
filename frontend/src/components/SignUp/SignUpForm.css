@@ -1,17 +1,17 @@
 .check-status {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: -8px;
-    margin-bottom: -50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: -8px;
+  margin-bottom: -50px;
 }
 
 .check-status > * {
-    margin: 0 30px 30px 30px;
+  margin: 0 30px 30px 30px;
 }
 
 .ui.checkbox label:before,
-.ui.checkbox label:after{
+.ui.checkbox label:after {
   right: 0px;
   left: auto;
 }
@@ -22,19 +22,17 @@
 }
 
 .photo-label {
-    margin: 0px auto;
+  margin: 0px auto;
 }
 
 .heading {
-  margin: 0 0 .28571429rem 0;
-  color: rgba(0,0,0,.87);
-  font-size: .92857143em;
+  margin: 0 0 0.28571429rem 0;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.92857143em;
   font-weight: 700;
   text-transform: none;
   display: inline;
 }
-
-
 
 html {
   background-image: url("../../assets/garden.png");
@@ -42,18 +40,12 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
-
 }
-
-
- body {
-
-} 
 
 .signUpForm {
   border-radius: 50px;
   background-color: white;
-  margin:auto;
+  margin: auto;
   margin: 5%;
   resize: both;
 }
@@ -61,5 +53,4 @@ html {
 .chakra-ui-light {
   background-color: transparent;
   background: transparent;
-
 }

@@ -22,6 +22,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
+=======
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
@@ -43,3 +45,4 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+>>>>>>> fcfb2bb51e00bb4cb569e061540c2a3abc2c82ea

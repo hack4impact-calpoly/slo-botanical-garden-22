@@ -1,4 +1,4 @@
-const AWS = require('aws-sdk');
+const AWS = require("aws-sdk");
 
 const configuration = {
   region: "us-east-1",
@@ -21,6 +21,27 @@ export const fetchData = async (tableName) => {
     docClient.scan(params, function (err, data) {
       if (err) reject(err);
       else resolve(data.Items);
+    });
+  });
+
+  return entries;
+};
+
+//Make it so dont hard code my username
+export const fetchUser = async (tableName, user) => {
+  const person = "kennar12";
+  console.log(person.user);
+  var params = {
+    Key: {
+      username: person,
+    },
+    TableName: tableName,
+  };
+  console.log(user);
+  const entries = await new Promise((resolve, reject) => {
+    docClient.get(params, function (err, data) {
+      if (err) reject(err);
+      else resolve(data.Item);
     });
   });
 
