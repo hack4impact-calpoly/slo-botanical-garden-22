@@ -3,6 +3,8 @@ import bgimage from "../../assets/garden.png";
 import AnnouncementBar from "../AnnouncementBar/AnnouncementBar.js";
 import React, { useState, useEffect } from "react";
 import { fetchUser } from "../../dynoFuncs";
+import { Navigate } from "react-router-dom";
+
 
 import {
   Box,
@@ -24,7 +26,7 @@ import Navbar from "../Navbar/navbar";
 export default function Home(props) {
   console.log(props);
   const [userInfo, setUserInfo] = useState();
-
+  var username = props.user;
   useEffect(() => {
     fetchUser("volunteers_individual", props).then((data) => setUserInfo(data));
   }, []);
@@ -32,6 +34,8 @@ export default function Home(props) {
   if (!userInfo) return null;
 
   return (
+    <>
+    {username === null ?  <Navigate replace to="/" /> :         
     <>
     <Flex
       p={10}
@@ -174,6 +178,6 @@ export default function Home(props) {
         </Box>
       </Flex>
     </Flex>
-    </>
+    </>}</>
   );
 }
