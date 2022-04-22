@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import {
   Authenticator,
   useTheme,
@@ -9,9 +9,11 @@ import {
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import "./login.css";
-import { Link, Navigate } from "react-router-dom";
+import SignUpForm from "../SignUp/SignUpForm";
+import { Navigate } from "react-router-dom";
 
-const components = {
+const getComp = (setSignUpUser) => {
+return {
   SignIn: {
     Header() {
       const { tokens } = useTheme();
@@ -33,12 +35,12 @@ const components = {
         <h2 style={{ marginTop: ".5em" }} className="OR">
           <span>OR</span>
         </h2>
-        <Link to="/signup">
           <Button
             fontWeight="normal"
             variation="primary"
             size="Large"
             isFullWidth={true}
+            onClick={() => setSignUpUser(true)}
             style={{
               width: "45%",
               marginTop: "1em",
@@ -49,29 +51,37 @@ const components = {
           >
             Sign Up
           </Button>
-        </Link>
       </View>
     );
   },
 };
+}
 export default function Login({ setUsername }) {
+  const [signUpUser, setSignUpUser] = useState(false);
   return (
-    <div className="signInPage">
-      <Authenticator
-        className="signIn"
-        hideSignUp={true}
-        components={components}
-      >
-        {({ signOut, user }) => (
-          <main>
-            {setUsername(user.username)}
-            <Navigate replace to="/home" />
+    <>
+      {signUpUser ? (
+        <SignUpForm setUsername={setUsername}/>
+      ) : (
+        <div className="signInPage">
+          <Authenticator
+            className="signIn"
+            hideSignUp={true}
+            components={getComp(setSignUpUser)}
+            authState={setSignUpUser}
+          >
+            {({ signOut, user }) => (
+              <main>
+                {setUsername(user.username)}
+                <Navigate replace to="/home" />
 
-            {/* <h1>Hello {user.username}</h1>
+                {/* <h1>Hello {user.username}</h1>
             <button onClick={signOut}>Sign out</button> */}
-          </main>
-        )}
-      </Authenticator>
-    </div>
+              </main>
+            )}
+          </Authenticator>
+        </div>
+      )}
+    </>
   );
 }

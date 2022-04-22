@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Form, Checkbox } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
+import { Auth } from "aws-amplify";
+import { useNavigate } from "react-router-dom";
+
 
 import "./SignUpForm.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const SignUpForm = () => {
-
+const SignUpForm = ({ setUsername }) => {
   const [signUp, setSignUp] = useState({});
   const [signUpGroup, setSignUpGroup] = useState({});
   const [startDate, setStartDate] = useState();
   const [group, setGroup] = useState(false);
   const [indiv, setIndiv] = useState(true);
+  const [confirmation, setConfirmation] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e, { name, value }) =>
     setSignUp({ ...signUp, [name]: value });
@@ -44,17 +48,54 @@ const SignUpForm = () => {
     }
   };
 
+  const signUpCognito = async () => {
+    var username = group ? signUpGroup.username : signUp.username;
+    var password = group ? signUpGroup.password : signUp.password;
+    var email = group ? signUpGroup.emailContact : signUp.email;
+
+    try {
+      const { user } = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email, // optional
+        },
+      });
+      setConfirmation(true);
+      console.log(user);
+    } catch (error) {
+      console.log("error signing up:", error);
+    }
+  };
+
+  const confirmSignUp = async () => {
+    var username = group ? signUpGroup.username : signUp.username;
+    var password = group ? signUpGroup.password : signUp.password;
+    var code = group ? signUpGroup.code : signUp.code;
+
+    console.log("code: " + code);
+    try {
+      await Auth.confirmSignUp(username, code);
+      console.log(setUsername);
+      setUsername(username);
+      await Auth.signIn(username, password);
+      navigate("/home")
+    } catch (error) {
+      console.log("error confirming sign up", error);
+    }
+  };
+
   return (
     <Form
       className="signUpForm"
       style={{ padding: "40px", display: "flex", flexDirection: "column" }}
-      onSubmit={handleSubmit}
+      onSubmit={confirmation ? confirmSignUp : signUpCognito}
     >
       <h1 style={{ color: "#4d602a" }} size="huge">
         SIGN UP
       </h1>
       <hr style={{ backgroundColor: "green", width: "100%" }} />
-      <div className="check-status">
+      {confirmation ? null : <div className="check-status">
         <Checkbox
           className="check-status indiv"
           label="Individual"
@@ -83,10 +124,42 @@ const SignUpForm = () => {
           }}
           checked={group}
         />
-      </div>
+      </div>}
       <hr style={{ backgroundColor: "green", width: "100%" }} />
-      {indiv && (
+      {indiv && !confirmation && (
         <div>
+          <Form.Group widths="equal">
+            <Form.Input
+              label="Username"
+              name="username"
+              value={signUp.username}
+              onChange={handleChange}
+              required
+            />
+            <Form.Input
+              label="Password"
+              name="password"
+              type="password"
+              value={signUp.password}
+              onChange={handleChange}
+              required
+            />
+            <Form.Input
+              label="Email"
+              name="email"
+              value={signUp.email}
+              onChange={handleChange}
+              required
+            />
+            {/* <Form.Input
+              label="Confirm Password"
+              name="confirmPassword"
+              type='password'
+              value={signUp.confirmPassword}
+              onChange={handleChange}
+              required
+            /> */}
+          </Form.Group>
           <Form.Group widths="equal">
             <Form.Input
               label="First Name"
@@ -196,7 +269,7 @@ const SignUpForm = () => {
         </div>
       )}
       {console.log(signUp)}
-      {group && (
+      {group && !confirmation && (
         <Form>
           <Form.Input
             label="Group Name"
@@ -205,6 +278,31 @@ const SignUpForm = () => {
             onChange={handleChangeGroup}
             required
           />
+          <Form.Group widths="equal">
+            <Form.Input
+              label="Username"
+              name="username"
+              value={signUpGroup.username}
+              onChange={handleChangeGroup}
+              required
+            />
+            <Form.Input
+              label="Password"
+              name="password"
+              type="password"
+              value={signUpGroup.password}
+              onChange={handleChangeGroup}
+              required
+            />
+            {/* <Form.Input
+              label="Confirm Password"
+              name="confirmPassword"
+              type='password'
+              value={signUp.confirmPassword}
+              onChange={handleChange}
+              required
+            /> */}
+          </Form.Group>
           <Form.Group widths="equal">
             <Form.Input
               label="Name of Person of Contact"
@@ -242,10 +340,24 @@ const SignUpForm = () => {
           />
         </Form>
       )}
-      <br />
-      {(group || indiv) && (
-        <Form.Button content="Submit" onSubmit={handleSubmit} />
+      {confirmation && (
+        <Form>
+          <Form.Input
+            label="Verification Code"
+            name="code"
+            value={group ? signUpGroup.code : signUp.code}
+            onChange={group ? handleChangeGroup : handleChange}
+            required
+          />
+        </Form>
       )}
+      <br />
+      {(group || indiv || confirmation) && (
+        <Form.Button content="Submit" onSubmit={signUpCognito} />
+      )}
+      {/* {confirmation && (
+        <Form.Button content="Submit" onSubmit={confirmSignUp} />
+      )} */}
     </Form>
   );
 };

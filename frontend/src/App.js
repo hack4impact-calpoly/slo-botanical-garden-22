@@ -23,7 +23,7 @@ function App(props) {
           <Routes>
             <Route exact path="/home" element={<Home user={username} />} />
             <Route exact path="/profile" element={<Home user={username} />} />
-            <Route path="signup" element={<SignUpForm />} />
+            <Route path="/signup" element={<SignUpForm />} setUsername={setUsername}/>
             <Route path="/" element={<Login setUsername={setUsername} />} />
             <Route path="/volunteer" element={<VolunteerTable />} />
           </Routes>
