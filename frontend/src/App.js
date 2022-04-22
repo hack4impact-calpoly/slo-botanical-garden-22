@@ -19,13 +19,13 @@ function App(props) {
     <>
       <ChakraProvider>
         <Router>
-            {username !== null ? <Navbar user={username} /> : null}          
+          {username !== null ? <Navbar user={username} /> : null}          
           <Routes>
             <Route exact path="/home" element={<Home user={username} />} />
             <Route exact path="/profile" element={<Home user={username} />} />
-            <Route path="/signup" element={<SignUpForm />} setUsername={setUsername}/>
+            <Route path="/signup" element={<SignUpForm setUsername={setUsername}/>} />
             <Route path="/" element={<Login setUsername={setUsername} />} />
-            <Route path="/volunteer" element={<VolunteerTable />} />
+            <Route path="/volunteer" element={<VolunteerTable user={username}/>} />
           </Routes>
         </Router>
       </ChakraProvider>

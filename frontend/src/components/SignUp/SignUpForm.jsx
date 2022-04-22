@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form, Checkbox } from "semantic-ui-react";
+import { Form, Checkbox, Message } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import { Auth } from "aws-amplify";
 import { useNavigate } from "react-router-dom";
-
 
 import "./SignUpForm.css";
 
@@ -16,6 +15,9 @@ const SignUpForm = ({ setUsername }) => {
   const [group, setGroup] = useState(false);
   const [indiv, setIndiv] = useState(true);
   const [confirmation, setConfirmation] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [usernameTaken, setUsernameTaken] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e, { name, value }) =>
@@ -49,9 +51,16 @@ const SignUpForm = ({ setUsername }) => {
   };
 
   const signUpCognito = async () => {
+    setPasswordsMatch(true);
+    setUsernameTaken(false);
     var username = group ? signUpGroup.username : signUp.username;
     var password = group ? signUpGroup.password : signUp.password;
+    var confirmPassword = group ? signUpGroup.confirmPassword : signUp.confirmPassword;
     var email = group ? signUpGroup.emailContact : signUp.email;
+    if (password !== confirmPassword) {
+      setPasswordsMatch(false);
+      return;
+    }
 
     try {
       const { user } = await Auth.signUp({
@@ -65,6 +74,10 @@ const SignUpForm = ({ setUsername }) => {
       console.log(user);
     } catch (error) {
       console.log("error signing up:", error);
+      const code = error.code;
+      if (error.code === "UsernameExistsException") {
+        setUsernameTaken(true);
+      }
     }
   };
 
@@ -79,7 +92,8 @@ const SignUpForm = ({ setUsername }) => {
       console.log(setUsername);
       setUsername(username);
       await Auth.signIn(username, password);
-      navigate("/home")
+      // push data to dynamo
+      navigate("/home");
     } catch (error) {
       console.log("error confirming sign up", error);
     }
@@ -95,36 +109,38 @@ const SignUpForm = ({ setUsername }) => {
         SIGN UP
       </h1>
       <hr style={{ backgroundColor: "green", width: "100%" }} />
-      {confirmation ? null : <div className="check-status">
-        <Checkbox
-          className="check-status indiv"
-          label="Individual"
-          style={{ paddingTop: "10px" }}
-          onChange={() => {
-            setIndiv(true);
-            if (group) {
-              setGroup(false);
-            }
-          }}
-          checked={indiv}
-        />
-        {/* <div
+      {confirmation ? null : (
+        <div className="check-status">
+          <Checkbox
+            className="check-status indiv"
+            label="Individual"
+            style={{ paddingTop: "10px" }}
+            onChange={() => {
+              setIndiv(true);
+              if (group) {
+                setGroup(false);
+              }
+            }}
+            checked={indiv}
+          />
+          {/* <div
             className="check-status line"
             style={{ borderLeft: "1px solid green", height: "30px" }}
           /> */}
-        <Checkbox
-          className="check-status group"
-          label="Group"
-          style={{ paddingTop: "10px" }}
-          onChange={() => {
-            setGroup(true);
-            if (indiv) {
-              setIndiv(false);
-            }
-          }}
-          checked={group}
-        />
-      </div>}
+          <Checkbox
+            className="check-status group"
+            label="Group"
+            style={{ paddingTop: "10px" }}
+            onChange={() => {
+              setGroup(true);
+              if (indiv) {
+                setIndiv(false);
+              }
+            }}
+            checked={group}
+          />
+        </div>
+      )}
       <hr style={{ backgroundColor: "green", width: "100%" }} />
       {indiv && !confirmation && (
         <div>
@@ -145,20 +161,13 @@ const SignUpForm = ({ setUsername }) => {
               required
             />
             <Form.Input
-              label="Email"
-              name="email"
-              value={signUp.email}
-              onChange={handleChange}
-              required
-            />
-            {/* <Form.Input
               label="Confirm Password"
               name="confirmPassword"
-              type='password'
+              type="password"
               value={signUp.confirmPassword}
               onChange={handleChange}
               required
-            /> */}
+            />
           </Form.Group>
           <Form.Group widths="equal">
             <Form.Input
@@ -172,6 +181,13 @@ const SignUpForm = ({ setUsername }) => {
               label="Last Name"
               name="lastName"
               value={signUp.lastName}
+              onChange={handleChange}
+              required
+            />
+            <Form.Input
+              label="Email"
+              name="email"
+              value={signUp.email}
               onChange={handleChange}
               required
             />
@@ -294,14 +310,14 @@ const SignUpForm = ({ setUsername }) => {
               onChange={handleChangeGroup}
               required
             />
-            {/* <Form.Input
+            <Form.Input
               label="Confirm Password"
               name="confirmPassword"
-              type='password'
-              value={signUp.confirmPassword}
-              onChange={handleChange}
+              type="password"
+              value={signUpGroup.confirmPassword}
+              onChange={handleChangeGroup}
               required
-            /> */}
+            />
           </Form.Group>
           <Form.Group widths="equal">
             <Form.Input
@@ -351,6 +367,16 @@ const SignUpForm = ({ setUsername }) => {
           />
         </Form>
       )}
+      {usernameTaken && (<Message negative>
+        <Message.Header>
+          Username is already taken
+        </Message.Header>
+      </Message>)}
+      {!passwordsMatch && (<Message negative>
+        <Message.Header>
+          Passwords must match
+        </Message.Header>
+      </Message>)}
       <br />
       {(group || indiv || confirmation) && (
         <Form.Button content="Submit" onSubmit={signUpCognito} />
