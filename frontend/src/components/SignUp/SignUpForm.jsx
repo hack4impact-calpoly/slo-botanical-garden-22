@@ -17,7 +17,7 @@ const SignUpForm = ({ setUsername }) => {
   const [confirmation, setConfirmation] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [usernameTaken, setUsernameTaken] = useState(false);
-
+  const [correctEmailFormat, setCorrectEmailFormat] = useState(true);
   const navigate = useNavigate();
 
   const handleChange = (e, { name, value }) =>
@@ -53,6 +53,7 @@ const SignUpForm = ({ setUsername }) => {
   const signUpCognito = async () => {
     setPasswordsMatch(true);
     setUsernameTaken(false);
+    setCorrectEmailFormat(true);
     var username = group ? signUpGroup.username : signUp.username;
     var password = group ? signUpGroup.password : signUp.password;
     var confirmPassword = group ? signUpGroup.confirmPassword : signUp.confirmPassword;
@@ -77,6 +78,9 @@ const SignUpForm = ({ setUsername }) => {
       const code = error.code;
       if (error.code === "UsernameExistsException") {
         setUsernameTaken(true);
+      }
+      else if (error.message === "Invalid email address format."){
+        setCorrectEmailFormat(false);
       }
     }
   };
@@ -375,6 +379,11 @@ const SignUpForm = ({ setUsername }) => {
       {!passwordsMatch && (<Message negative>
         <Message.Header>
           Passwords must match
+        </Message.Header>
+      </Message>)}
+      {!correctEmailFormat && (<Message negative>
+        <Message.Header>
+          Must have a valid email
         </Message.Header>
       </Message>)}
       <br />
