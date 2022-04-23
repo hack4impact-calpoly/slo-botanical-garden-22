@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 //import styles from "./AnnouncementForm.module.css";
 import { putData, getRandomId } from "../../dynoFuncs";
 
 export default function AnnouncementForm(props) {
+  const [newAnnouncement, setNewAnnouncement] = useState({
+    Message: "Nothing Yet",
+  });
+
   var styles = `
     #body {
       background: #f8edeb;
@@ -17,6 +21,8 @@ export default function AnnouncementForm(props) {
       margin: 10px;
       display: flex;
       justify-content: center;
+      font-size="lg";
+      color="#cee4bb"
     }
     
     #lilbox {
@@ -61,7 +67,7 @@ export default function AnnouncementForm(props) {
       padding: 10%;
     }
     
-    #littlerbox {
+    .littlerbox {
       box-sizing: border-box;
       background-color: #e3e3e3;
       border-radius: 5%;
@@ -73,11 +79,11 @@ export default function AnnouncementForm(props) {
       color: #686868;
       font-family: "Century Gothic", Verdana, monospace;
       font-weight: bold;
-      height: 250px;
-      width: 238px;
+      height: 225px;
+      width: 95%;
       box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
     } 
-    #littlestbox {
+    .littlestbox {
       box-sizing: border-box;
       background-color: #e3e3e3;
       border-radius: 10%;
@@ -89,8 +95,8 @@ export default function AnnouncementForm(props) {
       color: #686868;
       font-family: "Century Gothic", Verdana, monospace;
       font-weight: bold;
-      height: 40px;
-      width: 238px;
+      height: 10%;
+      width: 95%;
       box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
     } 
   `;
@@ -105,42 +111,57 @@ export default function AnnouncementForm(props) {
   */
   //admin_announcements
 
-  function submitAnnouncement() {
+  async function submitForm() {
+    setNewAnnouncement("TEST", () => {
+      console.log(newAnnouncement);
+    });
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + "/" + dd + "/" + yyyy;
     const form = document.getElementById("announcemetForm");
     const item = {
       primary_id: getRandomId(),
-      content: form.elements["content"].value,
-      date: new Date(),
-      poster: form.elements["poster"].value,
-      title: form.elements["title"].value,
+      content: document.getElementById("content").value,
+      date: today,
+      poster: document.getElementById("poster").value,
+      title: document.getElementById("title").value,
     };
-    console.log(item);
+    document.getElementById("content").value = "";
+    document.getElementById("poster").value = "";
+    document.getElementById("title").value = "";
     putData("admin_announcements", item);
+    console.log(newAnnouncement);
+    console.log(item);
+    console.log(newAnnouncement);
   }
 
   return (
     <div>
       <div id="lilbox" className={styles.lilbox}>
-        <h3 id="formtitle">New Announcement </h3>
-        <form id="announcementForm" onsubmit="submitAnnouncement()">
+        <h3 id="formtitle">Create New Announcement </h3>
+        <div id="announcementForm">
           <div className="textboxes">
             <textarea
-              id="littlestbox"
+              id="title"
+              className="littlestbox"
               rows="1"
               cols="100%"
               name="title"
               placeholder="Title"
             ></textarea>
             <textarea
-              id="littlestbox"
+              id="poster"
+              className="littlestbox"
               rows="1"
               cols="100%"
               name="poster"
               placeholder="Poster"
             ></textarea>
             <textarea
-              className={styles.littlerbox}
-              id="littlerbox"
+              className="littlerbox"
+              id="content"
               rows="3"
               cols="100%"
               name="content"
@@ -152,11 +173,12 @@ export default function AnnouncementForm(props) {
             <input
               className={styles.publish}
               id="publish"
-              type="submit"
-              value="Publish"
+              type="reset"
+              value="Post"
+              onClick={submitForm}
             />
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

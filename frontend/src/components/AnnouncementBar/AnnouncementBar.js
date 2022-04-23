@@ -16,7 +16,9 @@ const AnnouncementBar = () => {
 
   return (
     <div>
-      <Box>
+      <Box className="box">
+        <h2> </h2>
+        <AnnouncementForm />
         {messages.map((announcement) => (
           <Announcement
             name={announcement.name}
@@ -27,7 +29,6 @@ const AnnouncementBar = () => {
           />
         ))}
       </Box>
-      <AnnouncementForm />
     </div>
   );
 };
