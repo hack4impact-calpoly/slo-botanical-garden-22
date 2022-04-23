@@ -77,7 +77,6 @@ export default function AnnouncementForm(props) {
       width: 238px;
       box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
     } 
-
     #littlestbox {
       box-sizing: border-box;
       background-color: #e3e3e3;
