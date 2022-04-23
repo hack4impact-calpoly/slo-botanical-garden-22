@@ -3,6 +3,7 @@ import { Form, Checkbox, Message } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import { Auth } from "aws-amplify";
 import { useNavigate } from "react-router-dom";
+import { putData, getRandomId } from "../../dynoFuncs";
 
 import "./SignUpForm.css";
 
@@ -26,37 +27,15 @@ const SignUpForm = ({ setUsername }) => {
   const handleChangeGroup = (e, { name, value }) =>
     setSignUpGroup({ ...signUpGroup, [name]: value });
 
-  const handleSubmit = async () => {
-    if (group) {
-      const resp = await fetch("", {
-        // Backend URL goes here
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(signUpGroup),
-      });
-    } else {
-      const resp = await fetch("", {
-        // Backend URL goes here
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(signUp),
-      });
-    }
-  };
-
   const signUpCognito = async () => {
     setPasswordsMatch(true);
     setUsernameTaken(false);
     setCorrectEmailFormat(true);
     var username = group ? signUpGroup.username : signUp.username;
     var password = group ? signUpGroup.password : signUp.password;
-    var confirmPassword = group ? signUpGroup.confirmPassword : signUp.confirmPassword;
+    var confirmPassword = group
+      ? signUpGroup.confirmPassword
+      : signUp.confirmPassword;
     var email = group ? signUpGroup.emailContact : signUp.email;
     if (password !== confirmPassword) {
       setPasswordsMatch(false);
@@ -78,8 +57,7 @@ const SignUpForm = ({ setUsername }) => {
       const code = error.code;
       if (error.code === "UsernameExistsException") {
         setUsernameTaken(true);
-      }
-      else if (error.message === "Invalid email address format."){
+      } else if (error.message === "Invalid email address format.") {
         setCorrectEmailFormat(false);
       }
     }
@@ -90,12 +68,51 @@ const SignUpForm = ({ setUsername }) => {
     var password = group ? signUpGroup.password : signUp.password;
     var code = group ? signUpGroup.code : signUp.code;
 
-    console.log("code: " + code);
     try {
       await Auth.confirmSignUp(username, code);
       console.log(setUsername);
       setUsername(username);
       await Auth.signIn(username, password);
+      if (group) {
+        var item = {
+          username: signUpGroup.username,
+          groupName: signUpGroup.groupName,
+          nameContact: signUpGroup.nameContact,
+          phoneContact: signUpGroup.phoneContact,
+          emailContact: signUpGroup.emailContact,
+          hourGoal: signUpGroup.hourGoal,
+          totalHours: 0,
+          safetyStatus: signUpGroup.safetyStatus,
+        };
+        console.log(item);
+        putData("volunteers_group", item);
+      } else {
+        item = {
+          Emergency_Contact_Phone: signUp.emergencyNumber,
+          "Last Name": signUp.lastName,
+          Covid_Waiver_and_Release: signUp.covidWaiver,
+          "First Name": signUp.firstName,
+          Group: signUp.groupName,
+          "Total Hours Volunteered": 0,
+          Emergency_Contact: signUp.emergencyName,
+          Email: signUp.email,
+          Birth_date: signUp.birthDate,
+          is_Admin: false,
+          medicalConditions: signUp.medicalConditions, //?
+          "Safety Training Status": signUp.safetyStatus,
+          "Photo-Permission": signUp.photoStatus,
+          "Secondary Phone": signUp.phonetwo,
+          "Primary Phone": signUp.phone,
+          Volunter_Waiver_and_Release: signUp.volunteerWaiver,
+          "Community Service": signUp.commService,
+          username: signUp.username,
+          hourGoal: signUp.hourGoal, //?
+          mailing_address: signUp.address,
+        };
+        console.log(item);
+        putData("volunteers_individual", item);
+      }
+
       // push data to dynamo
       navigate("/home");
     } catch (error) {
@@ -217,7 +234,6 @@ const SignUpForm = ({ setUsername }) => {
             name="groupName"
             value={signUp.groupName}
             onChange={handleChange}
-            required
           />
           <Form.Input
             label="Hour Goal"
@@ -228,8 +244,12 @@ const SignUpForm = ({ setUsername }) => {
           <Checkbox
             className="photo-label"
             label="Photo Permission?"
+            value={signUp.photoStatus}
             style={{ paddingBottom: "10px" }}
             required
+            onChange={(e, data) =>
+              setSignUp({ ...signUp, photoStatus: data.checked })
+            }
           />
           <hr style={{ backgroundColor: "green", width: "100%" }} />
           <Form.Input
@@ -246,6 +266,12 @@ const SignUpForm = ({ setUsername }) => {
             onChange={handleChange}
             required
           />
+          <Form.Input
+            label="Secondary Phone Number"
+            name="phonetwo"
+            value={signUp.phonetwo}
+            onChange={handleChange}
+          />
           <hr style={{ backgroundColor: "green", width: "100%" }} />
           <h3 style={{ textAlign: "left" }}>Personal Information:</h3>
           <Form.Field
@@ -253,33 +279,44 @@ const SignUpForm = ({ setUsername }) => {
             label="Birth Date:"
             control={DatePicker}
             selected={startDate}
+            value={signUp.birthDate}
             onChange={(date) => {
               setStartDate(date);
               setSignUp({ ...signUp, birthDate: date });
             }}
           />
           <br />
-          <Form.TextArea label="Medical Conditions" required />
+          <Form.TextArea
+            label="Medical Conditions"
+            name="medicalConditions"
+            value={signUp.medicalConditions}
+            onChange={handleChange}
+            required
+          />
           <Checkbox
             label="Safety Training Status Complete?"
+            value={signUp.safetyStatus}
             onChange={(e, data) =>
               setSignUp({ ...signUp, safetyStatus: data.checked })
             }
           />
           <Checkbox
             label="Volunteer Waiver and Release Complete?"
+            value={signUp.volunteerWaiver}
             onChange={(e, data) =>
               setSignUp({ ...signUp, volunteerWaiver: data.checked })
             }
           />
           <Checkbox
             label="Covid Waiver and Release Complete?"
+            value={signUp.covidWaiver}
             onChange={(e, data) =>
               setSignUp({ ...signUp, covidWaiver: data.checked })
             }
           />
           <Checkbox
             label="Community Service?"
+            value={signUp.commService}
             onChange={(e, data) =>
               setSignUp({ ...signUp, commService: data.checked })
             }
@@ -288,7 +325,6 @@ const SignUpForm = ({ setUsername }) => {
           <br />
         </div>
       )}
-      {console.log(signUp)}
       {group && !confirmation && (
         <Form>
           <Form.Input
@@ -354,6 +390,7 @@ const SignUpForm = ({ setUsername }) => {
           />
           <Checkbox
             label="Safety Training Status Complete?"
+            value={signUpGroup.safetyStatus}
             onChange={(e, data) =>
               setSignUp({ ...signUp, safetyStatus: data.checked })
             }
@@ -371,21 +408,21 @@ const SignUpForm = ({ setUsername }) => {
           />
         </Form>
       )}
-      {usernameTaken && (<Message negative>
-        <Message.Header>
-          Username is already taken
-        </Message.Header>
-      </Message>)}
-      {!passwordsMatch && (<Message negative>
-        <Message.Header>
-          Passwords must match
-        </Message.Header>
-      </Message>)}
-      {!correctEmailFormat && (<Message negative>
-        <Message.Header>
-          Must have a valid email
-        </Message.Header>
-      </Message>)}
+      {usernameTaken && (
+        <Message negative>
+          <Message.Header>Username is already taken</Message.Header>
+        </Message>
+      )}
+      {!passwordsMatch && (
+        <Message negative>
+          <Message.Header>Passwords must match</Message.Header>
+        </Message>
+      )}
+      {!correctEmailFormat && (
+        <Message negative>
+          <Message.Header>Must have a valid email</Message.Header>
+        </Message>
+      )}
       <br />
       {(group || indiv || confirmation) && (
         <Form.Button content="Submit" onSubmit={signUpCognito} />
