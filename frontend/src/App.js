@@ -10,22 +10,19 @@ import { Auth } from "aws-amplify";
 import React, { useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import VolunteerTable from "./components/VolunteerTable/volunteerTable";
+import ContribitionTable from "./components/ContributionsTable/ContributionTable";
 
 function App(props) {
-  const [username, setUsername] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-
   return (
     <>
       <ChakraProvider>
         <Router>
-          {username !== null ? <Navbar user={username} /> : null}          
           <Routes>
-            <Route exact path="/home" element={<Home user={username} />} />
-            <Route exact path="/profile" element={<Home user={username} />} />
-            <Route path="/signup" element={<SignUpForm setUsername={setUsername}/>} />
-            <Route path="/" element={<Login setUsername={setUsername} />} />
-            <Route path="/volunteer" element={<VolunteerTable user={username}/>} />
+            <Route exact path="/home" element={<Home />} />
+            <Route exact path="/profile" element={<ContribitionTable />} />
+            <Route path="/signup" element={<SignUpForm />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/volunteer" element={<VolunteerTable />} />
           </Routes>
         </Router>
       </ChakraProvider>

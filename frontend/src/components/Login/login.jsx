@@ -12,7 +12,7 @@ import "./login.css";
 import SignUpForm from "../SignUp/SignUpForm";
 import { Link, Navigate } from "react-router-dom";
 
-const getComp = (setSignUpUser) => {
+const getComp = () => {
   return {
     SignIn: {
       Header() {
@@ -41,7 +41,6 @@ const getComp = (setSignUpUser) => {
               variation="primary"
               size="Large"
               isFullWidth={true}
-              onClick={() => setSignUpUser(true)}
               style={{
                 width: "45%",
                 marginTop: "1em",
@@ -58,23 +57,16 @@ const getComp = (setSignUpUser) => {
     },
   };
 };
-export default function Login({ setUsername }) {
-  const [signUpUser, setSignUpUser] = useState(false);
+export default function Login() {
   return (
-    // <>
-    //   {signUpUser ? (
-    //     <SignUpForm setUsername={setUsername}/>
-    //   ) : (
     <div className="signInPage">
       <Authenticator
         className="signIn"
         hideSignUp={true}
-        components={getComp(setSignUpUser)}
-        authState={setSignUpUser}
+        components={getComp()}
       >
         {({ signOut, user }) => (
           <main>
-            {setUsername(user.username)}
             <Navigate replace to="/home" />
 
             {/* <h1>Hello {user.username}</h1>

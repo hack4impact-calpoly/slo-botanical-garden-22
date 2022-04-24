@@ -16,7 +16,9 @@ const AnnouncementBar = () => {
 
   return (
     <div>
-      <Box>
+      <Box className="box">
+        <h2> </h2>
+        <AnnouncementForm />
         {messages.map((announcement) => (
           <Announcement
             name={announcement.name}
@@ -24,10 +26,10 @@ const AnnouncementBar = () => {
             title={announcement.title}
             body={announcement.content}
             poster={announcement.poster}
+            id={announcement.primary_id}
           />
         ))}
       </Box>
-      <AnnouncementForm />
     </div>
   );
 };
