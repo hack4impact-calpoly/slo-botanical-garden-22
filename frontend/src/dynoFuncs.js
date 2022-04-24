@@ -29,10 +29,10 @@ export const fetchData = async (tableName) => {
 
 //Make it so dont hard code my username
 export const fetchUser = async (tableName, user) => {
-  console.log(user.user);
+  console.log(user);
   var params = {
     Key: {
-      username: "kennar12",
+      username: user,
     },
     TableName: tableName,
   };

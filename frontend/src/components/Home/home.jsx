@@ -4,25 +4,38 @@ import AnnouncementBar from "../AnnouncementBar/AnnouncementBar.js";
 import React, { useState, useEffect } from "react";
 import { fetchUser } from "../../dynoFuncs";
 import { Navigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
 
 import { Box, Flex, Center, Spacer, Heading } from "@chakra-ui/react";
 
-export default function Home(props) {
-  console.log(props);
+export default function Home() {
   const [userInfo, setUserInfo] = useState();
-  var username = props.user;
+
   useEffect(() => {
-    fetchUser("volunteers_individual", props).then((data) => setUserInfo(data));
-    if (!userInfo) {
-      fetchUser("volunteers_group", props).then((data) => setUserInfo(data));
-    }
+    Auth.currentAuthenticatedUser({
+      bypassCache: false,
+    })
+      .then((user) => {
+        console.log(user);
+        console.log(user.username);
+        console.log("Username is: " + user.username);
+        fetchUser("volunteers_individual", user.username).then((data) =>
+          setUserInfo(data)
+        );
+        if (!userInfo) {
+          fetchUser("volunteers_group", user.username).then((data) =>
+            setUserInfo(data)
+          );
+        }
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   if (!userInfo) return null;
 
   return (
     <>
-      {!username || !userInfo ? (
+      {!userInfo ? (
         <Navigate replace to="/" />
       ) : (
         <>

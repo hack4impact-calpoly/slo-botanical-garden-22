@@ -9,7 +9,7 @@ import "./SignUpForm.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const SignUpForm = ({ setUsername }) => {
+const SignUpForm = () => {
   const [signUp, setSignUp] = useState({});
   const [signUpGroup, setSignUpGroup] = useState({});
   const [startDate, setStartDate] = useState();
@@ -54,7 +54,6 @@ const SignUpForm = ({ setUsername }) => {
       console.log(user);
     } catch (error) {
       console.log("error signing up:", error);
-      const code = error.code;
       if (error.code === "UsernameExistsException") {
         setUsernameTaken(true);
       } else if (error.message === "Invalid email address format.") {
@@ -70,8 +69,6 @@ const SignUpForm = ({ setUsername }) => {
 
     try {
       await Auth.confirmSignUp(username, code);
-      console.log(setUsername);
-      setUsername(username);
       await Auth.signIn(username, password);
       if (group) {
         var item = {

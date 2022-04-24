@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function AnnouncementForm(props) {
+export default function HourLog(props) {
   var styles = `
   body
   {
@@ -108,59 +108,64 @@ export default function AnnouncementForm(props) {
       margin-left: auto;
       margin-right: 0px;
     }
-  `
+  `;
 
-var styleSheet = document.createElement("style")
-styleSheet.innerText = styles
-document.head.appendChild(styleSheet)
+  var styleSheet = document.createElement("style");
+  styleSheet.innerText = styles;
+  document.head.appendChild(styleSheet);
 
   return (
-    <div id = "dabox">
-        <div>
-            <h3 id = "formtitle">Log Hours: </h3>
-        </div>
-        <div >
-            <form id = "boxesholder" action="/form/submit" method = "GET">
-                <div id = "boxcols">
-                    <div id = "lilbox">
-                        <label for="activity">Activity:</label>
-                        <select name="activity">
-                        <option value="activity 1">Activity 1</option>
-                        <option value="activity 2">Activity 2</option>
-                        <option value="activity 3">Activity 3</option>
-                        <option value="activity 4">Activity 4</option>
-                        </select>
-                    </div>
-                    <div id = "lilbox" >
-                        <label>Hours: </label>
-                        <input id = "hours" value=""/>
-                    </div>
-                    <div id = "lilbox" >
-                        <label>Date: </label>
-                        <input type = "date" id = "date" value=""/>
-                    </div>
-                </div>
-                <div id = "boxcols">
-                    <div id = "lilbox" >
-                        <label>Supervisor: </label>
-                        <input id = "supervisor" value=""/>
-                    </div>
-                    <div id = "num" id = "lilbox" >
-                        <label>Number of Volunteers: </label>
-                        <input id = "number" type = "number" value=""/>
-                    </div>
-                </div>
-                <div id = "boxcols" >
-                    <div id = "lilbox" >
-                        <label>Description: </label>
-                        <textarea id = "littlerbox" rows="3" cols="30" name="text" ></textarea>
-                    </div>
-                    <div id = "lilbox" >
-                        <input id = "submit" type="submit" value="Submit"/>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <div id="dabox">
+      <div>
+        <h3 id="formtitle">Log Hours: </h3>
+      </div>
+      <div>
+        <form id="boxesholder" action="/form/submit" method="GET">
+          <div id="boxcols">
+            <div id="lilbox">
+              <label for="activity">Activity:</label>
+              <select name="activity">
+                <option value="activity 1">Activity 1</option>
+                <option value="activity 2">Activity 2</option>
+                <option value="activity 3">Activity 3</option>
+                <option value="activity 4">Activity 4</option>
+              </select>
+            </div>
+            <div id="lilbox">
+              <label>Hours: </label>
+              <input id="hours" value="" />
+            </div>
+            <div id="lilbox">
+              <label>Date: </label>
+              <input type="date" id="date" value="" />
+            </div>
+          </div>
+          <div id="boxcols">
+            <div id="lilbox">
+              <label>Supervisor: </label>
+              <input id="supervisor" value="" />
+            </div>
+            <div className="num" id="lilbox">
+              <label>Number of Volunteers: </label>
+              <input id="number" type="number" value="" />
+            </div>
+          </div>
+          <div id="boxcols">
+            <div id="lilbox">
+              <label>Description: </label>
+              <textarea
+                id="littlerbox"
+                rows="3"
+                cols="30"
+                name="text"
+              ></textarea>
+            </div>
+            <div id="lilbox">
+              <input id="submit" type="submit" value="Submit" />
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
