@@ -291,7 +291,6 @@ const SignUpForm = ({ setUsername }) => {
             name="medicalConditions"
             value={signUp.medicalConditions}
             onChange={handleChange}
-            required
           />
           <Checkbox
             label="Safety Training Status Complete?"

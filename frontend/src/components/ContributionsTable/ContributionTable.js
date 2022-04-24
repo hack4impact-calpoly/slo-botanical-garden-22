@@ -1,37 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./ContributionTable.css";
-
-const contributions = [
-  {
-    date: "October 17, 2022",
-    hours: 5,
-    description: "Garden Maintenance",
-    supervisor: "Kobe Hayashi",
-  },
-
-  {
-    date: "March 17, 2022",
-    hours: 4,
-    description: "Garden Maintenance",
-    supervisor: "Taylor Swift",
-  },
-  {
-    date: "April 17, 2022",
-    hours: 3,
-    description: "Garden Maintenance",
-    supervisor: "Jane Doe",
-  },
-];
-
-let totalHours = 0;
-contributions.map((contribution) => (totalHours += contribution.hours));
+import { fetchData } from "../../dynoFuncs";
 
 const ContributionTable = (props) => {
+  const [loggedHours, setLoggedHours] = useState();
+
+  useEffect(() => {
+    console.log("IN USE EFFECT");
+    fetchData("logged_hours").then((data) => setLoggedHours(data));
+    console.log(loggedHours);
+  }, []);
+
+  function fetchTotalHours() {
+    let totalHoursPre = 0;
+    loggedHours
+      .filter((con) => con.username === "patcaaias")
+      .map((contribution) => (totalHoursPre += parseFloat(contribution.hours)));
+    return totalHoursPre;
+  }
+
+  if (!loggedHours) return null;
   return (
     <div className="container">
       <h1 id="title">Your Contributions:</h1>
       {/* replace with numHours data */}
-      <h1 id="numHours">{totalHours} Total Hours</h1>
+      {console.log(fetchTotalHours())}
+      <h1 id="numHours">{fetchTotalHours()} Total Hours</h1>
       <table>
         <tr id="header">
           <th>Date</th>
@@ -39,14 +33,15 @@ const ContributionTable = (props) => {
           <th>Description</th>
           <th>Supervisor</th>
         </tr>
-        {contributions.map((contribution) => (
-          <tr>
-            <td>{contribution.date}</td>
-            <td>{contribution.hours}</td>
-            <td>{contribution.description}</td>
-            <td>{contribution.supervisor}</td>
-          </tr>
-        ))}
+        {loggedHours
+          .filter((con) => con.username === "patcaaias")
+          .map((contribution) => (
+            <tr>
+              <td>{contribution.date}</td> <td>{contribution.hours}</td>{" "}
+              <td>{contribution.description}</td>{" "}
+              <td>{contribution.supervisor}</td>
+            </tr>
+          ))}
       </table>
     </div>
   );

@@ -29,11 +29,10 @@ export const fetchData = async (tableName) => {
 
 //Make it so dont hard code my username
 export const fetchUser = async (tableName, user) => {
-  const person = "kennar12";
-  console.log(person.user);
+  console.log(user.user);
   var params = {
     Key: {
-      username: person,
+      username: "kennar12",
     },
     TableName: tableName,
   };
@@ -73,12 +72,34 @@ export const putData = (tableName, data) => {
 // for admin_announcements table - primary_id
 // for hoursLog table - primary_logId
 // for users - username
-export const deleteItem = (tableName, itemKey, itemKeyName) => {
+export const deleteAnnouncement = (tableName, itemKey) => {
+  console.log(itemKey);
   var params = {
-    TableName: tableName,
     Key: {
-      itemKeyName: itemKey,
+      primary_id: itemKey,
     },
+    TableName: "admin_announcements",
+  };
+
+  docClient.delete(params, function (err, data) {
+    if (err) {
+      console.error(
+        "Unable to delete item. Error JSON:",
+        JSON.stringify(err, null, 2)
+      );
+    } else {
+      console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+    }
+  });
+};
+
+export const deleteVolunteer = (itemKey) => {
+  console.log(itemKey);
+  var params = {
+    Key: {
+      username: itemKey,
+    },
+    TableName: "volunteers_individual",
   };
 
   docClient.delete(params, function (err, data) {

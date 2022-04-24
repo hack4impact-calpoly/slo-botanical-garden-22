@@ -26,6 +26,7 @@ const AnnouncementBar = () => {
             title={announcement.title}
             body={announcement.content}
             poster={announcement.poster}
+            id={announcement.primary_id}
           />
         ))}
       </Box>
