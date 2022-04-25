@@ -27,6 +27,7 @@ export default function Home() {
             setUserInfo(data)
           );
         }
+        console.log("userInfo: " + userInfo)
       })
       .catch((err) => console.log(err));
   }, []);

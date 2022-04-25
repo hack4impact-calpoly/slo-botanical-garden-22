@@ -34,7 +34,7 @@
   display: inline;
 }
 
-html {
+#root {
   background-image: url("../../assets/garden.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -47,6 +47,8 @@ html {
   background-color: white;
   margin: auto;
   margin: 5%;
+
+  /* margin: calc((100vh - 117px - 154px)/8) 5%; */
   resize: both;
 }
 
