@@ -17,6 +17,7 @@ function App(props) {
     <>
       <ChakraProvider>
         <Router>
+          <Navbar />
           <Routes>
             <Route exact path="/home" element={<Home />} />
             <Route exact path="/profile" element={<ContribitionTable />} />

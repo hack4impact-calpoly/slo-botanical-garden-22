@@ -5,6 +5,7 @@ import HourLog from "../../logHours";
 
 const ContributionTable = (props) => {
   const [loggedHours, setLoggedHours] = useState();
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     console.log("IN USE EFFECT");
@@ -15,7 +16,7 @@ const ContributionTable = (props) => {
   function fetchTotalHours() {
     let totalHoursPre = 0;
     loggedHours
-      .filter((con) => con.username === "patcaaias")
+      .filter((con) => con.username === "kennaGroup")
       .map((contribution) => (totalHoursPre += parseFloat(contribution.hours)));
     return totalHoursPre;
   }
@@ -23,8 +24,6 @@ const ContributionTable = (props) => {
   if (!loggedHours) return null;
   return (
     <div>
-      <HourLog />
-
       <div className="container">
         <h1 id="title">Your Contributions:</h1>
         {/* replace with numHours data */}
@@ -38,7 +37,7 @@ const ContributionTable = (props) => {
             <th>Supervisor</th>
           </tr>
           {loggedHours
-            .filter((con) => con.username === "patcaaias")
+            .filter((con) => con.username === "kennaGroup")
             .map((contribution) => (
               <tr>
                 <td>{contribution.date}</td> <td>{contribution.hours}</td>{" "}
@@ -48,6 +47,8 @@ const ContributionTable = (props) => {
             ))}
         </table>
       </div>
+      <HourLog updateContributions={setUpdate} />
+      {console.log(update)}
     </div>
   );
 };

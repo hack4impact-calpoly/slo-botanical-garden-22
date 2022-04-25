@@ -104,12 +104,6 @@ export default function AnnouncementForm(props) {
   var styleSheet = document.createElement("style");
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
-  /*
-  function eraseText() {
-    document.getElementById("littlerbox").value = "";
-  }
-  */
-  //admin_announcements
 
   async function submitForm() {
     setNewAnnouncement("TEST", () => {
@@ -120,7 +114,6 @@ export default function AnnouncementForm(props) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = mm + "/" + dd + "/" + yyyy;
-    const form = document.getElementById("announcemetForm");
     const item = {
       primary_id: getRandomId(),
       content: document.getElementById("content").value,
