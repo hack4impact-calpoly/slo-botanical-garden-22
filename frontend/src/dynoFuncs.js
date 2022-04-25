@@ -87,13 +87,34 @@ export const deleteAnnouncement = (itemKey) => {
   });
 };
 
-export const deleteVolunteer = (itemKey) => {
+export const deleteVolunteer = (itemKey, tableName) => {
   console.log(itemKey);
   var params = {
     Key: {
       username: itemKey,
     },
-    TableName: "volunteers_individual",
+    TableName: tableName,
+  };
+
+  docClient.delete(params, function (err, data) {
+    if (err) {
+      console.error(
+        "Unable to delete item. Error JSON:",
+        JSON.stringify(err, null, 2)
+      );
+    } else {
+      console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+    }
+  });
+};
+
+export const deleteHour = (itemKey) => {
+  console.log(itemKey);
+  var params = {
+    Key: {
+      primary_id: itemKey,
+    },
+    TableName: "logged_hours",
   };
 
   docClient.delete(params, function (err, data) {
@@ -118,6 +139,33 @@ export const addHours = (user, newHours, tableName) => {
     UpdateExpression: "set #totalHours= :x",
     ExpressionAttributeNames: { "#totalHours": "totalHours" },
     ExpressionAttributeValues: { ":x": newHours },
+  };
+
+  docClient.update(params, function (err, data) {
+    if (err) {
+      console.error(
+        "Unable to update item. Error JSON:",
+        JSON.stringify(err, null, 2)
+      );
+    } else {
+      console.log("Update succeeded:", JSON.stringify(data, null, 2));
+    }
+  });
+};
+
+export const changeVolunteerStatus = (user, tableName, newValue) => {
+  console.log(user);
+  console.log(tableName);
+  console.log(newValue);
+
+  var params = {
+    TableName: tableName,
+    Key: {
+      username: user,
+    },
+    UpdateExpression: "set #is_Admin= :x",
+    ExpressionAttributeNames: { "#is_Admin": "is_Admin" },
+    ExpressionAttributeValues: { ":x": newValue },
   };
 
   docClient.update(params, function (err, data) {

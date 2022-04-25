@@ -4,7 +4,11 @@ import "./volunteerTable.css";
 import bgimage from "../../assets/garden.png";
 import { Flex, Box } from "@chakra-ui/react";
 import { CSVLink } from "react-csv";
-import { fetchData, deleteVolunteer } from "../../dynoFuncs";
+import {
+  fetchData,
+  deleteVolunteer,
+  changeVolunteerStatus,
+} from "../../dynoFuncs";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -31,28 +35,54 @@ const VolunteerTable = () => {
 const Table = (props) => {
   const { data } = props;
   console.log(data);
-  const [openState, setOpen] = React.useState(false);
+  const [openDelete, setDelete] = React.useState(false);
   const [userToDelete, setUserToDelete] = React.useState();
+  const [openStatus, setStatus] = React.useState(false);
+  const [userToStatusChage, setUserToStatusChage] = React.useState();
+  const [userStatus, setUserStatus] = React.useState("False");
 
-  const handleClickOpen = (username) => {
-    console.log("In click open");
-    //setOpen(true);
-    //setUserToDelete(username);
+  const handleClickOpenDelete = (username) => {
+    setUserToDelete(username);
+    setDelete(true);
+  };
+
+  const handleClickOpenStatus = (username, status) => {
+    setUserToStatusChage(username);
+    setUserStatus(status);
+    setStatus(true);
   };
 
   const handleDelete = async () => {
     console.log("IN handle delete");
-    console.log(typeof userToDelete);
-    console.log(userToDelete);
-    deleteVolunteer("volunteers_individual", userToDelete);
+    console.log("UserDel: " + userToDelete);
+    deleteVolunteer(userToDelete, "volunteers_individual");
     alert(
-      "Announcement Successfully Deleted. \nPlease refresh page to see change."
+      "Volunteer Successfully Deleted. \nPlease refresh page to see change."
     );
-    setOpen(false);
+    setDelete(false);
+  };
+
+  const handleStatusChange = async () => {
+    changeVolunteerStatus(
+      userToStatusChage,
+      "volunteers_individual",
+      userStatus
+    );
+    if (userStatus === "True") {
+      alert(
+        "Volunteer Successfully Upgraded to Admin.\nPlease refresh page to see change."
+      );
+    } else {
+      alert(
+        "Volunteer Successfully Changed to Volunteer. \nPlease refresh page to see change."
+      );
+    }
+    setStatus(false);
   };
 
   const handleCancel = () => {
-    setOpen(false);
+    setDelete(false);
+    setStatus(false);
   };
 
   const columns = React.useMemo(
@@ -77,12 +107,72 @@ const Table = (props) => {
         accessor: "Email",
       },
       {
+        Header: "Role",
+        accessor: "is_Admin",
+        Cell: (row) => {
+          if (row.row.original["is_Admin"] === "True") {
+            return (
+              <div>
+                <p>Administration</p>
+              </div>
+            );
+          } else {
+            return (
+              <div>
+                <p>Volunteer</p>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        Header: "Change Status",
+        accessor: "status",
+        Cell: (row) => {
+          if (row.row.original["is_Admin"] === "True") {
+            return (
+              <div>
+                <button
+                  onClick={() =>
+                    handleClickOpenStatus(row.row.original["username"], "False")
+                  }
+                >
+                  Revoke Admin Privledges 🔽
+                </button>
+              </div>
+            );
+          } else {
+            return (
+              <div>
+                <div>
+                  <button
+                    onClick={() =>
+                      handleClickOpenStatus(
+                        row.row.original["username"],
+                        "True"
+                      )
+                    }
+                  >
+                    Invoke Admin Priveldeges 🔼
+                  </button>
+                </div>
+              </div>
+            );
+          }
+        },
+      },
+      {
         Header: "Delete Volunteer",
         accessor: "Delete",
         Cell: (row) => {
           return (
             <div>
-              <IconButton style={{ color: "#cee4bb" }}>
+              <IconButton
+                style={{ color: "#cee4bb" }}
+                onClick={() =>
+                  handleClickOpenDelete(row.row.original["username"])
+                }
+              >
                 <DeleteIcon />
               </IconButton>
             </div>
@@ -126,7 +216,6 @@ const Table = (props) => {
 
   return (
     <div className="container">
-      {console.log(openState)}
       <Flex
         p={10}
         w="100%"
@@ -179,7 +268,7 @@ const Table = (props) => {
               {page.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()} onClick={handleClickOpen()}>
+                  <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => {
                       return (
                         <td
@@ -241,7 +330,7 @@ const Table = (props) => {
             />
           </div>
           <Dialog
-            open={openState}
+            open={openDelete}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
@@ -258,8 +347,28 @@ const Table = (props) => {
                 Cancel
               </Button>
               <Button onClick={handleDelete} color="#CCDDBD" autoFocus>
-                Delete Announcement
+                Delete Volunteer
               </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={openStatus}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure you want to change the status of this user?"}
+            </DialogTitle>
+            <DialogContent></DialogContent>
+            <DialogActions>
+              <DialogActions>
+                <Button onClick={handleCancel} color="#CCDDBD">
+                  Cancel
+                </Button>
+                <Button onClick={handleStatusChange} color="#CCDDBD" autoFocus>
+                  Change User Status
+                </Button>
+              </DialogActions>
             </DialogActions>
           </Dialog>
         </Box>
