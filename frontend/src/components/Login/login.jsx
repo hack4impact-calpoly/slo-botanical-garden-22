@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Authenticator,
   useTheme,
@@ -11,6 +11,8 @@ import "@aws-amplify/ui-react/styles.css";
 import "./login.css";
 import SignUpForm from "../SignUp/SignUpForm";
 import { Link, Navigate } from "react-router-dom";
+import { GlobalContext } from "../../GlobalState";
+import { fetchUser } from "../../dynoFuncs";
 
 const getComp = () => {
   return {
@@ -57,7 +59,45 @@ const getComp = () => {
     },
   };
 };
-export default function Login() {
+
+export default function Login(props) {
+  const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
+  const [testUser, setTestUser] = useState(null);
+
+  function getUserInfoCandD(user) {
+    var userInfo;
+
+    fetchUser("volunteers_group", user.username).then((data) => {
+      userInfo = data;
+      userInfo["volunteerTable"] = "volunteers_group";
+      //console.log("Group");
+      console.log(userInfo);
+      if (!userInfo) {
+        fetchUser("volunteers_individual", user.username).then((data) => {
+          userInfo = data;
+          userInfo["volunteerTable"] = "volunteers_individual";
+          //console.log("I");
+          //console.log();
+          setCurrentUser(data);
+        });
+      } else {
+        setCurrentUser(userInfo);
+      }
+    });
+  }
+
+  /* const { user, signOut } = useAuthenticator((context) => {
+    console.log(context);
+    setTestUser(context.user);
+    return [context.user];
+  });
+
+  useEffect(() => {
+    if (testUser) {
+      getUserInfoCandD(testUser);
+    }
+  }, [testUser]); */
+
   return (
     <div className="signInPage">
       <Authenticator
@@ -67,6 +107,8 @@ export default function Login() {
       >
         {({ signOut, user }) => (
           <main>
+            {getUserInfoCandD(user)}
+            {props.children}
             <Navigate replace to="/home" />
 
             {/* <h1>Hello {user.username}</h1>

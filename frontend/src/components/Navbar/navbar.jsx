@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../../assets/logo.png";
 import vector from "../../assets/vector.png";
 import userIcon from "../../assets/user-icon.png";
@@ -14,8 +14,33 @@ import {
   Button,
   Link,
 } from "@chakra-ui/react";
+import { GlobalContext } from "../../GlobalState";
 
 export default function Navbar(props) {
+  const { currentUserInfo } = useContext(GlobalContext);
+
+  const getVolunteerOption = () => {
+    if (currentUserInfo.is_Admin === "True") {
+      return (
+        <div>
+          <Box mr={2}>
+            <Link
+              as={ReactLink}
+              _activeLink={{ fontWeight: "bold" }}
+              to="/volunteer"
+            >
+              {" "}
+              <Heading size="lg" color="white">
+                {" "}
+                Volunteers{" "}
+              </Heading>{" "}
+            </Link>
+          </Box>
+        </div>
+      );
+    }
+  };
+
   return (
     <Flex pt={5} pb={5} bg="#CCDDBD">
       <HStack pl={10}>
@@ -43,6 +68,7 @@ export default function Navbar(props) {
             </Heading>{" "}
           </Link>
         </Box>
+        {getVolunteerOption()}
         <Box>
           <Link as={ReactLink} to="/profile">
             {" "}

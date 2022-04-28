@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSortBy, useTable, usePagination } from "react-table";
 import "./volunteerTable.css";
 import bgimage from "../../assets/garden.png";
@@ -17,19 +17,28 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
+import { GlobalContext } from "../../GlobalState";
 
 const VolunteerTable = () => {
   const [data, setData] = useState();
+  const [reloadPage, setReloadPage] = useState(0);
+  const { currentUserInfo } = useContext(GlobalContext);
 
   useEffect(() => {
-    fetchData("volunteers_individual").then((result) => setData(result));
-  }, []);
+    fetchData("volunteers_group").then((result) => setData(result));
+  }, [reloadPage]);
 
-  if (data) {
+  if (data && currentUserInfo.is_Admin === "True") {
     console.log(data);
-    return <Table data={data} />;
+    return (
+      <Table
+        data={data}
+        reloadPage={reloadPage}
+        setReloadPage={setReloadPage}
+      />
+    );
   }
-  return null;
+  return <h2>You Do Not Have the Permissions to View This Page</h2>;
 };
 
 const Table = (props) => {
@@ -55,29 +64,15 @@ const Table = (props) => {
   const handleDelete = async () => {
     console.log("IN handle delete");
     console.log("UserDel: " + userToDelete);
-    deleteVolunteer(userToDelete, "volunteers_individual");
-    alert(
-      "Volunteer Successfully Deleted. \nPlease refresh page to see change."
-    );
+    deleteVolunteer(userToDelete, "volunteers_group");
     setDelete(false);
+    props.setReloadPage(props.reloadPage + 1);
   };
 
   const handleStatusChange = async () => {
-    changeVolunteerStatus(
-      userToStatusChage,
-      "volunteers_individual",
-      userStatus
-    );
-    if (userStatus === "True") {
-      alert(
-        "Volunteer Successfully Upgraded to Admin.\nPlease refresh page to see change."
-      );
-    } else {
-      alert(
-        "Volunteer Successfully Changed to Volunteer. \nPlease refresh page to see change."
-      );
-    }
+    changeVolunteerStatus(userToStatusChage, "volunteers_group", userStatus);
     setStatus(false);
+    props.setReloadPage(props.reloadPage + 1);
   };
 
   const handleCancel = () => {
@@ -89,22 +84,29 @@ const Table = (props) => {
     () => [
       {
         Header: "Name",
-        accessor: "Name", // accessor is the "key" in the data
-        Cell: (row) => {
-          return (
-            <div>
-              <span>
-                {row.row.original["First Name"] +
-                  " " +
-                  row.row.original["Last Name"]}
-              </span>
-            </div>
-          );
-        },
+        accessor: "nameContact", // accessor is the "key" in the data
+        // Cell: (row) => {
+        //   return (
+        //     <div>
+        //       <span>
+        //         {row.row.original["First Name"] +
+        //           " " +
+        //           row.row.original["Last Name"]}
+        //       </span>
+        //     </div>
+        //   );
+        // },
       },
       {
         Header: "Email",
-        accessor: "Email",
+        accessor: "emailContact", //Email
+        Cell: (row) => {
+          return (
+            <div>
+              <span>{"Email"}</span>
+            </div>
+          );
+        },
       },
       {
         Header: "Role",

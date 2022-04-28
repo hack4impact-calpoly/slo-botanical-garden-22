@@ -124,7 +124,11 @@ export default function AnnouncementForm(props) {
     document.getElementById("content").value = "";
     document.getElementById("poster").value = "";
     document.getElementById("title").value = "";
+    console.log("Announcement Form props");
+    console.log(props.reloadPageVar);
+    console.log(props.reloadPageFunc);
     putData("admin_announcements", item);
+    props.reloadPageFunc(props.reloadPageVar + 1);
     console.log(newAnnouncement);
     console.log(item);
     console.log(newAnnouncement);

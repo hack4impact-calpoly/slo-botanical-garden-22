@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { deleteAnnouncement } from "../../dynoFuncs";
 import { Box, Text, Heading } from "@chakra-ui/react";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -10,9 +10,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "./Announcement.css";
+import { GlobalContext } from "../../GlobalState";
 
 const Announcement = (props) => {
   const [open, setOpen] = React.useState(false);
+  const { currentUserInfo } = useContext(GlobalContext);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,15 +23,26 @@ const Announcement = (props) => {
   const handleDelete = async () => {
     console.log(typeof props.id);
     console.log(props.id);
-    deleteAnnouncement("admin_announcements", props.id);
-    alert(
-      "Announcement Successfully Deleted. \nPlease refresh page to see change."
-    );
+    deleteAnnouncement(props.id);
     setOpen(false);
+    console.log("Announcement props");
+    console.log(props.reloadPageVar);
+    console.log(props.reloadPageFunc);
+    props.reloadPageFunc(props.reloadPageVar + 1);
   };
 
   const handleCancel = () => {
     setOpen(false);
+  };
+
+  const getDeleteIcon = () => {
+    if (currentUserInfo.is_Admin === "True") {
+      return (
+        <IconButton style={{ color: "#cee4bb" }} onClick={handleClickOpen}>
+          <DeleteIcon />
+        </IconButton>
+      );
+    }
   };
 
   return (
@@ -40,9 +53,7 @@ const Announcement = (props) => {
             {" "}
             {props.title}{" "}
           </Heading>
-          <IconButton style={{ color: "#cee4bb" }} onClick={handleClickOpen}>
-            <DeleteIcon />
-          </IconButton>
+          {getDeleteIcon()}
           <Dialog
             open={open}
             aria-labelledby="alert-dialog-title"

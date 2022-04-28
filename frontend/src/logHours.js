@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { putData, getRandomId, addHours } from "./dynoFuncs";
+import { GlobalContext } from "./GlobalState";
 
-export default function HourLog({ updateContributions }) {
+export default function HourLog(props) {
   const [updateStatus, setUpdateStatus] = useState(false);
+  const { currentUserInfo } = useContext(GlobalContext);
 
   var styles = `
   body
@@ -123,7 +125,6 @@ export default function HourLog({ updateContributions }) {
   document.head.appendChild(styleSheet);
 
   async function submitForm() {
-    console.log("IN SUBMIT FORM");
     const item = {
       primary_id: getRandomId(),
       activity: document.getElementById("activity").value,
@@ -132,7 +133,7 @@ export default function HourLog({ updateContributions }) {
       description: document.getElementById("description").value,
       hours: document.getElementById("hours").value,
       volunteerCount: document.getElementById("volunteerCount").value,
-      username: "kennaGroup", //change based on cookie, wait for Arden meeting with Cole
+      username: currentUserInfo.username, //change based on cookie, wait for Arden meeting with Cole
     };
     console.log(item);
     document.getElementById("activity").value = "";
@@ -143,9 +144,14 @@ export default function HourLog({ updateContributions }) {
     document.getElementById("volunteerCount").value = "";
 
     putData("logged_hours", item);
-    addHours("kennaGroup", 3 + parseFloat(item.hours), "volunteers_group");
-    updateContributions(true);
-    setUpdateStatus(true);
+    addHours(
+      currentUserInfo.username,
+      3 + parseFloat(item.hours),
+      currentUserInfo.volunteerTable
+    );
+    props.setReloadPage(props.reloadPage + 1);
+    console.log("Item in Logged Hours");
+    console.log(item);
   }
 
   return (
@@ -165,6 +171,7 @@ export default function HourLog({ updateContributions }) {
                 <option value="Propagation">Propagation</option>
                 <option value="Outreach">Outreach</option>
                 <option value="Education">Education</option>
+                <option value="Garden">Garden</option>
               </select>
             </div>
             <div className="lilbox">

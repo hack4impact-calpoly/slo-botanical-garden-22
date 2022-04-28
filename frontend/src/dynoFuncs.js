@@ -29,14 +29,12 @@ export const fetchData = async (tableName) => {
 
 //Make it so dont hard code my username
 export const fetchUser = async (tableName, user) => {
-  console.log(user);
   var params = {
     Key: {
       username: user,
     },
     TableName: tableName,
   };
-  console.log(user);
   const entries = await new Promise((resolve, reject) => {
     docClient.get(params, function (err, data) {
       if (err) reject(err);
