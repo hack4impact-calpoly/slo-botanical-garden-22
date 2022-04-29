@@ -2,7 +2,8 @@ import React from "react";
 import logo from "../../assets/logo.png";
 import vector from "../../assets/vector.png";
 import userIcon from "../../assets/user-icon.png";
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, useNavigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
 import {
   Box,
   Text,
@@ -16,6 +17,16 @@ import {
 } from "@chakra-ui/react";
 
 export default function Navbar(props) {
+  const navigate = useNavigate();
+
+  async function signOut() {
+    try {
+      await Auth.signOut({ global: true });
+      navigate("/");
+    } catch (error) {
+      console.log("error signing out: ", error);
+    }
+  }
   return (
     <Flex pt={5} pb={5} bg="#CCDDBD">
       <HStack pl={10}>
@@ -54,6 +65,9 @@ export default function Navbar(props) {
         </Box>
         <Box>
           <Image src={userIcon} />
+        </Box>
+        <Box>
+          <button onClick={signOut}>Sign Out </button>
         </Box>
       </HStack>
     </Flex>
