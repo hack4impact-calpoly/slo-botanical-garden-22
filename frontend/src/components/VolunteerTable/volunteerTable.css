@@ -46,28 +46,28 @@ th {
 }
 
 .vol-table {
-    background-image: url("../../assets/garden.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    font-family: SBG;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+  background-image: url("../../assets/garden.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: SBG;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
 .pagination {
-    background-color:#CCDDBD;
-    padding: 10px;
-    display: flex;
-    justify-content: space-evenly;
-    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  background-color: #ccddbd;
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .export {
-    border-radius: 10px;
-    color: rgb(27, 122, 27);
-    background: white;
-    padding: 10px;
-    margin-right: 10px;
+  border-radius: 10px;
+  color: rgb(27, 122, 27);
+  background: white;
+  padding: 10px;
+  margin-right: 10px;
 }

@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { putData, getRandomId, addHours } from "./dynoFuncs";
+import { GlobalContext } from "./GlobalState";
 
 export default function HourLog(props) {
+  const [updateStatus, setUpdateStatus] = useState(false);
+  const { currentUserInfo } = useContext(GlobalContext);
+
   var styles = `
   body
   {
@@ -11,14 +16,19 @@ export default function HourLog(props) {
       font-weight: bold;
       line-height: 1;
   }
+
+  textarea
+  {
+    border:solid 1px #686868;
+  }
   
-  #formtitle
+  .formtitle
   {
       margin: 10px;
       margin-bottom: 20px;
   }
   
-  #dabox
+  .dabox
   {
       display: flex;
       flex-direction: column;
@@ -34,21 +44,21 @@ export default function HourLog(props) {
       height: 220px;
   }
   
-  #boxesholder
+  .boxesholder
   {
       display: flex;
       flex-direction: row;
       justify-content: space-around;
   }
   
-  #boxcols
+  .boxcols
   {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
   }
   
-  #lilbox
+  .lilbox
   {
       display: flex;
       flex-direction: column;
@@ -59,7 +69,7 @@ export default function HourLog(props) {
   }
   
   
-  #littlerbox
+  .littlerbox
   {
       box-sizing: border-box;
       background-color: white;
@@ -114,58 +124,98 @@ export default function HourLog(props) {
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
 
+  async function submitForm() {
+    const item = {
+      primary_id: getRandomId(),
+      activity: document.getElementById("activity").value,
+      date: document.getElementById("date").value,
+      supervisor: document.getElementById("supervisor").value,
+      description: document.getElementById("description").value,
+      hours: document.getElementById("hours").value,
+      volunteerCount: document.getElementById("volunteerCount").value,
+      username: currentUserInfo.username, //change based on cookie, wait for Arden meeting with Cole
+    };
+    console.log(item);
+    document.getElementById("activity").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("supervisor").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("hours").value = "";
+    document.getElementById("volunteerCount").value = "";
+
+    putData("logged_hours", item);
+    addHours(
+      currentUserInfo.username,
+      3 + parseFloat(item.hours),
+      currentUserInfo.volunteerTable
+    );
+    props.setReloadPage(props.reloadPage + 1);
+    console.log("Item in Logged Hours");
+    console.log(item);
+  }
+
   return (
-    <div id="dabox">
+    <div className="dabox">
       <div>
-        <h3 id="formtitle">Log Hours: </h3>
+        <h3 className="formtitle">Log Hours: </h3>
       </div>
       <div>
-        <form id="boxesholder" action="/form/submit" method="GET">
-          <div id="boxcols">
-            <div id="lilbox">
+        <div className="boxesholder">
+          <div className="boxcols">
+            <div className="lilbox">
               <label for="activity">Activity:</label>
-              <select name="activity">
-                <option value="activity 1">Activity 1</option>
-                <option value="activity 2">Activity 2</option>
-                <option value="activity 3">Activity 3</option>
-                <option value="activity 4">Activity 4</option>
+              <select name="activity" id="activity">
+                <option value="Other">Other</option>
+                <option value="Administration">Administration</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Propagation">Propagation</option>
+                <option value="Outreach">Outreach</option>
+                <option value="Education">Education</option>
+                <option value="Garden">Garden</option>
               </select>
             </div>
-            <div id="lilbox">
+            <div className="lilbox">
               <label>Hours: </label>
-              <input id="hours" value="" />
+              <textarea id="hours"></textarea>
             </div>
-            <div id="lilbox">
+            <div className="lilbox">
               <label>Date: </label>
-              <input type="date" id="date" value="" />
+              <input type="date" id="date" />
             </div>
           </div>
-          <div id="boxcols">
-            <div id="lilbox">
+          <div className="boxcols">
+            <div className="lilbox">
               <label>Supervisor: </label>
-              <input id="supervisor" value="" />
+              <textarea id="supervisor"></textarea>
             </div>
-            <div className="num" id="lilbox">
+            <div className="lilbox">
               <label>Number of Volunteers: </label>
-              <input id="number" type="number" value="" />
+              <textarea id="volunteerCount" type="number"></textarea>
             </div>
           </div>
-          <div id="boxcols">
-            <div id="lilbox">
+          <div className="boxcols">
+            <div className="lilbox">
               <label>Description: </label>
               <textarea
-                id="littlerbox"
+                className="littlerbox"
+                id="description"
                 rows="3"
                 cols="30"
                 name="text"
               ></textarea>
             </div>
-            <div id="lilbox">
-              <input id="submit" type="submit" value="Submit" />
+            <div className="lilbox">
+              <input
+                id="submit"
+                type="submit"
+                value="Submit"
+                onClick={submitForm}
+              />
             </div>
           </div>
-        </form>
+        </div>
       </div>
+      {console.log("Update: " + updateStatus)}
     </div>
   );
 }

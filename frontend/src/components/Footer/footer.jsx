@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useContext } from "react";
 import "./footer.css";
 import logo from "../../assets/logo.png";
 import vector from "../../assets/vector.png";

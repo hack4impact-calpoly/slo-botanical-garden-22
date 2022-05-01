@@ -29,14 +29,12 @@ export const fetchData = async (tableName) => {
 
 //Make it so dont hard code my username
 export const fetchUser = async (tableName, user) => {
-  console.log(user);
   var params = {
     Key: {
       username: user,
     },
     TableName: tableName,
   };
-  console.log(user);
   const entries = await new Promise((resolve, reject) => {
     docClient.get(params, function (err, data) {
       if (err) reject(err);
@@ -66,13 +64,7 @@ export const putData = (tableName, data) => {
   });
 };
 
-//Where tableName is "admin_announcements", "users", or "hoursLog"
-// itemKey is the the actually primary key identifier
-// itemKeyName is the name of the primary key
-// for admin_announcements table - primary_id
-// for hoursLog table - primary_logId
-// for users - username
-export const deleteAnnouncement = (tableName, itemKey) => {
+export const deleteAnnouncement = (itemKey) => {
   console.log(itemKey);
   var params = {
     Key: {
@@ -93,13 +85,13 @@ export const deleteAnnouncement = (tableName, itemKey) => {
   });
 };
 
-export const deleteVolunteer = (itemKey) => {
+export const deleteVolunteer = (itemKey, tableName) => {
   console.log(itemKey);
   var params = {
     Key: {
       username: itemKey,
     },
-    TableName: "volunteers_individual",
+    TableName: tableName,
   };
 
   docClient.delete(params, function (err, data) {
@@ -110,6 +102,78 @@ export const deleteVolunteer = (itemKey) => {
       );
     } else {
       console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+    }
+  });
+};
+
+export const deleteHour = (itemKey) => {
+  console.log(itemKey);
+  var params = {
+    Key: {
+      primary_id: itemKey,
+    },
+    TableName: "logged_hours",
+  };
+
+  docClient.delete(params, function (err, data) {
+    if (err) {
+      console.error(
+        "Unable to delete item. Error JSON:",
+        JSON.stringify(err, null, 2)
+      );
+    } else {
+      console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+    }
+  });
+};
+
+export const addHours = (user, newHours, tableName) => {
+  console.log(user);
+  var params = {
+    TableName: tableName,
+    Key: {
+      username: user,
+    },
+    UpdateExpression: "set #totalHours= :x",
+    ExpressionAttributeNames: { "#totalHours": "totalHours" },
+    ExpressionAttributeValues: { ":x": newHours },
+  };
+
+  docClient.update(params, function (err, data) {
+    if (err) {
+      console.error(
+        "Unable to update item. Error JSON:",
+        JSON.stringify(err, null, 2)
+      );
+    } else {
+      console.log("Update succeeded:", JSON.stringify(data, null, 2));
+    }
+  });
+};
+
+export const changeVolunteerStatus = (user, tableName, newValue) => {
+  console.log(user);
+  console.log(tableName);
+  console.log(newValue);
+
+  var params = {
+    TableName: tableName,
+    Key: {
+      username: user,
+    },
+    UpdateExpression: "set #is_Admin= :x",
+    ExpressionAttributeNames: { "#is_Admin": "is_Admin" },
+    ExpressionAttributeValues: { ":x": newValue },
+  };
+
+  docClient.update(params, function (err, data) {
+    if (err) {
+      console.error(
+        "Unable to update item. Error JSON:",
+        JSON.stringify(err, null, 2)
+      );
+    } else {
+      console.log("Update succeeded:", JSON.stringify(data, null, 2));
     }
   });
 };

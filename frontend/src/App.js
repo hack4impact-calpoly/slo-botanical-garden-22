@@ -11,23 +11,28 @@ import React, { useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import VolunteerTable from "./components/VolunteerTable/volunteerTable";
 import ContribitionTable from "./components/ContributionsTable/ContributionTable";
+import { GlobalProvider } from "./GlobalState";
 
 function App(props) {
   return (
     <>
-      <ChakraProvider>
-        <Router>
-        <Navbar/>
-          <Routes>
-            <Route exact path="/home" element={<Home />} />
-            <Route exact path="/profile" element={<ContribitionTable />} />
-            <Route path="/signup" element={<SignUpForm />} />
-            <Route path="/" element={<Login />} />
-            <Route path="/volunteer" element={<VolunteerTable />} />
-          </Routes>
-        </Router>
-      </ChakraProvider>
-      <Footer />
+      <GlobalProvider>
+        <ChakraProvider>
+          <Router>
+            <Navbar />
+            {/* <Login> */}
+            <Routes>
+              <Route exact path="/home" element={<Home />} />
+              <Route exact path="/profile" element={<ContribitionTable />} />
+              <Route path="/signup" element={<SignUpForm />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/volunteer" element={<VolunteerTable />} />
+            </Routes>
+            {/* </Login> */}
+          </Router>
+        </ChakraProvider>
+        <Footer />
+      </GlobalProvider>
     </>
   );
 }
