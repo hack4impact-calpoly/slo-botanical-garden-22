@@ -1,64 +1,54 @@
-import React from "react";
-import "./AnnouncementBar.css";
-import Announcement from "./Announcement";
+import React, { useState, useEffect, useContext } from "react";
 import { fetchData } from "../../dynoFuncs";
+import Announcement from "./Announcement";
+import { Box } from "@chakra-ui/react";
+import "./AnnouncementBar.css";
+import AnnouncementForm from "./announcementForm";
+import { GlobalContext } from "../../GlobalState";
 
-const fetchDataFormDynamoDb = async () => {
-  const item = await fetchData("admin_announcements").then((data) => {
-    console.log(data);
-    return data.Items;
-  });
-  console.log("FETCHDATAFORM");
-  console.log(item);
-  return item;
+const AnnouncementBar = ({ reloadPageVar, reloadPageFunc }) => {
+  const [messages, setMessages] = useState();
+  const { currentUserInfo } = useContext(GlobalContext);
+
+  useEffect(() => {
+    fetchData("admin_announcements").then((data) => setMessages(data));
+  }, [reloadPageVar]);
+
+  if (!messages) return null;
+
+  const getAnnouncementForm = () => {
+    if (currentUserInfo.is_Admin === "True") {
+      return (
+        <div>
+          <h2> </h2>
+          <AnnouncementForm
+            reloadPageVar={reloadPageVar}
+            reloadPageFunc={reloadPageFunc}
+          />
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div>
+      <Box className="box">
+        {getAnnouncementForm()}
+        {messages.map((announcement) => (
+          <Announcement
+            name={announcement.name}
+            date={announcement.date}
+            title={announcement.title}
+            body={announcement.content}
+            poster={announcement.poster}
+            id={announcement.primary_id}
+            reloadPageVar={reloadPageVar}
+            reloadPageFunc={reloadPageFunc}
+          />
+        ))}
+      </Box>
+    </div>
+  );
 };
-
-class AnnouncementBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      messages: [],
-    };
-  }
-
-  componentDidMount() {
-    console.log("IN MOUNT");
-    this.setState({ loading: true });
-    fetchDataFormDynamoDb().then((result) => {
-      console.log("ITEMS");
-      console.log(result);
-      this.setState({ messages: result, loading: false });
-      console.log(this.state.messages);
-    });
-  }
-
-  render() {
-    console.log(this.state.messages);
-    console.log(this.state.loading);
-
-    return (
-      <>
-        <h2>Admin Announcements</h2>
-        {this.state.loading ? (
-          <div></div>
-        ) : (
-          <div className="bar-container">
-            {console.log(this.state.messages)}
-            {this.state.messages.map((announcement) => (
-              <Announcement
-                name={announcement.name}
-                date={announcement.date}
-                title={announcement.title}
-                body={announcement.content}
-                poster={announcement.poster}
-              />
-            ))}
-          </div>
-        )}
-      </>
-    );
-  }
-}
 
 export default AnnouncementBar;
