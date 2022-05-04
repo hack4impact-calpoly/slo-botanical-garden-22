@@ -69,7 +69,9 @@ export default function Login(props) {
 
     fetchUser("volunteers_group", user.username).then((data) => {
       userInfo = data;
-      userInfo["volunteerTable"] = "volunteers_group";
+      if (userInfo !== undefined) {
+        userInfo["volunteerTable"] = "volunteers_group";
+      }
       //console.log("Group");
       console.log(userInfo);
       if (!userInfo) {
@@ -78,6 +80,7 @@ export default function Login(props) {
           userInfo["volunteerTable"] = "volunteers_individual";
           //console.log("I");
           //console.log();
+
           setCurrentUser(data);
         });
       } else {
@@ -110,9 +113,6 @@ export default function Login(props) {
             {getUserInfoCandD(user)}
             {props.children}
             <Navigate replace to="/home" />
-
-            {/* <h1>Hello {user.username}</h1>
-            <button onClick={signOut}>Sign out</button> */}
           </main>
         )}
       </Authenticator>

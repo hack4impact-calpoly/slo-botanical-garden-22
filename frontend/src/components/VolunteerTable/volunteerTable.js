@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSortBy, useTable, usePagination } from "react-table";
 import "./volunteerTable.css";
 import bgimage from "../../assets/garden.png";
 import { Flex, Box } from "@chakra-ui/react";
 import { CSVLink } from "react-csv";
-import { fetchData, deleteVolunteer } from "../../dynoFuncs";
+import {
+  fetchData,
+  deleteVolunteer,
+  changeVolunteerStatus,
+} from "../../dynoFuncs";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -13,68 +17,168 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
+import { GlobalContext } from "../../GlobalState";
+import Amplify, { Auth, API } from 'aws-amplify';
+
 
 const VolunteerTable = () => {
   const [data, setData] = useState();
+  const [reloadPage, setReloadPage] = useState(0);
+  const { currentUserInfo } = useContext(GlobalContext);
 
   useEffect(() => {
-    fetchData("volunteers_individual").then((result) => setData(result));
-  }, []);
+    fetchData("volunteers_group").then((result) => setData(result));
+  }, [reloadPage]);
 
-  if (data) {
+  if (data && currentUserInfo.is_Admin === "True") {
     console.log(data);
-    return <Table data={data} />;
+    return (
+      <Table
+        data={data}
+        reloadPage={reloadPage}
+        setReloadPage={setReloadPage}
+      />
+    );
   }
-  return null;
+  return <h2>You Do Not Have the Permissions to View This Page</h2>;
 };
 
 const Table = (props) => {
   const { data } = props;
   console.log(data);
-  const [openState, setOpen] = React.useState(false);
+  const [openDelete, setDelete] = React.useState(false);
   const [userToDelete, setUserToDelete] = React.useState();
+  const [openStatus, setStatus] = React.useState(false);
+  const [userToStatusChage, setUserToStatusChage] = React.useState();
+  const [userStatus, setUserStatus] = React.useState("False");
 
-  const handleClickOpen = (username) => {
-    console.log("In click open");
-    //setOpen(true);
-    //setUserToDelete(username);
+  const handleClickOpenDelete = (username) => {
+    setUserToDelete(username);
+    setDelete(true);
   };
+
+  const handleClickOpenStatus = (username, status) => {
+    setUserToStatusChage(username);
+    setUserStatus(status);
+    setStatus(true);
+  };
+  async function disableUser() {
+    let apiName = 'AdminQueries';
+    let path = '/disableUser';
+    let myInit = {
+      body: {
+        "username": userToDelete
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+      }
+    }
+    return await API.post(apiName, path, myInit);
+  }
 
   const handleDelete = async () => {
     console.log("IN handle delete");
-    console.log(typeof userToDelete);
-    console.log(userToDelete);
-    deleteVolunteer("volunteers_individual", userToDelete);
-    alert(
-      "Announcement Successfully Deleted. \nPlease refresh page to see change."
-    );
-    setOpen(false);
+    console.log("UserDel: " + userToDelete);
+    deleteVolunteer(userToDelete, "volunteers_group");
+    console.log(disableUser());
+    setDelete(false);
+    props.setReloadPage(props.reloadPage + 1);
+  };
+
+  const handleStatusChange = async () => {
+    changeVolunteerStatus(userToStatusChage, "volunteers_group", userStatus);
+    setStatus(false);
+    props.setReloadPage(props.reloadPage + 1);
   };
 
   const handleCancel = () => {
-    setOpen(false);
+    setDelete(false);
+    setStatus(false);
   };
 
   const columns = React.useMemo(
     () => [
       {
         Header: "Name",
-        accessor: "Name", // accessor is the "key" in the data
+        accessor: "nameContact", // accessor is the "key" in the data
+        // Cell: (row) => {
+        //   return (
+        //     <div>
+        //       <span>
+        //         {row.row.original["First Name"] +
+        //           " " +
+        //           row.row.original["Last Name"]}
+        //       </span>
+        //     </div>
+        //   );
+        // },
+      },
+      {
+        Header: "Email",
+        accessor: "emailContact", //Email
         Cell: (row) => {
           return (
             <div>
-              <span>
-                {row.row.original["First Name"] +
-                  " " +
-                  row.row.original["Last Name"]}
-              </span>
+              <span>{"Email"}</span>
             </div>
           );
         },
       },
       {
-        Header: "Email",
-        accessor: "Email",
+        Header: "Role",
+        accessor: "is_Admin",
+        Cell: (row) => {
+          if (row.row.original["is_Admin"] === "True") {
+            return (
+              <div>
+                <p>Administration</p>
+              </div>
+            );
+          } else {
+            return (
+              <div>
+                <p>Volunteer</p>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        Header: "Change Status",
+        accessor: "status",
+        Cell: (row) => {
+          if (row.row.original["is_Admin"] === "True") {
+            return (
+              <div>
+                <button
+                  onClick={() =>
+                    handleClickOpenStatus(row.row.original["username"], "False")
+                  }
+                >
+                  Revoke Admin Privledges 🔽
+                </button>
+              </div>
+            );
+          } else {
+            return (
+              <div>
+                <div>
+                  <button
+                    onClick={() =>
+                      handleClickOpenStatus(
+                        row.row.original["username"],
+                        "True"
+                      )
+                    }
+                  >
+                    Invoke Admin Priveldeges 🔼
+                  </button>
+                </div>
+              </div>
+            );
+          }
+        },
       },
       {
         Header: "Delete Volunteer",
@@ -82,7 +186,12 @@ const Table = (props) => {
         Cell: (row) => {
           return (
             <div>
-              <IconButton style={{ color: "#cee4bb" }}>
+              <IconButton
+                style={{ color: "#cee4bb" }}
+                onClick={() =>
+                  handleClickOpenDelete(row.row.original["username"])
+                }
+              >
                 <DeleteIcon />
               </IconButton>
             </div>
@@ -126,7 +235,6 @@ const Table = (props) => {
 
   return (
     <div className="container">
-      {console.log(openState)}
       <Flex
         p={10}
         w="100%"
@@ -179,7 +287,7 @@ const Table = (props) => {
               {page.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()} onClick={handleClickOpen()}>
+                  <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => {
                       return (
                         <td
@@ -241,7 +349,7 @@ const Table = (props) => {
             />
           </div>
           <Dialog
-            open={openState}
+            open={openDelete}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
@@ -258,8 +366,28 @@ const Table = (props) => {
                 Cancel
               </Button>
               <Button onClick={handleDelete} color="#CCDDBD" autoFocus>
-                Delete Announcement
+                Delete Volunteer
               </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={openStatus}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure you want to change the status of this user?"}
+            </DialogTitle>
+            <DialogContent></DialogContent>
+            <DialogActions>
+              <DialogActions>
+                <Button onClick={handleCancel} color="#CCDDBD">
+                  Cancel
+                </Button>
+                <Button onClick={handleStatusChange} color="#CCDDBD" autoFocus>
+                  Change User Status
+                </Button>
+              </DialogActions>
             </DialogActions>
           </Dialog>
         </Box>

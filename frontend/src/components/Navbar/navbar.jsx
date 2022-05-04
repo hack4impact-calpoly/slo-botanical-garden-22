@@ -19,16 +19,17 @@ import { GlobalContext } from "../../GlobalState";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
+  const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
 
   async function signOut() {
     try {
+      setCurrentUser(null);
       await Auth.signOut({ global: true });
       navigate("/");
     } catch (error) {
       console.log("error signing out: ", error);
     }
   }
-  const { currentUserInfo } = useContext(GlobalContext);
 
   const getVolunteerOption = () => {
     if (currentUserInfo.is_Admin === "True") {
@@ -90,10 +91,16 @@ export default function Navbar(props) {
           </Link>
         </Box>
         <Box>
-          <Image src={userIcon} />
+          <Link as={ReactLink} onClick={signOut} to="/">
+            {" "}
+            <Heading size="lg" color="white">
+              {" "}
+              Sign Out{" "}
+            </Heading>{" "}
+          </Link>
         </Box>
         <Box>
-          <button onClick={signOut}>Sign Out </button>
+          <Image src={userIcon} />
         </Box>
       </HStack>
     </Flex>
