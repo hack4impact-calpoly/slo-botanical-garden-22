@@ -9,7 +9,6 @@ import {
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import "./login.css";
-import SignUpForm from "../SignUp/SignUpForm";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../GlobalState";
 import { fetchUser } from "../../dynoFuncs";

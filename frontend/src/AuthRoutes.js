@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { GlobalContext } from "./GlobalState";
 import { fetchUser } from "./dynoFuncs";
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
+import { Navigate, useLocation } from "react-router-dom";
 
 export const AuthRoute = ({ children }) => {
   const { route, cognitoUser } = useAuthenticator((context) => {
@@ -38,10 +39,10 @@ export const AuthRoute = ({ children }) => {
   console.log(currentUserInfo);
   console.log(route);
   console.log(cognitoUser);
+  let location = useLocation();
 
   if (route !== "authenticated" || !currentUserInfo.userLoggedIn) {
-    console.log("HERE");
-    return <Authenticator />;
+    return <Navigate to="/" state={{ from: location }} replace></Navigate>;
   }
 
   //NEED TO CHANGE
