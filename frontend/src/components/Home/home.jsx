@@ -58,7 +58,7 @@ export default function Home() {
     <>
       {!currentUserInfo ? (
         <Navigate replace to="/" />
-      ) : (
+      ) : (currentUserInfo.Emergency_Contact === '' ? <Navigate replace to="/info" /> : (
         <>
           <Flex
             p={10}
@@ -306,7 +306,7 @@ export default function Home() {
             </Flex>
           </Flex>
         </>
-      )}
+      ))}
     </>
   );
 }

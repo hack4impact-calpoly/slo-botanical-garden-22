@@ -72,15 +72,10 @@ export default function Login(props) {
       if (userInfo !== undefined) {
         userInfo["volunteerTable"] = "volunteers_group";
       }
-      //console.log("Group");
-      console.log(userInfo);
       if (!userInfo) {
         fetchUser("volunteers_individual", user.username).then((data) => {
           userInfo = data;
           userInfo["volunteerTable"] = "volunteers_individual";
-          //console.log("I");
-          //console.log();
-
           setCurrentUser(data);
         });
       } else {
@@ -88,18 +83,6 @@ export default function Login(props) {
       }
     });
   }
-
-  /* const { user, signOut } = useAuthenticator((context) => {
-    console.log(context);
-    setTestUser(context.user);
-    return [context.user];
-  });
-
-  useEffect(() => {
-    if (testUser) {
-      getUserInfoCandD(testUser);
-    }
-  }, [testUser]); */
 
   return (
     <div className="signInPage">
@@ -117,7 +100,5 @@ export default function Login(props) {
         )}
       </Authenticator>
     </div>
-    //   {/* )}
-    // </> */}
   );
 }
