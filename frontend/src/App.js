@@ -32,7 +32,6 @@ function App(props) {
         <GlobalProvider>
           <ChakraProvider>
             <Router>
-              <Navbar />
               <Routes>
                 <Route
                   exact

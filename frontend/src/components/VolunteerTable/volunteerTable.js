@@ -19,6 +19,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
 import { GlobalContext } from "../../GlobalState";
 import Amplify, { Auth, API } from 'aws-amplify';
+import Navbar from "../Navbar/navbar";
 
 
 const VolunteerTable = () => {
@@ -83,7 +84,8 @@ const Table = (props) => {
   const handleDelete = async () => {
     console.log("IN handle delete");
     console.log("UserDel: " + userToDelete);
-    deleteVolunteer(userToDelete, "volunteers_group");
+    await disableUser();
+    //deleteVolunteer(userToDelete, "volunteers_group");
     console.log(disableUser());
     setDelete(false);
     props.setReloadPage(props.reloadPage + 1);
@@ -237,165 +239,168 @@ const Table = (props) => {
   );
 
   return (
-    <div className="container">
-      <Flex
-        p={10}
-        w="100%"
-        bgImage={bgimage}
-        bgPosition="center"
-        bgSize="cover"
-        bgRepeat="repeat"
-        className="vol-table"
-      >
-        <CSVLink data={data} filename="volunteer_data" className="export">
-          Export Data
-        </CSVLink>
-        ;
-        <Box>
-          <table
-            {...getTableProps()}
-            style={{
-              boxShadow: "0 0 20px rgba(0,0,0,0.8)",
-              background: "#CCDDBD",
-              borderSpacing: "0 1em",
-            }}
-          >
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      style={{
-                        borderRight: "none",
-                        background: "#576754",
-                        color: "white",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {column.render("Header")}
-                      <span>
-                        {column.isSorted
-                          ? column.isSortedDesc
-                            ? " 🔽"
-                            : " 🔼"
-                          : ""}
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td
-                          {...cell.getCellProps()}
-                          style={{
-                            background: "#e6f2d9",
-                          }}
-                        >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <br />
-          <div className="pagination">
-            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-              {"<<"}
-            </button>{" "}
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              {"<"}
-            </button>{" "}
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              {">"}
-            </button>{" "}
-            <button
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              {">>"}
-            </button>{" "}
-            <span>
-              Page{" "}
-              <strong>
-                {pageIndex + 1} of {pageOptions.length}
-              </strong>{" "}
-            </span>
-            <span> | </span>
-            <span>
-              Go to page:{" "}
-              <input
-                type="number"
-                defaultValue={pageIndex + 1}
-                onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  gotoPage(page);
-                }}
-                style={{ paddingLeft: "10px", width: "40px" }}
-              />
-            </span>{" "}
-            <span
-              value={15}
-              onChange={(e) => {
-                setPageSize(Number(e.target.value));
+    <>
+      <Navbar />
+      <div className="container">
+        <Flex
+          p={10}
+          w="100%"
+          bgImage={bgimage}
+          bgPosition="center"
+          bgSize="cover"
+          bgRepeat="repeat"
+          className="vol-table"
+        >
+          <CSVLink data={data} filename="volunteer_data" className="export">
+            Export Data
+          </CSVLink>
+          ;
+          <Box>
+            <table
+              {...getTableProps()}
+              style={{
+                boxShadow: "0 0 20px rgba(0,0,0,0.8)",
+                background: "#CCDDBD",
+                borderSpacing: "0 1em",
               }}
-            />
-          </div>
-          <Dialog
-            open={openDelete}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to delete this volunteer?"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                This action can't be undone.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCancel} color="#CCDDBD">
-                Cancel
-              </Button>
-              <Button onClick={handleDelete} color="#CCDDBD" autoFocus>
-                Delete Volunteer
-              </Button>
-            </DialogActions>
-          </Dialog>
-          <Dialog
-            open={openStatus}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to change the status of this user?"}
-            </DialogTitle>
-            <DialogContent></DialogContent>
-            <DialogActions>
+            >
+              <thead>
+                {headerGroups.map((headerGroup) => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map((column) => (
+                      <th
+                        {...column.getHeaderProps(column.getSortByToggleProps())}
+                        style={{
+                          borderRight: "none",
+                          background: "#576754",
+                          color: "white",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {column.render("Header")}
+                        <span>
+                          {column.isSorted
+                            ? column.isSortedDesc
+                              ? " 🔽"
+                              : " 🔼"
+                            : ""}
+                        </span>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map((cell) => {
+                        return (
+                          <td
+                            {...cell.getCellProps()}
+                            style={{
+                              background: "#e6f2d9",
+                            }}
+                          >
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <br />
+            <div className="pagination">
+              <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                {"<<"}
+              </button>{" "}
+              <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                {"<"}
+              </button>{" "}
+              <button onClick={() => nextPage()} disabled={!canNextPage}>
+                {">"}
+              </button>{" "}
+              <button
+                onClick={() => gotoPage(pageCount - 1)}
+                disabled={!canNextPage}
+              >
+                {">>"}
+              </button>{" "}
+              <span>
+                Page{" "}
+                <strong>
+                  {pageIndex + 1} of {pageOptions.length}
+                </strong>{" "}
+              </span>
+              <span> | </span>
+              <span>
+                Go to page:{" "}
+                <input
+                  type="number"
+                  defaultValue={pageIndex + 1}
+                  onChange={(e) => {
+                    const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                    gotoPage(page);
+                  }}
+                  style={{ paddingLeft: "10px", width: "40px" }}
+                />
+              </span>{" "}
+              <span
+                value={15}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                }}
+              />
+            </div>
+            <Dialog
+              open={openDelete}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Are you sure you want to delete this volunteer?"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  This action can't be undone.
+                </DialogContentText>
+              </DialogContent>
               <DialogActions>
                 <Button onClick={handleCancel} color="#CCDDBD">
                   Cancel
                 </Button>
-                <Button onClick={handleStatusChange} color="#CCDDBD" autoFocus>
-                  Change User Status
+                <Button onClick={handleDelete} color="#CCDDBD" autoFocus>
+                  Delete Volunteer
                 </Button>
               </DialogActions>
-            </DialogActions>
-          </Dialog>
-        </Box>
-      </Flex>
-    </div>
+            </Dialog>
+            <Dialog
+              open={openStatus}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Are you sure you want to change the status of this user?"}
+              </DialogTitle>
+              <DialogContent></DialogContent>
+              <DialogActions>
+                <DialogActions>
+                  <Button onClick={handleCancel} color="#CCDDBD">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleStatusChange} color="#CCDDBD" autoFocus>
+                    Change User Status
+                  </Button>
+                </DialogActions>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Flex>
+      </div>
+    </>
   );
 };
 

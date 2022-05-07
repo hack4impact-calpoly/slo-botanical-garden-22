@@ -34,7 +34,7 @@
   display: inline;
 }
 
-#root {
+html {
   background-image: url("../../assets/garden.png");
   background-position: center;
   background-repeat: no-repeat;
