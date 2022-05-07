@@ -71,40 +71,102 @@ const SignUpForm = () => {
       await Auth.confirmSignUp(username, code);
       await Auth.signIn(username, password);
       if (group) {
+        var hourGoal = "None Specified";
+        if (signUpGroup.hourGoal) {
+          hourGoal = signUpGroup.hourGoal;
+        }
+
+        var safetyStatus = "False";
+        if (signUp.safetyStatus) {
+          safetyStatus = signUpGroup.safetyStatus;
+        }
+
         var item = {
           username: signUpGroup.username,
           groupName: signUpGroup.groupName,
           nameContact: signUpGroup.nameContact,
           phoneContact: signUpGroup.phoneContact,
           emailContact: signUpGroup.emailContact,
-          hourGoal: signUpGroup.hourGoal,
+          hourGoal: hourGoal,
           totalHours: 0,
-          safetyStatus: signUpGroup.safetyStatus,
+          safetyStatus: safetyStatus,
+          is_Admin: "False",
         };
         console.log(item);
         putData("volunteers_group", item);
       } else {
+        var groupName = "None Specified";
+        if (signUp.groupName) {
+          groupName = signUp.groupName;
+        }
+
+        hourGoal = "None Specified";
+        if (signUp.hourGoal) {
+          hourGoal = signUp.hourGoal;
+        }
+
+        var phonetwo = "None Specified";
+        if (signUp.phonetwo) {
+          phonetwo = signUp.phonetwo;
+        }
+
+        var medicalConditions = "None Specified";
+        if (signUp.medicalConditions) {
+          medicalConditions = signUp.medicalConditions;
+        }
+
+        safetyStatus = "False";
+        if (signUp.safetyStatus) {
+          safetyStatus = signUp.safetyStatus;
+        }
+
+        var photoStatus = "False";
+        if (signUp.photoStatus) {
+          photoStatus = signUp.photoStatus;
+        }
+
+        var volunteerWaiver = "False";
+        if (signUp.volunteerWaiver) {
+          volunteerWaiver = signUp.volunteerWaiver;
+        }
+
+        var commService = "False";
+        if (signUp.commService) {
+          commService = signUp.commService;
+        }
+
+        var scannedStatus = "False";
+        if (signUp.scannedStatus) {
+          scannedStatus = signUp.scannedStatus;
+        }
+
+        var covidWaiver = "False";
+        if (signUp.covidWaiver) {
+          covidWaiver = signUp.covidWaiver;
+        }
+
         item = {
           Emergency_Contact_Phone: signUp.emergencyNumber,
           "Last Name": signUp.lastName,
-          Covid_Waiver_and_Release: signUp.covidWaiver,
+          Covid_Waiver_and_Release: covidWaiver,
           "First Name": signUp.firstName,
-          Group: signUp.groupName,
+          Group: groupName,
           "Total Hours Volunteered": 0,
           Emergency_Contact: signUp.emergencyName,
           Email: signUp.email,
           Birth_date: signUp.birthDate,
-          is_Admin: false,
-          medicalConditions: signUp.medicalConditions, //?
-          "Safety Training Status": signUp.safetyStatus,
-          "Photo-Permission": signUp.photoStatus,
-          "Secondary Phone": signUp.phonetwo,
+          is_Admin: "False",
+          medicalConditions: medicalConditions,
+          "Safety Training Status": safetyStatus,
+          "Photo-Permission": photoStatus,
+          "Secondary Phone": phonetwo,
           "Primary Phone": signUp.phone,
-          Volunter_Waiver_and_Release: signUp.volunteerWaiver,
-          "Community Service": signUp.commService,
+          Volunter_Waiver_and_Release: volunteerWaiver,
+          "Community Service": commService,
           username: signUp.username,
-          hourGoal: signUp.hourGoal, //?
+          hourGoal: hourGoal,
           mailing_address: signUp.address,
+          liveScanned: scannedStatus,
         };
         console.log(item);
         putData("volunteers_individual", item);
@@ -238,16 +300,6 @@ const SignUpForm = () => {
             value={signUp.hourGoal}
             onChange={handleChange}
           />
-          <Checkbox
-            className="photo-label"
-            label="Photo Permission?"
-            value={signUp.photoStatus}
-            style={{ paddingBottom: "10px" }}
-            required
-            onChange={(e, data) =>
-              setSignUp({ ...signUp, photoStatus: data.checked })
-            }
-          />
           <hr style={{ backgroundColor: "green", width: "100%" }} />
           <Form.Input
             label="Mailing Address"
@@ -289,34 +341,58 @@ const SignUpForm = () => {
             value={signUp.medicalConditions}
             onChange={handleChange}
           />
-          <Checkbox
-            label="Safety Training Status Complete?"
-            value={signUp.safetyStatus}
-            onChange={(e, data) =>
-              setSignUp({ ...signUp, safetyStatus: data.checked })
-            }
-          />
-          <Checkbox
-            label="Volunteer Waiver and Release Complete?"
-            value={signUp.volunteerWaiver}
-            onChange={(e, data) =>
-              setSignUp({ ...signUp, volunteerWaiver: data.checked })
-            }
-          />
-          <Checkbox
-            label="Covid Waiver and Release Complete?"
-            value={signUp.covidWaiver}
-            onChange={(e, data) =>
-              setSignUp({ ...signUp, covidWaiver: data.checked })
-            }
-          />
-          <Checkbox
-            label="Community Service?"
-            value={signUp.commService}
-            onChange={(e, data) =>
-              setSignUp({ ...signUp, commService: data.checked })
-            }
-          />
+          <div className="bool_top">
+            <Checkbox
+              label="Safety Training Status Complete?"
+              value={signUp.safetyStatus}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, safetyStatus: data.checked })
+              }
+            />
+            <Checkbox
+              label="Volunteer Waiver and Release Complete?"
+              value={signUp.volunteerWaiver}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, volunteerWaiver: data.checked })
+              }
+            />
+            <Checkbox
+              label="Covid Waiver and Release Complete?"
+              value={signUp.covidWaiver}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, covidWaiver: data.checked })
+              }
+            />
+            <br />
+          </div>
+          <div className="bool_top">
+            <Checkbox
+              label="Community Service?"
+              value={signUp.commService}
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, commService: data.checked })
+              }
+            />
+            <Checkbox
+              label="Photo Permission?"
+              value={signUp.photoStatus}
+              style={{ paddingBottom: "10px" }}
+              required
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, photoStatus: data.checked })
+              }
+            />
+            <Checkbox
+              className="liveScan"
+              label="Lived Scanned? (Need to work with children)"
+              value={signUp.scannedStatus}
+              style={{ paddingBottom: "10px" }}
+              required
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, scannedStatus: data.checked })
+              }
+            />
+          </div>
           <br />
           <br />
         </div>

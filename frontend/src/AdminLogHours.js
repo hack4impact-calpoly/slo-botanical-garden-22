@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { putData, getRandomId, changeHours } from "./dynoFuncs";
+import { putData, getRandomId, addHours } from "./dynoFuncs";
 import { GlobalContext } from "./GlobalState";
 
-export default function HourLog(props) {
+export default function AdminHourLog(props) {
   const [updateStatus, setUpdateStatus] = useState(false);
   const { currentUserInfo } = useContext(GlobalContext);
 
@@ -117,7 +117,7 @@ export default function HourLog(props) {
       margin-bottom: 5%;
     }
 
-    #activity {
+    #activityA {
       border:solid 1px #686868;
       min-width: 170px;
       max-width: 200px;
@@ -144,41 +144,28 @@ export default function HourLog(props) {
   document.head.appendChild(styleSheet);
 
   async function submitForm() {
-    var volunteerName = "";
-    if (currentUserInfo.volunteerTable === "volunteers_group") {
-      volunteerName = currentUserInfo.nameContact;
-    } else {
-      volunteerName =
-        currentUserInfo["First Name"] + " " + currentUserInfo["Last Name"];
-    }
-
     const item = {
       primary_id: getRandomId(),
-      activity: document.getElementById("activity").value,
-      date: document.getElementById("date").value,
-      supervisor: document.getElementById("supervisor").value,
-      description: document.getElementById("description").value,
-      hours: document.getElementById("hours").value,
-      volunteerCount: document.getElementById("volunteerCount").value,
-      username: currentUserInfo.username, //change based on cookie, wait for Arden meeting with Cole
-      volunteer: volunteerName,
+      activity: document.getElementById("activityA").value,
+      date: document.getElementById("dateA").value,
+      supervisor: document.getElementById("supervisorA").value,
+      description: document.getElementById("descriptionA").value,
+      hours: document.getElementById("hoursA").value,
+      volunteerCount: document.getElementById("volunteerCountA").value,
+      username: "AdminLogged",
+      volunteer: document.getElementById("volunteerName").value,
     };
     console.log(item);
-    document.getElementById("activity").value = "";
-    document.getElementById("date").value = "";
-    document.getElementById("supervisor").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("hours").value = "";
-    document.getElementById("volunteerCount").value = "";
+    document.getElementById("activityA").value = "";
+    document.getElementById("dateA").value = "";
+    document.getElementById("supervisorA").value = "";
+    document.getElementById("descriptionA").value = "";
+    document.getElementById("hoursA").value = "";
+    document.getElementById("volunteerCountA").value = "";
 
     putData("logged_hours", item);
-    changeHours(
-      currentUserInfo.username,
-      currentUserInfo.totalHours + parseFloat(item.hours),
-      currentUserInfo.volunteerTable
-    );
     props.setReloadPage(props.reloadPage + 1);
-    console.log("Item in Logged Hours");
+    console.log("Item in Logged Hours Admin");
     console.log(item);
   }
 
@@ -191,9 +178,15 @@ export default function HourLog(props) {
         <div className="boxesholder">
           <div className="boxcols">
             <div className="lilbox">
+              <label>Volunteer(s): </label>
+              <textarea id="volunteerName"></textarea>
+            </div>
+            <h1> </h1>
+            <h1> </h1>
+            <div className="lilbox">
               <div className="activity">
                 <label for="activity">Activity:</label>
-                <select name="activity" id="activity">
+                <select name="activity" id="activityA">
                   <option value="Other">Other</option>
                   <option value="Administration">Administration</option>
                   <option value="Maintenance">Maintenance</option>
@@ -208,35 +201,37 @@ export default function HourLog(props) {
             <h1> </h1>
             <div className="lilbox">
               <label>Hours: </label>
-              <textarea id="hours"></textarea>
+              <textarea id="hoursA"></textarea>
+            </div>
+            <h1> </h1>
+            <h1> </h1>
+          </div>
+          <div className="boxcols">
+            <div className="lilbox">
+              <label>Supervisor: </label>
+              <textarea id="supervisorA"></textarea>
+            </div>
+            <h1> </h1>
+            <h1> </h1>
+            <div className="lilbox">
+              <label>Number of Volunteers: </label>
+              <textarea id="volunteerCountA" type="number"></textarea>
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <div className="date">
                 <label>Date: </label>
-                <input type="date" id="date" />
+                <input type="date" id="dateA" />
               </div>
-            </div>
-          </div>
-          <div className="boxcols">
-            <div className="lilbox">
-              <label>Supervisor: </label>
-              <textarea id="supervisor"></textarea>
-            </div>
-            <h1> </h1>
-            <h1> </h1>
-            <div className="lilbox">
-              <label>Number of Volunteers: </label>
-              <textarea id="volunteerCount" type="number"></textarea>
             </div>
           </div>
           <div className="boxcols">
             <div className="lilbox">
               <label>Description: </label>
               <textarea
-                id="description"
-                rows="3"
+                id="descriptionA"
+                rows="10"
                 cols="20"
                 name="text"
               ></textarea>

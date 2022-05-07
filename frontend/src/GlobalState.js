@@ -13,7 +13,7 @@ export const GlobalProvider = ({ children }) => {
   // Actions for changing state
 
   function setCurrentUser(item) {
-    console.log(item);
+    //console.log(item);
     dispatch({
       type: "ADD_ITEM",
       payload: item,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./ContributionTable.css";
-import { fetchData, deleteHour, changeHours } from "../../dynoFuncs";
+import { fetchData, deleteHour } from "../../dynoFuncs";
 import HourLog from "../../logHours";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
@@ -14,7 +14,7 @@ import { GlobalContext } from "../../GlobalState";
 import ReactTable from "react-table";
 import { useSortBy, useTable, usePagination } from "react-table";
 
-const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
+const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
   const { currentUserInfo } = useContext(GlobalContext);
   const [open, setOpen] = React.useState(false);
   const [toDelete, setToDelete] = useState();
@@ -26,11 +26,6 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
 
   const handleDelete = async () => {
     deleteHour(toDelete);
-    changeHours(
-      currentUserInfo.username,
-      currentUserInfo.totalHours - parseFloat(toDelete.hours),
-      currentUserInfo.volunteerTable
-    );
     setReloadPage(reloadPage + 1);
     setOpen(false);
   };
@@ -50,7 +45,7 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
         date: " ",
         hours: " ",
         description: "No Hours Logged Yet",
-        supervisor: " ",
+        volunteer: " ",
       },
     ];
   }
@@ -97,16 +92,17 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
     <div className="Page">
       <div className="container">
         <div className="topRow">
-          <h1 id="title">Your Most Recent Contributions:</h1>
-          <h1 id="numHours">{currentUserInfo.totalHours} Total Hours</h1>
+          <h1 id="title">Contributions Logged by Admin:</h1>
         </div>
+        <h1> </h1>
+        <h1> </h1>
         <table class="fixed_header">
           <thead>
             <tr id="header">
               <th>Date</th>
               <th>Hours</th>
               <th>Description</th>
-              <th>Supervisor</th>
+              <th>Volunteer</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -115,7 +111,7 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
               <tr>
                 <td>{contribution.date}</td> <td>{contribution.hours}</td>{" "}
                 <td>{contribution.description}</td>{" "}
-                <td>{contribution.supervisor}</td>{" "}
+                <td>{contribution.volunteer}</td>{" "}
                 <td>{getDelete(contribution)}</td>{" "}
               </tr>
             ))}
@@ -126,4 +122,52 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
   );
 };
 
-export default ContributionTable;
+export default ContributionTableAdmin;
+
+{
+  /* <ReactTable
+          data={loggedHours}
+          pageSizeOptions={[20, 30, 50, 100, 200, 500]}
+          columns={[
+            {
+              Header: "Hours",
+              accessor: "hours",
+              minWidth: 300,
+            },
+          ]}
+          defaultPageSize={20}
+          getTableProps={() => {
+            return {
+              onScroll: (e) => {
+                if (this.tableScrollTop === e.target.scrollTop) {
+                  let left = e.target.scrollLeft > 0 ? e.target.scrollLeft : 0;
+                } else {
+                  this.tableScrollTop = e.target.scrollTop;
+                }
+              },
+            };
+          }}
+        /> */
+}
+
+{
+  /* <table className="table">
+          <tbody>
+            <tr id="header">
+              <th>Date</th>
+              <th>Hours</th>
+              <th>Description</th>
+              <th>Supervisor</th>
+              <th>Delete</th>
+            </tr>
+            {loggedHours.map((contribution) => (
+              <tr>
+                <td>{contribution.date}</td> <td>{contribution.hours}</td>{" "}
+                <td>{contribution.description}</td>{" "}
+                <td>{contribution.supervisor}</td>{" "}
+                <td>{getDelete(contribution)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table> */
+}

@@ -10,11 +10,11 @@ import {
 import "@aws-amplify/ui-react/styles.css";
 import "./login.css";
 import SignUpForm from "../SignUp/SignUpForm";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../GlobalState";
 import { fetchUser } from "../../dynoFuncs";
 
-const getComp = () => {
+export const getComp = () => {
   return {
     SignIn: {
       Header() {
@@ -60,24 +60,50 @@ const getComp = () => {
   };
 };
 
+export const getUserInfoCandD = (user, setCurrentUser) => {
+  var userInfo;
+
+  fetchUser("volunteers_group", user.username).then((data) => {
+    userInfo = data;
+    if (userInfo) {
+      userInfo["volunteerTable"] = "volunteers_group";
+    }
+    console.log(userInfo);
+    if (!userInfo) {
+      fetchUser("volunteers_individual", user.username).then((data) => {
+        userInfo = data;
+        userInfo["volunteerTable"] = "volunteers_individual";
+        setCurrentUser(data);
+      });
+    } else {
+      setCurrentUser(userInfo);
+    }
+  });
+};
+
 export default function Login(props) {
   const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
-  const [testUser, setTestUser] = useState(null);
+  let location = useLocation();
+  let navigate = useNavigate();
+
+  let from = location.state?.from?.pathname || "/home";
 
   function getUserInfoCandD(user) {
     var userInfo;
 
     fetchUser("volunteers_group", user.username).then((data) => {
       userInfo = data;
-      userInfo["volunteerTable"] = "volunteers_group";
-      //console.log("Group");
-      console.log(userInfo);
+      if (userInfo) {
+        userInfo["volunteerTable"] = "volunteers_group";
+        userInfo["userLoggedIn"] = true;
+      }
+      //console.log(userInfo);
       if (!userInfo) {
         fetchUser("volunteers_individual", user.username).then((data) => {
           userInfo = data;
           userInfo["volunteerTable"] = "volunteers_individual";
-          //console.log("I");
-          //console.log();
+          userInfo["userLoggedIn"] = true;
+
           setCurrentUser(data);
         });
       } else {
@@ -85,18 +111,6 @@ export default function Login(props) {
       }
     });
   }
-
-  /* const { user, signOut } = useAuthenticator((context) => {
-    console.log(context);
-    setTestUser(context.user);
-    return [context.user];
-  });
-
-  useEffect(() => {
-    if (testUser) {
-      getUserInfoCandD(testUser);
-    }
-  }, [testUser]); */
 
   return (
     <div className="signInPage">
@@ -109,10 +123,7 @@ export default function Login(props) {
           <main>
             {getUserInfoCandD(user)}
             {props.children}
-            <Navigate replace to="/home" />
-
-            {/* <h1>Hello {user.username}</h1>
-            <button onClick={signOut}>Sign out</button> */}
+            {navigate(from, { replace: true })}
           </main>
         )}
       </Authenticator>

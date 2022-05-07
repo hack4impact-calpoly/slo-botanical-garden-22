@@ -28,6 +28,9 @@ const VolunteerTable = () => {
     fetchData("volunteers_group").then((result) => setData(result));
   }, [reloadPage]);
 
+  console.log("currentUserInfo in volunteers");
+  console.log(currentUserInfo);
+
   if (data && currentUserInfo.is_Admin === "True") {
     console.log(data);
     return (
@@ -100,13 +103,13 @@ const Table = (props) => {
       {
         Header: "Email",
         accessor: "emailContact", //Email
-        Cell: (row) => {
-          return (
-            <div>
-              <span>{"Email"}</span>
-            </div>
-          );
-        },
+        // Cell: (row) => {
+        //   return (
+        //     <div>
+        //       <span>{row.row.original["is_Admin"]}</span>
+        //     </div>
+        //   );
+        // },
       },
       {
         Header: "Role",
@@ -224,7 +227,7 @@ const Table = (props) => {
         bgImage={bgimage}
         bgPosition="center"
         bgSize="cover"
-        bgRepeat="no-repeat"
+        bgRepeat="repeat"
         className="vol-table"
       >
         <CSVLink data={data} filename="volunteer_data" className="export">

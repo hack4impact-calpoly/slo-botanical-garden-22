@@ -50,263 +50,253 @@ export default function Home() {
     let volunteerCount = new Set(loggedHours.map((toV) => toV.username)).size;
     return volunteerCount;
   }
-
-  console.log(currentUserInfo);
   if (!currentUserInfo || !loggedHours) return null;
 
   return (
     <>
-      {!currentUserInfo ? (
-        <Navigate replace to="/" />
-      ) : (
-        <>
-          <Flex
-            p={10}
-            w="100%"
-            bgImage={bgimage}
-            bgPosition="center"
-            bgSize="cover"
-            bgRepeat="yes-repeat"
-          >
-            <Flex w="100%">
-              <Box
-                w="25%"
-                borderRadius={"12px"}
-                p={3}
-                boxShadow="dark-lg"
-                backdropFilter="blur(60px)"
-              >
-                <Heading size="lg" color="#cee4bb">
-                  {" "}
-                  Admin Announcements:{" "}
-                </Heading>
-                <Box>
-                  <AnnouncementBar
-                    reloadPageVar={reloadPage}
-                    reloadPageFunc={setReloadPage}
-                  />
-                </Box>
+      <>
+        <Flex
+          p={10}
+          w="100%"
+          bgImage={bgimage}
+          bgPosition="center"
+          bgSize="cover"
+          bgRepeat="yes-repeat"
+        >
+          <Flex w="100%">
+            <Box
+              w="25%"
+              borderRadius={"12px"}
+              p={3}
+              boxShadow="dark-lg"
+              backdropFilter="blur(60px)"
+            >
+              <Heading size="lg" color="#cee4bb">
+                {" "}
+                Admin Announcements:{" "}
+              </Heading>
+              <Box>
+                <AnnouncementBar
+                  reloadPageVar={reloadPage}
+                  reloadPageFunc={setReloadPage}
+                />
               </Box>
-              <Spacer />
+            </Box>
+            <Spacer />
+            <Box
+              w="72%"
+              h="100vh"
+              borderRadius={"12px"}
+              boxShadow="dark-lg"
+              backdropFilter="blur(60px)"
+            >
               <Box
-                w="72%"
-                h="100vh"
                 borderRadius={"12px"}
-                boxShadow="dark-lg"
+                boxShadow="lg"
+                bg="#F5F5F559"
                 backdropFilter="blur(60px)"
+                bgOpacity="0.75"
               >
-                <Box
-                  borderRadius={"12px"}
-                  boxShadow="lg"
-                  bg="#F5F5F559"
-                  backdropFilter="blur(60px)"
-                  bgOpacity="0.75"
-                >
-                  <Box bg="#576754" borderRadius={"12px"} boxShadow="dark-lg">
-                    <Heading p={3} size="lg" color="white">
+                <Box bg="#576754" borderRadius={"12px"} boxShadow="dark-lg">
+                  <Heading p={3} size="lg" color="white">
+                    {" "}
+                    In the Last Week:{" "}
+                  </Heading>
+                </Box>
+                <Flex p={10}>
+                  <Flex>
+                    <Center w="100%">
+                      <Heading fontSize="144">
+                        {" "}
+                        {getThisWeeksHoursTotal()}{" "}
+                      </Heading>
+                      <Heading mb={3} fontSize="lg">
+                        total hours contributed by
+                        <br />
+                        SLO volunteers{" "}
+                      </Heading>
+                    </Center>
+                  </Flex>
+                  <Spacer />
+                  <Flex>
+                    <Center w="100%">
+                      <Heading fontSize="144">
+                        {" "}
+                        {countVolunteersThisWeek()}{" "}
+                      </Heading>
+                      <Heading mb={3} fontSize="lg">
+                        volunteers volunteered
+                      </Heading>
+                    </Center>
+                  </Flex>
+                </Flex>
+              </Box>
+              <Box>
+                <Flex p={10}>
+                  <Box
+                    bg="#576754"
+                    w="30%"
+                    borderRadius={"12px"}
+                    boxShadow="dark-lg"
+                    backdropFilter="blur(60px)"
+                  >
+                    <Flex>
+                      <Center w="100%">
+                        <Heading fontSize="90px" color="#CCDDBD">
+                          {" "}
+                          {getThisWeeksHoursTotalByDepartment(
+                            "Maintenance"
+                          )}{" "}
+                        </Heading>
+                        <Heading fontSize="20px" color="#CCDDBD">
+                          {" "}
+                          HRS{" "}
+                        </Heading>
+                      </Center>
+                    </Flex>
+                    <Heading pb={3} fontSize="20px" color="#CCDDBD">
                       {" "}
-                      In the Last Week:{" "}
+                      In Maintenance{" "}
                     </Heading>
                   </Box>
-                  <Flex p={10}>
+                  <Spacer />
+                  <Box
+                    bg="#576754"
+                    w="30%"
+                    borderRadius={"12px"}
+                    boxShadow="dark-lg"
+                    backdropFilter="blur(60px)"
+                  >
                     <Flex>
                       <Center w="100%">
-                        <Heading fontSize="144">
+                        <Heading fontSize="90px" color="#CCDDBD">
                           {" "}
-                          {getThisWeeksHoursTotal()}{" "}
+                          {getThisWeeksHoursTotalByDepartment("Garden")}{" "}
                         </Heading>
-                        <Heading mb={3} fontSize="lg">
-                          total hours contributed by
-                          <br />
-                          SLO volunteers{" "}
+                        <Heading fontSize="20px" color="#CCDDBD">
+                          {" "}
+                          HRS{" "}
                         </Heading>
                       </Center>
                     </Flex>
-                    <Spacer />
+                    <Heading pb={3} fontSize="20px" color="#CCDDBD">
+                      {" "}
+                      In the Garden{" "}
+                    </Heading>
+                  </Box>
+                  <Spacer />
+                  <Box
+                    bg="#576754"
+                    w="30%"
+                    borderRadius={"12px"}
+                    boxShadow="dark-lg"
+                    backdropFilter="blur(60px)"
+                  >
                     <Flex>
                       <Center w="100%">
-                        <Heading fontSize="144">
+                        <Heading fontSize="90px" color="#CCDDBD">
                           {" "}
-                          {countVolunteersThisWeek()}{" "}
+                          {getThisWeeksHoursTotalByDepartment(
+                            "Propagation"
+                          )}{" "}
                         </Heading>
-                        <Heading mb={3} fontSize="lg">
-                          volunteers volunteered
+                        <Heading fontSize="20px" color="#CCDDBD">
+                          {" "}
+                          HRS{" "}
                         </Heading>
                       </Center>
                     </Flex>
-                  </Flex>
-                </Box>
-                <Box>
-                  <Flex p={10}>
-                    <Box
-                      bg="#576754"
-                      w="30%"
-                      borderRadius={"12px"}
-                      boxShadow="dark-lg"
-                      backdropFilter="blur(60px)"
-                    >
-                      <Flex>
-                        <Center w="100%">
-                          <Heading fontSize="90px" color="#CCDDBD">
-                            {" "}
-                            {getThisWeeksHoursTotalByDepartment(
-                              "Maintenance"
-                            )}{" "}
-                          </Heading>
-                          <Heading fontSize="20px" color="#CCDDBD">
-                            {" "}
-                            HRS{" "}
-                          </Heading>
-                        </Center>
-                      </Flex>
-                      <Heading pb={3} fontSize="20px" color="#CCDDBD">
-                        {" "}
-                        In Maintenance{" "}
-                      </Heading>
-                    </Box>
-                    <Spacer />
-                    <Box
-                      bg="#576754"
-                      w="30%"
-                      borderRadius={"12px"}
-                      boxShadow="dark-lg"
-                      backdropFilter="blur(60px)"
-                    >
-                      <Flex>
-                        <Center w="100%">
-                          <Heading fontSize="90px" color="#CCDDBD">
-                            {" "}
-                            {getThisWeeksHoursTotalByDepartment("Garden")}{" "}
-                          </Heading>
-                          <Heading fontSize="20px" color="#CCDDBD">
-                            {" "}
-                            HRS{" "}
-                          </Heading>
-                        </Center>
-                      </Flex>
-                      <Heading pb={3} fontSize="20px" color="#CCDDBD">
-                        {" "}
-                        In the Garden{" "}
-                      </Heading>
-                    </Box>
-                    <Spacer />
-                    <Box
-                      bg="#576754"
-                      w="30%"
-                      borderRadius={"12px"}
-                      boxShadow="dark-lg"
-                      backdropFilter="blur(60px)"
-                    >
-                      <Flex>
-                        <Center w="100%">
-                          <Heading fontSize="90px" color="#CCDDBD">
-                            {" "}
-                            {getThisWeeksHoursTotalByDepartment(
-                              "Propagation"
-                            )}{" "}
-                          </Heading>
-                          <Heading fontSize="20px" color="#CCDDBD">
-                            {" "}
-                            HRS{" "}
-                          </Heading>
-                        </Center>
-                      </Flex>
-                      {console.log("currentUserInfo")}
-                      {console.log(currentUserInfo)}
-                      <Heading pb={3} fontSize="20px" color="#CCDDBD">
-                        {" "}
-                        In Propagation{" "}
-                      </Heading>
-                    </Box>
-                  </Flex>
-                  <Flex p={10}>
-                    <Box
-                      bg="#576754"
-                      w="30%"
-                      borderRadius={"12px"}
-                      boxShadow="dark-lg"
-                      backdropFilter="blur(60px)"
-                    >
-                      <Flex>
-                        <Center w="100%">
-                          <Heading fontSize="90px" color="#CCDDBD">
-                            {" "}
-                            {getThisWeeksHoursTotalByDepartment(
-                              "Outreach"
-                            )}{" "}
-                          </Heading>
-                          <Heading fontSize="20px" color="#CCDDBD">
-                            {" "}
-                            HRS{" "}
-                          </Heading>
-                        </Center>
-                      </Flex>
-                      <Heading pb={3} fontSize="20px" color="#CCDDBD">
-                        {" "}
-                        In Outreach{" "}
-                      </Heading>
-                    </Box>
-                    <Spacer />
-                    <Box
-                      bg="#576754"
-                      w="30%"
-                      borderRadius={"12px"}
-                      boxShadow="dark-lg"
-                      backdropFilter="blur(60px)"
-                    >
-                      <Flex>
-                        <Center w="100%">
-                          <Heading fontSize="90px" color="#CCDDBD">
-                            {" "}
-                            {getThisWeeksHoursTotalByDepartment(
-                              "Education"
-                            )}{" "}
-                          </Heading>
-                          <Heading fontSize="20px" color="#CCDDBD">
-                            {" "}
-                            HRS{" "}
-                          </Heading>
-                        </Center>
-                      </Flex>
-                      <Heading pb={3} fontSize="20px" color="#CCDDBD">
-                        {" "}
-                        In Education{" "}
-                      </Heading>
-                    </Box>
-                    <Spacer />
-                    <Box
-                      bg="#576754"
-                      w="30%"
-                      borderRadius={"12px"}
-                      boxShadow="dark-lg"
-                      backdropFilter="blur(60px)"
-                    >
-                      <Flex>
-                        <Center w="100%">
-                          <Heading fontSize="90px" color="#CCDDBD">
-                            {" "}
-                            {getThisWeeksHoursTotalByDepartment(
-                              "Administration"
-                            )}{" "}
-                          </Heading>
-                          <Heading fontSize="20px" color="#CCDDBD">
-                            {" "}
-                            HRS{" "}
-                          </Heading>
-                        </Center>
-                      </Flex>
-                      <Heading pb={3} fontSize="20px" color="#CCDDBD">
-                        {" "}
-                        In Administration{" "}
-                      </Heading>
-                    </Box>
-                  </Flex>
-                </Box>
+                    {console.log("currentUserInfo in home")}
+                    {console.log(currentUserInfo)}
+                    <Heading pb={3} fontSize="20px" color="#CCDDBD">
+                      {" "}
+                      In Propagation{" "}
+                    </Heading>
+                  </Box>
+                </Flex>
+                <Flex p={10}>
+                  <Box
+                    bg="#576754"
+                    w="30%"
+                    borderRadius={"12px"}
+                    boxShadow="dark-lg"
+                    backdropFilter="blur(60px)"
+                  >
+                    <Flex>
+                      <Center w="100%">
+                        <Heading fontSize="90px" color="#CCDDBD">
+                          {" "}
+                          {getThisWeeksHoursTotalByDepartment("Outreach")}{" "}
+                        </Heading>
+                        <Heading fontSize="20px" color="#CCDDBD">
+                          {" "}
+                          HRS{" "}
+                        </Heading>
+                      </Center>
+                    </Flex>
+                    <Heading pb={3} fontSize="20px" color="#CCDDBD">
+                      {" "}
+                      In Outreach{" "}
+                    </Heading>
+                  </Box>
+                  <Spacer />
+                  <Box
+                    bg="#576754"
+                    w="30%"
+                    borderRadius={"12px"}
+                    boxShadow="dark-lg"
+                    backdropFilter="blur(60px)"
+                  >
+                    <Flex>
+                      <Center w="100%">
+                        <Heading fontSize="90px" color="#CCDDBD">
+                          {" "}
+                          {getThisWeeksHoursTotalByDepartment("Education")}{" "}
+                        </Heading>
+                        <Heading fontSize="20px" color="#CCDDBD">
+                          {" "}
+                          HRS{" "}
+                        </Heading>
+                      </Center>
+                    </Flex>
+                    <Heading pb={3} fontSize="20px" color="#CCDDBD">
+                      {" "}
+                      In Education{" "}
+                    </Heading>
+                  </Box>
+                  <Spacer />
+                  <Box
+                    bg="#576754"
+                    w="30%"
+                    borderRadius={"12px"}
+                    boxShadow="dark-lg"
+                    backdropFilter="blur(60px)"
+                  >
+                    <Flex>
+                      <Center w="100%">
+                        <Heading fontSize="90px" color="#CCDDBD">
+                          {" "}
+                          {getThisWeeksHoursTotalByDepartment(
+                            "Administration"
+                          )}{" "}
+                        </Heading>
+                        <Heading fontSize="20px" color="#CCDDBD">
+                          {" "}
+                          HRS{" "}
+                        </Heading>
+                      </Center>
+                    </Flex>
+                    <Heading pb={3} fontSize="20px" color="#CCDDBD">
+                      {" "}
+                      In Administration{" "}
+                    </Heading>
+                  </Box>
+                </Flex>
               </Box>
-            </Flex>
+            </Box>
           </Flex>
-        </>
-      )}
+        </Flex>
+      </>
     </>
   );
 }
