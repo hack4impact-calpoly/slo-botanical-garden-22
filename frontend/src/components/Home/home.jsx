@@ -56,8 +56,9 @@ export default function Home() {
     <>
       {!currentUserInfo ? (
         <Navigate replace to="/" />
-      ) : (currentUserInfo.Emergency_Contact === '' ? <Navigate replace to="/info" /> : (
-
+      ) : currentUserInfo.Emergency_Contact === "" ? (
+        <Navigate replace to="/info" />
+      ) : (
         <Flex
           p={10}
           w="100%"
@@ -298,13 +299,8 @@ export default function Home() {
               </Box>
             </Box>
           </Flex>
-<<<<<<< HEAD
-        </>
-      ))}
-=======
         </Flex>
-      </>
->>>>>>> 88571c20d6d1a400bdb72f7ef4c6e2fd7c45775c
+      )}
     </>
   );
 }

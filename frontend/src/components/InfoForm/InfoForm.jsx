@@ -144,6 +144,16 @@ const InfoForm = () => {
             }
             required
           />
+          <Checkbox
+              className="liveScan"
+              label="Lived Scanned? (Need to work with children)"
+              value={signUp.scannedStatus}
+              style={{ paddingBottom: "10px" }}
+              required
+              onChange={(e, data) =>
+                setSignUp({ ...signUp, scannedStatus: data.checked })
+              }
+            />
           <br />
           <br />
         </div>
