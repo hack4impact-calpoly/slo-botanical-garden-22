@@ -14,7 +14,13 @@ import { GlobalContext } from "../../GlobalState";
 import ReactTable from "react-table";
 import { useSortBy, useTable, usePagination } from "react-table";
 
-const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
+const ContributionTable = ({
+  setReloadPage,
+  reloadPage,
+  loggedHours,
+  totalHours,
+  setTotalHours,
+}) => {
   const { currentUserInfo } = useContext(GlobalContext);
   const [open, setOpen] = React.useState(false);
   const [toDelete, setToDelete] = useState();
@@ -31,6 +37,7 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
       currentUserInfo.totalHours - parseFloat(toDelete.hours),
       currentUserInfo.volunteerTable
     );
+    //setTotalHours(totalHours - parseFloat(toDelete.hours));
     setReloadPage(reloadPage + 1);
     setOpen(false);
   };
@@ -98,7 +105,7 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
       <div className="container">
         <div className="topRow">
           <h1 id="title">Your Most Recent Contributions:</h1>
-          <h1 id="numHours">{currentUserInfo.totalHours} Total Hours</h1>
+          <h1 id="numHours">{totalHours} Total Hours</h1>
         </div>
         <table class="fixed_header">
           <thead>
