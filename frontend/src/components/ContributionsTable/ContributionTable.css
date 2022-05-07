@@ -1,11 +1,20 @@
 .container {
-  width: 50%;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   padding: 20px;
   height: 100%;
-  overflow: scroll;
-  overflow-x: hidden;
-  scrollbar-color: dark;
+  background-color: white;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #9c9c9c;
+  box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
+}
+
+.topRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 #title {
@@ -28,22 +37,34 @@
 
 #header {
   background-color: #576754;
-  padding: 1em;
   color: white;
 }
 
-table {
-  margin: 20px;
-  justify-content: center;
+.fixed_header {
+  width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
-  border-radius: 1em;
-  overflow: hidden;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
-td {
-  padding: 1em;
-  background: rgb(255, 255, 255);
-  border-bottom: 2px solid rgb(255, 255, 255);
-  color: #576754;
+.fixed_header tbody {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 150px;
+}
+
+.fixed_header thead tr {
+  display: block;
+}
+
+.fixed_header thead {
+  background: black;
+  color: #fff;
+}
+
+.fixed_header th,
+.fixed_header td {
+  padding: 5px;
+  text-align: center;
+  width: 200px;
 }

@@ -3,3 +3,8 @@
   flex-direction: row;
   justify-content: center;
 }
+
+.trash {
+  display: flex;
+  justify-content: flex-end;
+}

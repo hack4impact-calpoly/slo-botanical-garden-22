@@ -27,7 +27,6 @@ export const fetchData = async (tableName) => {
   return entries;
 };
 
-//Make it so dont hard code my username
 export const fetchUser = async (tableName, user) => {
   var params = {
     Key: {
@@ -127,8 +126,10 @@ export const deleteHour = (itemKey) => {
   });
 };
 
-export const addHours = (user, newHours, tableName) => {
+export const changeHours = (user, newHours, tableName) => {
+  console.log("In Change Hours");
   console.log(user);
+  console.log(newHours);
   var params = {
     TableName: tableName,
     Key: {

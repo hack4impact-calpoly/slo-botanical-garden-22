@@ -1,0 +1,25 @@
+.wholePage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-image: url("../../assets/garden.png");
+  background-repeat: repeat;
+}
+
+.conTable {
+  padding: 2%;
+}
+
+h1 {
+  font-size: xx-large;
+}
+
+.AdminHeader {
+  background-color: white;
+  font-size: x-large;
+  color: #576754;
+  font-family: "Days One";
+  width: 40%;
+  margin-left: 2%;
+  padding-left: 2%;
+}

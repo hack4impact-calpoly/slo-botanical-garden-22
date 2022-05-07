@@ -53,29 +53,6 @@ const Announcement = (props) => {
             {" "}
             {props.title}{" "}
           </Heading>
-          {getDeleteIcon()}
-          <Dialog
-            open={open}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to delete this announcement?"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                This action can't be undone.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCancel} color="#CCDDBD">
-                Cancel
-              </Button>
-              <Button onClick={handleDelete} color="#CCDDBD" autoFocus>
-                Delete Announcement
-              </Button>
-            </DialogActions>
-          </Dialog>
         </div>
         <Heading color="#CCDDBD" size="sm">
           {" "}
@@ -89,6 +66,29 @@ const Announcement = (props) => {
           - {props.poster}{" "}
         </Text>
       </Box>
+      <div className="trash">{getDeleteIcon()}</div>
+      <Dialog
+        open={open}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this announcement?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This action can't be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel} color="#CCDDBD">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="#CCDDBD" autoFocus>
+            Delete Announcement
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
