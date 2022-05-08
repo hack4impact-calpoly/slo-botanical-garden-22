@@ -12,10 +12,14 @@ const Profile = () => {
   const { currentUserInfo } = useContext(GlobalContext);
   const [reloadPage, setReloadPage] = useState(0);
   const [loggedHours, setLoggedHours] = useState();
+  const [totalHours, setTotalHours] = useState(0);
 
   useEffect(() => {
     fetchData("logged_hours").then((data) => setLoggedHours(data));
+    setTotalHours(currentUserInfo.totalHours);
   }, [reloadPage]);
+
+  useEffect(() => {}, [setTotalHours]);
 
   const getAdminLogger = () => {
     if (currentUserInfo.is_Admin === "True") {
@@ -47,8 +51,7 @@ const Profile = () => {
     }
   };
 
-  if (!loggedHours) return null;
-
+  if (!loggedHours || !currentUserInfo) return null;
   return (
     <div className="wholePage">
       <div ClassName="LeftSide">

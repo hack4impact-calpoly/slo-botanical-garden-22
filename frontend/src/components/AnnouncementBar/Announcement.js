@@ -21,13 +21,8 @@ const Announcement = (props) => {
   };
 
   const handleDelete = async () => {
-    console.log(typeof props.id);
-    console.log(props.id);
     deleteAnnouncement(props.id);
     setOpen(false);
-    console.log("Announcement props");
-    console.log(props.reloadPageVar);
-    console.log(props.reloadPageFunc);
     props.reloadPageFunc(props.reloadPageVar + 1);
   };
 
@@ -48,12 +43,10 @@ const Announcement = (props) => {
   return (
     <Box bg="#576754" m={4} p={4} borderRadius="12px">
       <Box pb={4}>
-        <div className="topRow">
-          <Heading color="#CCDDBD" size="md">
-            {" "}
-            {props.title}{" "}
-          </Heading>
-        </div>
+        <Heading color="#CCDDBD" size="md">
+          {" "}
+          {props.title}{" "}
+        </Heading>
         <Heading color="#CCDDBD" size="sm">
           {" "}
           {props.date}{" "}

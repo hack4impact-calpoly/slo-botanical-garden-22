@@ -172,14 +172,18 @@ export default function HourLog(props) {
     document.getElementById("volunteerCount").value = "";
 
     putData("logged_hours", item);
+    console.log("Total Hours Log");
+    console.log(currentUserInfo.totalHours);
+
     changeHours(
       currentUserInfo.username,
       currentUserInfo.totalHours + parseFloat(item.hours),
       currentUserInfo.volunteerTable
     );
+
     props.setReloadPage(props.reloadPage + 1);
-    console.log("Item in Logged Hours");
-    console.log(item);
+    //console.log("Item in Logged Hours");
+    //console.log(item);
   }
 
   return (

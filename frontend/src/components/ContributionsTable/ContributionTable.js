@@ -14,13 +14,7 @@ import { GlobalContext } from "../../GlobalState";
 import ReactTable from "react-table";
 import { useSortBy, useTable, usePagination } from "react-table";
 
-const ContributionTable = ({
-  setReloadPage,
-  reloadPage,
-  loggedHours,
-  totalHours,
-  setTotalHours,
-}) => {
+const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
   const { currentUserInfo } = useContext(GlobalContext);
   const [open, setOpen] = React.useState(false);
   const [toDelete, setToDelete] = useState();
@@ -30,28 +24,11 @@ const ContributionTable = ({
     setOpen(true);
   };
 
-  const handleDelete = async () => {
-    deleteHour(toDelete);
-    changeHours(
-      currentUserInfo.username,
-      currentUserInfo.totalHours - parseFloat(toDelete.hours),
-      currentUserInfo.volunteerTable
-    );
-    //setTotalHours(totalHours - parseFloat(toDelete.hours));
-    setReloadPage(reloadPage + 1);
-    setOpen(false);
-  };
-
   const handleCancel = () => {
     setOpen(false);
   };
 
-  console.log("currentUserInfo in contributions");
-  console.log(currentUserInfo);
-  console.log(loggedHours);
-
   if (loggedHours.length === 0 || loggedHours === undefined) {
-    console.log("HERE");
     loggedHours = [
       {
         date: " ",
@@ -62,8 +39,22 @@ const ContributionTable = ({
     ];
   }
 
+  const handleDelete = async () => {
+    deleteHour(toDelete);
+    var totalHoursNew = 0;
+    loggedHours.map(
+      (contribution) => (totalHoursNew += parseFloat(contribution.hours))
+    );
+    changeHours(
+      currentUserInfo.username,
+      totalHoursNew,
+      currentUserInfo.volunteerTable
+    );
+    setReloadPage(reloadPage + 1);
+    setOpen(false);
+  };
+
   const getDelete = (contribution) => {
-    console.log(contribution);
     if (contribution.hours !== " ") {
       return (
         <div>
@@ -99,6 +90,11 @@ const ContributionTable = ({
       );
     }
   };
+
+  var totalHours = 0;
+  loggedHours.map(
+    (contribution) => (totalHours += parseFloat(contribution.hours))
+  );
 
   return (
     <div className="Page">

@@ -7,37 +7,22 @@ export default function AnnouncementForm(props) {
     Message: "Nothing Yet",
   });
 
-  var styles = `
-    #body {
-      background: #f8edeb;
-      font-family: "Century Gothic", Verdana, monospace;
-      color: #1e502f;
-      margin: 0px;
-      font-weight: bold;
-      line-height: 1;
-    }
-    
+  var styles = `    
     #formtitle {
       margin: 10px;
       display: flex;
       justify-content: center;
-      font-size="lg";
-      color="#cee4bb"
+      font-size=1em;
+      color="#465344"
     }
     
     #lilbox {
       display: flex;
       flex-direction: column;
       align-content: center;
-      padding: 0px;
       border-radius: 5%;
-      background-color: #e3e3e3;
-      max-width: 250px;
-      color: #556453;
-      border-style: solid;
-      border-width: 2px;
-      border-color: #9c9c9c;
-      box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
+      background-color: #576754;
+      color: #CCDDBD;
     }
     
     #lilbuttons {
@@ -53,11 +38,11 @@ export default function AnnouncementForm(props) {
       background-color: #556453;
       border-radius: 8px;
       border-width: 1px;
-      color: #ffffff;
+      color: #cee4bb;
       font-size: 16px;
       line-height: 10x;
       padding: 10px;
-      width: 110px;
+      width: 100%;
     }
     
     .textBoxes {
@@ -67,38 +52,25 @@ export default function AnnouncementForm(props) {
       padding: 10%;
     }
     
-    .littlerbox {
-      box-sizing: border-box;
-      background-color: #e3e3e3;
-      border-radius: 5%;
-      padding: 10px;
-      margin: 6px;
-      margin-top: 0px;
-      margin-bottom: 0px;
-      border-width: 1px;
-      color: #686868;
-      font-family: "Century Gothic", Verdana, monospace;
-      font-weight: bold;
-      height: 225px;
-      width: 95%;
-      box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
-    } 
     .littlestbox {
       box-sizing: border-box;
-      background-color: #e3e3e3;
-      border-radius: 10%;
+      background-color: #cee4bb;
+      border-radius: 10px;
       padding: 10px;
       margin: 6px;
-      margin-top: 0px;
+      margin-top: 6px;
       margin-bottom: 0px;
       border-width: 1px;
-      color: #686868;
       font-family: "Century Gothic", Verdana, monospace;
       font-weight: bold;
       height: 10%;
       width: 95%;
-      box-shadow: 0 2px 1px 1px rgb(161, 161, 161);
+      color: #576754;
     } 
+
+    textarea::placeholder {
+      color: #576754;  
+    }
   `;
 
   var styleSheet = document.createElement("style");
@@ -137,7 +109,7 @@ export default function AnnouncementForm(props) {
   return (
     <div>
       <div id="lilbox" className={styles.lilbox}>
-        <h3 id="formtitle">Create New Announcement </h3>
+        <h1 id="formtitle">Create New Announcement </h1>
         <div id="announcementForm">
           <div className="textboxes">
             <textarea
@@ -151,15 +123,15 @@ export default function AnnouncementForm(props) {
             <textarea
               id="poster"
               className="littlestbox"
-              rows="1"
+              rows="2"
               cols="100%"
               name="poster"
               placeholder="Poster"
             ></textarea>
             <textarea
-              className="littlerbox"
+              className="littlestbox"
               id="content"
-              rows="3"
+              rows="6"
               cols="100%"
               name="content"
               placeholder="Message"

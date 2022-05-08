@@ -34,12 +34,7 @@ const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
     setOpen(false);
   };
 
-  console.log("currentUserInfo in contributions");
-  console.log(currentUserInfo);
-  console.log(loggedHours);
-
   if (loggedHours.length === 0 || loggedHours === undefined) {
-    console.log("HERE");
     loggedHours = [
       {
         date: " ",
@@ -51,7 +46,6 @@ const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
   }
 
   const getDelete = (contribution) => {
-    console.log(contribution);
     if (contribution.hours !== " ") {
       return (
         <div>

@@ -13,3 +13,12 @@ h2 {
   color: #465344;
   text-align: center;
 }
+
+.announcements {
+  overflow: auto;
+  height: 18em;
+}
+
+.announcementForm {
+  padding-bottom: 10%;
+}

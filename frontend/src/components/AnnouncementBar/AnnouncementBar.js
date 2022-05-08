@@ -19,7 +19,7 @@ const AnnouncementBar = ({ reloadPageVar, reloadPageFunc }) => {
   const getAnnouncementForm = () => {
     if (currentUserInfo.is_Admin === "True") {
       return (
-        <div>
+        <div className="announcementForm">
           <h2> </h2>
           <AnnouncementForm
             reloadPageVar={reloadPageVar}
@@ -34,18 +34,29 @@ const AnnouncementBar = ({ reloadPageVar, reloadPageFunc }) => {
     <div>
       <Box className="box">
         {getAnnouncementForm()}
-        {messages.map((announcement) => (
-          <Announcement
-            name={announcement.name}
-            date={announcement.date}
-            title={announcement.title}
-            body={announcement.content}
-            poster={announcement.poster}
-            id={announcement.primary_id}
-            reloadPageVar={reloadPageVar}
-            reloadPageFunc={reloadPageFunc}
-          />
-        ))}
+
+        <div className="announcements">
+          {messages
+            .sort(function (a, b) {
+              var keyA = new Date(a.date),
+                keyB = new Date(b.date);
+              if (keyA < keyB) return 1;
+              if (keyA > keyB) return -1;
+              return 0;
+            })
+            .map((announcement) => (
+              <Announcement
+                name={announcement.name}
+                date={announcement.date}
+                title={announcement.title}
+                body={announcement.content}
+                poster={announcement.poster}
+                id={announcement.primary_id}
+                reloadPageVar={reloadPageVar}
+                reloadPageFunc={reloadPageFunc}
+              />
+            ))}
+        </div>
       </Box>
     </div>
   );
