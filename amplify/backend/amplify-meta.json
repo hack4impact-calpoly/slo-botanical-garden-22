@@ -11,5 +11,31 @@
       "StackId": "arn:aws:cloudformation:us-west-2:633874248049:stack/amplify-slobotanicalgarden22-dev-150053/78834b10-8b8e-11ec-a0b2-066e8037c957",
       "AmplifyAppId": "d3hdscheivbl6v"
     }
+  },
+  "auth": {
+    "slobotanicalgarden22a8172ea7": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      }
+    }
   }
 }

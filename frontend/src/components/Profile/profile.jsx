@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { fetchData, deleteHour } from "../../dynoFuncs";
 import HourLog from "../../logHours";
 import AdminHourLog from "../../AdminLogHours";
-
+import Navbar from "../Navbar/navbar";
 import { GlobalContext } from "../../GlobalState";
 import ContribitionTable from "../ContributionsTable/ContributionTable";
 import ContributionTableAdmin from "../ContributionsTable/ContributionTableAdmin";
@@ -53,32 +53,35 @@ const Profile = () => {
 
   if (!loggedHours || !currentUserInfo) return null;
   return (
-    <div className="wholePage">
-      <div ClassName="LeftSide">
-        <h1>PlaceHolder</h1>
-      </div>
-      <div ClassName="RightSide">
-        <div className="conTable">
-          <ContribitionTable
-            setReloadPage={setReloadPage}
-            reloadPage={reloadPage}
-            loggedHours={loggedHours
-              .filter((con) => con.username === currentUserInfo.username)
-              .sort(function (a, b) {
-                var keyA = new Date(a.date),
-                  keyB = new Date(b.date);
-                if (keyA < keyB) return 1;
-                if (keyA > keyB) return -1;
-                return 0;
-              })}
-          />
+    <>
+      <Navbar />
+      <div className="wholePage">
+        <div ClassName="LeftSide">
+          <h1>PlaceHolder</h1>
         </div>
-        <div className="conTable">
-          <HourLog reloadPage={reloadPage} setReloadPage={setReloadPage} />
+        <div ClassName="RightSide">
+          <div className="conTable">
+            <ContribitionTable
+              setReloadPage={setReloadPage}
+              reloadPage={reloadPage}
+              loggedHours={loggedHours
+                .filter((con) => con.username === currentUserInfo.username)
+                .sort(function (a, b) {
+                  var keyA = new Date(a.date),
+                    keyB = new Date(b.date);
+                  if (keyA < keyB) return 1;
+                  if (keyA > keyB) return -1;
+                  return 0;
+                })}
+            />
+          </div>
+          <div className="conTable">
+            <HourLog reloadPage={reloadPage} setReloadPage={setReloadPage} />
+          </div>
+          {getAdminLogger()}
         </div>
-        {getAdminLogger()}
       </div>
-    </div>
+    </>
   );
 };
 

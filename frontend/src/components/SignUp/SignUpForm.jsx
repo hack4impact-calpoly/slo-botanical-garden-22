@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Checkbox, Message } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import { Auth } from "aws-amplify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { putData, getRandomId } from "../../dynoFuncs";
 
 import "./SignUpForm.css";
@@ -19,6 +19,8 @@ const SignUpForm = () => {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [usernameTaken, setUsernameTaken] = useState(false);
   const [correctEmailFormat, setCorrectEmailFormat] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const navigate = useNavigate();
 
   const handleChange = (e, { name, value }) =>
@@ -31,6 +33,7 @@ const SignUpForm = () => {
     setPasswordsMatch(true);
     setUsernameTaken(false);
     setCorrectEmailFormat(true);
+    setErrorMessage(null);
     var username = group ? signUpGroup.username : signUp.username;
     var password = group ? signUpGroup.password : signUp.password;
     var confirmPassword = group
@@ -59,6 +62,9 @@ const SignUpForm = () => {
       } else if (error.message === "Invalid email address format.") {
         setCorrectEmailFormat(false);
       }
+      else {
+        setErrorMessage(error.message);
+      }
     }
   };
 
@@ -66,6 +72,7 @@ const SignUpForm = () => {
     var username = group ? signUpGroup.username : signUp.username;
     var password = group ? signUpGroup.password : signUp.password;
     var code = group ? signUpGroup.code : signUp.code;
+    setErrorMessage(null);
 
     try {
       await Auth.confirmSignUp(username, code);
@@ -175,6 +182,7 @@ const SignUpForm = () => {
       // push data to dynamo
       navigate("/home");
     } catch (error) {
+      setErrorMessage(error.message);
       console.log("error confirming sign up", error);
     }
   };
@@ -186,7 +194,7 @@ const SignUpForm = () => {
       onSubmit={confirmation ? confirmSignUp : signUpCognito}
     >
       <h1 style={{ color: "#4d602a" }} size="huge">
-        SIGN UP
+        {confirmation ? 'A verfication code has been sent to your email' : 'SIGN UP'}
       </h1>
       <hr style={{ backgroundColor: "green", width: "100%" }} />
       {confirmation ? null : (
@@ -495,13 +503,20 @@ const SignUpForm = () => {
           <Message.Header>Must have a valid email</Message.Header>
         </Message>
       )}
+      {errorMessage != null && (
+        <Message negative>
+          <Message.Header>{errorMessage}</Message.Header>
+        </Message>
+      )}
       <br />
       {(group || indiv || confirmation) && (
         <Form.Button content="Submit" onSubmit={signUpCognito} />
       )}
-      {/* {confirmation && (
-        <Form.Button content="Submit" onSubmit={confirmSignUp} />
-      )} */}
+      {(group || indiv) && !confirmation &&(
+        <Link to="/">
+          <Form.Button content="Back to Sign In"/>
+        </Link>
+      )}
     </Form>
   );
 };

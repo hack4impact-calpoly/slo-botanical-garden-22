@@ -6,11 +6,6 @@
   margin-bottom: -50px;
 }
 
-.bool_top {
-  display: grid;
-  grid-template-columns: 35% 35% 35%;
-}
-
 .check-status > * {
   margin: 0 30px 30px 30px;
 }
