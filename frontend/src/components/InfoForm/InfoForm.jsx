@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Form, Checkbox, Message } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import { Auth } from "aws-amplify";
 import { useNavigate, Link } from "react-router-dom";
-import { putData, getRandomId } from "../../dynoFuncs";
+import { updateVolunteerInformation } from "../../dynoFuncs";
+import { GlobalContext } from "../../GlobalState";
 
 import "./InfoForm.css";
 
@@ -11,43 +12,73 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const InfoForm = () => {
   const [signUp, setSignUp] = useState({});
-
-  const navigate = useNavigate();
+  const { currentUserInfo } = useContext(GlobalContext);
 
   const handleChange = (e, { name, value }) =>
     setSignUp({ ...signUp, [name]: value });
 
   const handleSubmit = async () => {
-    console.log("handle submit");
-  };
-
-  const confirmSignUp = async () => {
-    try {
-      const item = {
-        Emergency_Contact_Phone: signUp.emergencyNumber,
-        Covid_Waiver_and_Release: signUp.covidWaiver,
-        Group: signUp.groupName,
-        "Total Hours Volunteered": 0,
-        Emergency_Contact: signUp.emergencyName,
-        is_Admin: false,
-        "Safety Training Status": signUp.safetyStatus,
-        "Photo-Permission": signUp.photoStatus,
-        "Secondary Phone": signUp.phonetwo,
-        "Primary Phone": signUp.phone,
-        Volunter_Waiver_and_Release: signUp.volunteerWaiver,
-        "Community Service": signUp.commService,
-        username: signUp.username,
-        hourGoal: signUp.hourGoal, //?
-        mailing_address: signUp.address,
-      };
-      console.log(item);
-      putData("volunteers_individual", item);
-
-      // push data to dynamo
-      navigate("/home");
-    } catch (error) {
-      console.log("error getting info", error);
+    var groupName = "None Specified";
+    if (signUp.groupName) {
+      groupName = signUp.groupName;
     }
+
+    var hourGoal = "None Specified";
+    if (signUp.hourGoal) {
+      hourGoal = signUp.hourGoal;
+    }
+
+    var phonetwo = "None Specified";
+    if (signUp.phonetwo) {
+      phonetwo = signUp.phonetwo;
+    }
+
+    var safetyStatus = "False";
+    if (signUp.safetyStatus) {
+      safetyStatus = signUp.safetyStatus;
+    }
+
+    var photoStatus = "False";
+    if (signUp.photoStatus) {
+      photoStatus = signUp.photoStatus;
+    }
+
+    var volunteerWaiver = "False";
+    if (signUp.volunteerWaiver) {
+      volunteerWaiver = signUp.volunteerWaiver;
+    }
+
+    var commService = "False";
+    if (signUp.commService) {
+      commService = signUp.commService;
+    }
+
+    var scannedStatus = "False";
+    if (signUp.scannedStatus) {
+      scannedStatus = signUp.scannedStatus;
+    }
+
+    var covidWaiver = "False";
+    if (signUp.covidWaiver) {
+      covidWaiver = signUp.covidWaiver;
+    }
+    console.log(signUp.mailing_address);
+    var item = {
+      Emergency_Contact_Phone: signUp.emergencyNumber,
+      Covid_Waiver_and_Release: covidWaiver,
+      Group: groupName,
+      Emergency_Contact: signUp.emergencyName,
+      "Safety Training Status": safetyStatus,
+      "Photo-Permission": photoStatus,
+      "Secondary Phone": phonetwo,
+      Volunter_Waiver_and_Release: volunteerWaiver,
+      "Community Service": commService,
+      hourGoal: hourGoal,
+      mailing_address: signUp.mailing_address,
+      liveScanned: scannedStatus,
+    };
+    console.log(item);
+    updateVolunteerInformation(currentUserInfo.username, item);
   };
 
   return (
@@ -57,7 +88,8 @@ const InfoForm = () => {
       onSubmit={handleSubmit}
     >
       <h1 style={{ color: "#4d602a" }} size="huge">
-        {"Additional information is needed to complete sign up"}
+        Additional information is needed to complete your account. This will
+        only be prompted once.
       </h1>
       <hr style={{ backgroundColor: "green", width: "100%" }} />
 
@@ -79,6 +111,13 @@ const InfoForm = () => {
               onChange={handleChange}
               required
             />
+            <Form.Input
+              label="Mailing Address"
+              name="mailing_address"
+              value={signUp.mailing_address}
+              onChange={handleChange}
+              required
+            />
           </Form.Group>
           <Form.Input
             label="Group Name"
@@ -97,7 +136,6 @@ const InfoForm = () => {
             label="Photo Permission?"
             value={signUp.photoStatus}
             style={{ paddingBottom: "10px" }}
-            required
             onChange={(e, data) =>
               setSignUp({ ...signUp, photoStatus: data.checked })
             }
@@ -118,7 +156,6 @@ const InfoForm = () => {
             onChange={(e, data) =>
               setSignUp({ ...signUp, safetyStatus: data.checked })
             }
-            required
           />
           <Checkbox
             label="Volunteer Waiver and Release Complete?"
@@ -126,7 +163,6 @@ const InfoForm = () => {
             onChange={(e, data) =>
               setSignUp({ ...signUp, volunteerWaiver: data.checked })
             }
-            required
           />
           <Checkbox
             label="Covid Waiver and Release Complete?"
@@ -134,33 +170,32 @@ const InfoForm = () => {
             onChange={(e, data) =>
               setSignUp({ ...signUp, covidWaiver: data.checked })
             }
-            required
           />
+          <br />
+
           <Checkbox
             label="Community Service?"
             value={signUp.commService}
             onChange={(e, data) =>
               setSignUp({ ...signUp, commService: data.checked })
             }
-            required
           />
           <Checkbox
-              className="liveScan"
-              label="Lived Scanned? (Need to work with children)"
-              value={signUp.scannedStatus}
-              style={{ paddingBottom: "10px" }}
-              required
-              onChange={(e, data) =>
-                setSignUp({ ...signUp, scannedStatus: data.checked })
-              }
-            />
+            className="liveScan"
+            label="Lived Scanned? (Need to work with children)"
+            value={signUp.scannedStatus}
+            style={{ paddingBottom: "10px" }}
+            onChange={(e, data) =>
+              setSignUp({ ...signUp, scannedStatus: data.checked })
+            }
+          />
           <br />
           <br />
         </div>
       }
 
       <br />
-      {<Form.Button content="Submit" onSubmit={handleSubmit} />}
+      {<Form.Button content="Submit" onSubmit={handleSubmit} to="home" />}
     </Form>
   );
 };

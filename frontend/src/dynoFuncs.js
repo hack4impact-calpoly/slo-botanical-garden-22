@@ -152,6 +152,59 @@ export const changeHours = (user, newHours, tableName) => {
   });
 };
 
+export const updateVolunteerInformation = (user, item) => {
+  console.log("In Update Volunteer Information");
+  console.log(user);
+  console.log(item);
+  var params = {
+    TableName: "volunteers_individual",
+    Key: {
+      username: user,
+    },
+    UpdateExpression:
+      "SET #hourGoal= :x, #Group= :y, #CommunityService= :a, #CWR= :b, #EC= :c, #ECP= :d, #PhotoP= :e, #STS= :f, #SP= :g, #VolWaiverRelease= :h, #liveScanned= :i, #mailing_address= :j",
+    ExpressionAttributeNames: {
+      "#hourGoal": "hourGoal",
+      "#Group": "Group",
+      "#CommunityService": "Community Service",
+      "#CWR": "Covid_Waive_and_Release",
+      "#EC": "Emergency_Contact",
+      "#ECP": "Emergency_Contact_Phone",
+      "#PhotoP": "Photo-Permission",
+      "#STS": "Safety Training Status",
+      "#SP": "Secondary Phone",
+      "#VolWaiverRelease": "Volunteer_Waiver_and_Release",
+      "#liveScanned": "livedScanned",
+      "#mailing_address": "mailing_address",
+    },
+    ExpressionAttributeValues: {
+      ":x": item.hourGoal,
+      ":y": item.Group,
+      ":a": item["Community Service"],
+      ":b": item.Covid_Waiver_and_Release,
+      ":c": item.Emergency_Contact,
+      ":d": item.Emergency_Contact_Phone,
+      ":e": item["Photo-Permission"],
+      ":f": item["Safety Training Status"],
+      ":g": item["Secondary Phone"],
+      ":h": item.Volunter_Waiver_and_Release,
+      ":i": item.liveScanned,
+      ":j": item.mailing_address,
+    },
+  };
+
+  docClient.update(params, function (err, data) {
+    if (err) {
+      console.error(
+        "Unable to update item. Error JSON:",
+        JSON.stringify(err, null, 2)
+      );
+    } else {
+      console.log("Update succeeded:", JSON.stringify(data, null, 2));
+    }
+  });
+};
+
 export const changeVolunteerStatus = (user, tableName, newValue) => {
   console.log(user);
   console.log(tableName);

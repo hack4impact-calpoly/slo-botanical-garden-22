@@ -51,7 +51,7 @@ export default function Home() {
     return volunteerCount;
   }
   if (!currentUserInfo || !loggedHours) return null;
-
+  console.log("IN HOME");
   return (
     <>
       {!currentUserInfo ? (
