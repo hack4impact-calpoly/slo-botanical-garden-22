@@ -28,6 +28,11 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
     setOpen(false);
   };
 
+  var totalHours = 0;
+  loggedHours.map(
+    (contribution) => (totalHours += parseFloat(contribution.hours))
+  );
+
   if (loggedHours.length === 0 || loggedHours === undefined) {
     loggedHours = [
       {
@@ -90,12 +95,6 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
       );
     }
   };
-
-  var totalHours = 0;
-  loggedHours.map(
-    (contribution) => (totalHours += parseFloat(contribution.hours))
-  );
-
   return (
     <div className="Page">
       <div className="container">

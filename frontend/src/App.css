@@ -48,7 +48,6 @@ body {
   background: #fff;
   padding: 0 10px;
   font-family: SBG;
-  color: #aeb5ad;
 }
 
 .amplify-button[data-variation="primary"] {
@@ -85,7 +84,7 @@ body {
   display: flex;
   padding: 2.6em;
   background-image: url("./assets/garden.png");
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-size: cover;
   height: 100vh;
   font-family: SBG;

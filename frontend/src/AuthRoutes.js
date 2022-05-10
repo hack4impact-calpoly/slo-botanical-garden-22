@@ -4,7 +4,7 @@ import { fetchUser } from "./dynoFuncs";
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
 import { Navigate, useLocation } from "react-router-dom";
 
-export const AuthRoute = ({ children }) => {
+export const AuthRoute = ({ disAllowedStatus, children }) => {
   const { route, cognitoUser } = useAuthenticator((context) => {
     return [context.route, context.user];
   });
@@ -46,7 +46,7 @@ export const AuthRoute = ({ children }) => {
   }
 
   //NEED TO CHANGE
-  if (currentUserInfo.is_Admin === "False") {
+  if (currentUserInfo.is_Admin === disAllowedStatus) {
     return (
       <p>
         You are not allowed to view this page. Logout and login to something
