@@ -61,8 +61,7 @@ const SignUpForm = () => {
         setUsernameTaken(true);
       } else if (error.message === "Invalid email address format.") {
         setCorrectEmailFormat(false);
-      }
-      else {
+      } else {
         setErrorMessage(error.message);
       }
     }
@@ -161,7 +160,7 @@ const SignUpForm = () => {
           "Total Hours Volunteered": 0,
           Emergency_Contact: signUp.emergencyName,
           Email: signUp.email,
-          Birth_date: signUp.birthDate,
+          Birth_date: startDate,
           is_Admin: "False",
           medicalConditions: medicalConditions,
           "Safety Training Status": safetyStatus,
@@ -194,7 +193,9 @@ const SignUpForm = () => {
       onSubmit={confirmation ? confirmSignUp : signUpCognito}
     >
       <h1 style={{ color: "#4d602a" }} size="huge">
-        {confirmation ? 'A verfication code has been sent to your email' : 'SIGN UP'}
+        {confirmation
+          ? "A verfication code has been sent to your email"
+          : "SIGN UP"}
       </h1>
       <hr style={{ backgroundColor: "green", width: "100%" }} />
       {confirmation ? null : (
@@ -331,7 +332,7 @@ const SignUpForm = () => {
           />
           <hr style={{ backgroundColor: "green", width: "100%" }} />
           <h3 style={{ textAlign: "left" }}>Personal Information:</h3>
-          <Form.Field
+          {/* <Form.Field
             required
             label="Birth Date:"
             control={DatePicker}
@@ -340,6 +341,14 @@ const SignUpForm = () => {
             onChange={(date) => {
               setStartDate(date);
               setSignUp({ ...signUp, birthDate: date });
+            }}
+          /> */}
+          <input
+            type="date"
+            onChange={(e) => {
+              console.log("Date");
+              console.log(e.target.value);
+              setStartDate(e.target.value);
             }}
           />
           <br />
@@ -512,9 +521,9 @@ const SignUpForm = () => {
       {(group || indiv || confirmation) && (
         <Form.Button content="Submit" onSubmit={signUpCognito} />
       )}
-      {(group || indiv) && !confirmation &&(
+      {(group || indiv) && !confirmation && (
         <Link to="/">
-          <Form.Button content="Back to Sign In"/>
+          <Form.Button content="Back to Sign In" />
         </Link>
       )}
     </Form>

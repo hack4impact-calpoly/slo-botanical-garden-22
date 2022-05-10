@@ -57,7 +57,7 @@ const ProfileSideBar = ({ setReloadPage, reloadPage, loggedHours }) => {
             </p>
 
             <p className="BarHeader">General Information</p>
-            {/* <p>Birth Date: {currentUserInfo["Birth_date"]}</p> */}
+            <p className="value">Birth Date: {currentUserInfo["Birth_date"]}</p>
             <p>Mailing Address: </p>
             <p className="value">{currentUserInfo["mailing_address"]}</p>
             <p>Medical Conditions: </p>
