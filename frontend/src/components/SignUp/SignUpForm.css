@@ -39,7 +39,7 @@
   display: inline;
 }
 
-html {
+#root {
   background-image: url("../../assets/garden.png");
   background-position: center;
   background-repeat: no-repeat;
