@@ -37,7 +37,7 @@ function App(props) {
                   exact
                   path="/home"
                   element={
-                    <AuthRoute>
+                    <AuthRoute disAllowedStatus="NONE">
                       <Home />
                     </AuthRoute>
                   }
@@ -46,18 +46,18 @@ function App(props) {
                   exact
                   path="/profile"
                   element={
-                    <AuthRoute>
+                    <AuthRoute disAllowedStatus="NONE">
                       <Profile />
                     </AuthRoute>
                   }
                 />
                 <Route path="/signup" element={<SignUpForm />} />
                 <Route path="/" element={<Login />} />
-                
+
                 <Route
                   path="/volunteer"
                   element={
-                    <AuthRoute>
+                    <AuthRoute disAllowedStatus="False">
                       <VolunteerTable />
                     </AuthRoute>
                   }
@@ -65,7 +65,7 @@ function App(props) {
                 <Route
                   path="/info"
                   element={
-                    <AuthRoute>
+                    <AuthRoute disAllowedStatus="NONE">
                       <InfoForm />
                     </AuthRoute>
                   }

@@ -42,6 +42,10 @@ export default function HourLog(props) {
       border-width: 2px;
       border-color: #9c9c9c;
       box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
+      margin-right: 5%;
+      margin-left: 5%;
+
+
   }
   
   .boxesholder

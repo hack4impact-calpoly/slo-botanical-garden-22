@@ -7,6 +7,8 @@ import { GlobalContext } from "../../GlobalState";
 import ContribitionTable from "../ContributionsTable/ContributionTable";
 import ContributionTableAdmin from "../ContributionsTable/ContributionTableAdmin";
 import "./profile.css";
+import ProfileSideBar from "./profileSideBar";
+import { getSystemErrorName } from "util";
 
 const Profile = () => {
   const { currentUserInfo } = useContext(GlobalContext);
@@ -21,11 +23,31 @@ const Profile = () => {
 
   useEffect(() => {}, [setTotalHours]);
 
+  const getName = () => {
+    if (currentUserInfo.volunteerTable === "volunteers_group") {
+      return <h className="hName">{currentUserInfo.groupName}</h>;
+    } else {
+      return (
+        <h className="hName">
+          {currentUserInfo["First Name"]} {currentUserInfo["Last Name"]}
+        </h>
+      );
+    }
+  };
+
+  const getStatus = () => {
+    if (currentUserInfo.is_Admin === "True") {
+      return <h className="status">Administration</h>;
+    } else {
+      return <h className="status">Volunteer</h>;
+    }
+  };
+
   const getAdminLogger = () => {
     if (currentUserInfo.is_Admin === "True") {
       return (
         <div>
-          <div className="AdminHeader">
+          <div className="TopLabel">
             <h1>Admin Log Hours for Volunteers</h1>
           </div>
           <div className="conTable">
@@ -57,9 +79,13 @@ const Profile = () => {
       <Navbar />
       <div className="wholePage">
         <div ClassName="LeftSide">
-          <h1>PlaceHolder</h1>
+          <ProfileSideBar />
         </div>
         <div ClassName="RightSide">
+          <div className="TopLabel">
+            {getName()}
+            {getStatus()}
+          </div>
           <div className="conTable">
             <ContribitionTable
               setReloadPage={setReloadPage}

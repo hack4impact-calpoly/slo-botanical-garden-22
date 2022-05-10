@@ -1,7 +1,3 @@
-table {
-  border-spacing: 0 1em;
-}
-
 td {
   padding: 10px;
 }
@@ -11,7 +7,6 @@ th {
   border-left: none;
   border-right: none;
   clip-path: inset(-10px 0px -10px 0px);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .pagination {
@@ -19,7 +14,6 @@ th {
   padding: 10px;
   display: flex;
   justify-content: space-evenly;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .export {
