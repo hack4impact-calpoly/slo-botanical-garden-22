@@ -188,11 +188,17 @@ const SignUpForm = () => {
   };
 
   return (
+    
     <Form
       className="signUpForm"
       style={{ padding: "40px", display: "flex", flexDirection: "column" }}
       onSubmit={confirmation ? confirmSignUp : signUpCognito}
-    >
+    >{(group || indiv) && !confirmation &&(
+      <Link to="/">
+        <Form.Button content="Back to Sign In"/>
+      </Link>
+    )}
+
       <h1 style={{ color: "#4d602a" }} size="huge">
         {confirmation ? 'A verfication code has been sent to your email' : 'SIGN UP'}
       </h1>
@@ -511,11 +517,6 @@ const SignUpForm = () => {
       <br />
       {(group || indiv || confirmation) && (
         <Form.Button content="Submit" onSubmit={signUpCognito} />
-      )}
-      {(group || indiv) && !confirmation &&(
-        <Link to="/">
-          <Form.Button content="Back to Sign In"/>
-        </Link>
       )}
     </Form>
   );
