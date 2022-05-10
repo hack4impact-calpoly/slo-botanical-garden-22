@@ -23,7 +23,7 @@ export default function Navbar(props) {
 
   async function signOut() {
     try {
-      setCurrentUser(null);
+      setCurrentUser({});
       await Auth.signOut({ global: true });
       navigate("/");
     } catch (error) {

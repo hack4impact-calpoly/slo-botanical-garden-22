@@ -5,6 +5,7 @@ import { Auth } from "aws-amplify";
 import { useNavigate, Link } from "react-router-dom";
 import { updateVolunteerInformation } from "../../dynoFuncs";
 import { GlobalContext } from "../../GlobalState";
+import { fetchUser } from "../../dynoFuncs";
 
 import "./InfoForm.css";
 
@@ -12,7 +13,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const InfoForm = () => {
   const [signUp, setSignUp] = useState({});
-  const { currentUserInfo } = useContext(GlobalContext);
+  const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
+  const navigate = useNavigate();
 
   const handleChange = (e, { name, value }) =>
     setSignUp({ ...signUp, [name]: value });
@@ -79,7 +81,33 @@ const InfoForm = () => {
     };
     console.log(item);
     updateVolunteerInformation(currentUserInfo.username, item);
+
+    var userInfo;
+
+    fetchUser("volunteers_group", currentUserInfo.username).then((data) => {
+      userInfo = data;
+      if (userInfo) {
+        userInfo["volunteerTable"] = "volunteers_group";
+      }
+      console.log(userInfo);
+      if (!userInfo) {
+        fetchUser("volunteers_individual", currentUserInfo.username).then(
+          (data) => {
+            userInfo = data;
+            userInfo["volunteerTable"] = "volunteers_individual";
+            setCurrentUser(data);
+          }
+        );
+      } else {
+        setCurrentUser(userInfo);
+      }
+    });
+
+    navigate("/home");
   };
+  console.log("Emergency_Contact");
+
+  console.log(currentUserInfo.Emergency_Contact);
 
   return (
     <Form
