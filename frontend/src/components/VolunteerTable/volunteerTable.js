@@ -182,7 +182,7 @@ const VolunteerTable = () => {
                 const logged = loggedHours.filter((obj) => {
                   return (
                     new Date(obj.date).getTime() >=
-                      startDate.target.valueAsNumber &&
+                    startDate.target.valueAsNumber &&
                     new Date(obj.date).getTime() <= endDate.target.valueAsNumber
                   );
                 });
@@ -398,14 +398,14 @@ const Table = (props) => {
 
   return (
     <div className="container">
-      <Flex p={10} w="100%">
+      <Flex p={0} w="100%">
         <Box>
           <table
             {...getTableProps()}
             style={{
               boxShadow: "0 0 20px rgba(0,0,0,0.8)",
               background: "#CCDDBD",
-              borderSpacing: "0 1em",
+              borderSpacing: "0 1em"
             }}
           >
             <thead>
@@ -707,13 +707,14 @@ const GroupTable = (props) => {
   return (
     <div className="container">
       <Flex
-        p={10}
+        p={0}
         w="100%"
         bgImage={bgimage}
         bgPosition="center"
         bgSize="cover"
         bgRepeat="no-repeat"
         className="vol-table"
+
       >
         <Box>
           <table
