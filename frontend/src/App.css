@@ -2,6 +2,13 @@ body {
   margin: 0;
 }
 
+.all {
+  background-image: url("./assets/garden.png");
+  background-repeat: repeat;
+  background-size: cover;
+  height: 100%;
+}
+
 @font-face {
   font-family: SBG;
   src: url(assets/DaysOne-Regular.ttf);
@@ -83,10 +90,6 @@ body {
 .signInPage {
   display: flex;
   padding: 2.6em;
-  background-image: url("./assets/garden.png");
-  background-repeat: repeat;
-  background-size: cover;
-  height: 100vh;
   font-family: SBG;
   display: flex;
   justify-content: center;

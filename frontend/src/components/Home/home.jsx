@@ -1,5 +1,4 @@
 import "../../App.css";
-import bgimage from "../../assets/garden.png";
 import AnnouncementBar from "../AnnouncementBar/AnnouncementBar.js";
 import React, { useState, useEffect, useContext } from "react";
 import { fetchUser, fetchData } from "../../dynoFuncs";
@@ -61,14 +60,7 @@ export default function Home() {
       ) : (
         <>
           <Navbar />
-          <Flex
-            p={10}
-            w="100%"
-            bgImage={bgimage}
-            bgPosition="center"
-            bgSize="cover"
-            bgRepeat="yes-repeat"
-          >
+          <Flex p={10} w="100%">
             <Flex w="100%">
               <Box
                 w="25%"
@@ -81,7 +73,7 @@ export default function Home() {
                   {" "}
                   Admin Announcements:{" "}
                 </Heading>
-                <Box>
+                <Box overflow="auto" height="90vh">
                   <AnnouncementBar
                     reloadPageVar={reloadPage}
                     reloadPageFunc={setReloadPage}

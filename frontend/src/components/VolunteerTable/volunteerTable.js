@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { useSortBy, useTable, usePagination } from "react-table";
 import "./volunteerTable.css";
-import bgimage from "../../assets/garden.png";
 import { Flex, Box, Spacer, VStack } from "@chakra-ui/react";
 import { CSVLink } from "react-csv";
 import { Checkbox } from "semantic-ui-react";
@@ -28,7 +27,7 @@ import { IconButton } from "@material-ui/core";
 import { GlobalContext } from "../../GlobalState";
 import Amplify, { Auth, API } from "aws-amplify";
 import Navbar from "../Navbar/navbar";
-const { CognitoIdentityServiceProvider } = require('aws-sdk');
+const { CognitoIdentityServiceProvider } = require("aws-sdk");
 
 const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
 async function disableUser(username) {
@@ -38,7 +37,9 @@ async function disableUser(username) {
   };
 
   try {
-    const result = await cognitoIdentityServiceProvider.adminDisableUser(params).promise();
+    const result = await cognitoIdentityServiceProvider
+      .adminDisableUser(params)
+      .promise();
     console.log(`Disabled ${username}`);
     return {
       message: `Disabled ${username}`,
@@ -48,7 +49,6 @@ async function disableUser(username) {
     throw err;
   }
 }
-
 
 const VolunteerTable = () => {
   // const [data, setData] = useState();
@@ -146,10 +146,6 @@ const VolunteerTable = () => {
       <Flex
         p={10}
         w="100%"
-        bgImage={bgimage}
-        bgPosition="center"
-        bgSize="cover"
-        bgRepeat="yes-repeat"
         overflow="auto"
         justify="space-evenly"
         align="center"
@@ -203,7 +199,7 @@ const VolunteerTable = () => {
                 const logged = loggedHours.filter((obj) => {
                   return (
                     new Date(obj.date).getTime() >=
-                    startDate.target.valueAsNumber &&
+                      startDate.target.valueAsNumber &&
                     new Date(obj.date).getTime() <= endDate.target.valueAsNumber
                   );
                 });
@@ -312,7 +308,7 @@ const Table = (props) => {
         accessor: "Email", //Email
       },
       {
-        Header: "Role",
+        Header: "Volunteer or Admin",
         accessor: "is_Admin",
         Cell: (row) => {
           if (row.row.original["is_Admin"] === "True") {
@@ -428,7 +424,7 @@ const Table = (props) => {
             style={{
               boxShadow: "0 0 20px rgba(0,0,0,0.8)",
               background: "#CCDDBD",
-              borderSpacing: "0 1em"
+              borderSpacing: "0 1em",
             }}
           >
             <thead>
@@ -731,16 +727,7 @@ const GroupTable = (props) => {
 
   return (
     <div className="container">
-      <Flex
-        p={0}
-        w="100%"
-        bgImage={bgimage}
-        bgPosition="center"
-        bgSize="cover"
-        bgRepeat="no-repeat"
-        className="vol-table"
-
-      >
+      <Flex p={0} w="100%" className="vol-table">
         <Box>
           <table
             {...getTableProps()}

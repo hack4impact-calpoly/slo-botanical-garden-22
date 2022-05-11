@@ -2,8 +2,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  background-image: url("../../assets/garden.png");
-  background-repeat: repeat;
 }
 
 .conTable {

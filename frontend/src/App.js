@@ -27,7 +27,7 @@ function App(props) {
     }
   }, []);
   return (
-    <>
+    <div className="all">
       <Authenticator.Provider>
         <GlobalProvider>
           <ChakraProvider>
@@ -77,7 +77,7 @@ function App(props) {
           <Footer />
         </GlobalProvider>
       </Authenticator.Provider>
-    </>
+    </div>
   );
 }
 

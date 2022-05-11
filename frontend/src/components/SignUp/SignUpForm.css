@@ -8,7 +8,7 @@
 
 .bool_top {
   display: grid;
-  grid-template-columns: 35% 35% 35%;
+  grid-template-columns: 32% 32% 32%;
 }
 
 .check-status > * {
@@ -40,10 +40,6 @@
 }
 
 #root {
-  background-image: url("../../assets/garden.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   min-height: 100vh;
 }
 

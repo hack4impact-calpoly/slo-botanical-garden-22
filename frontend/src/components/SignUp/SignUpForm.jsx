@@ -53,29 +53,6 @@ const SignUpForm = () => {
           email, // optional
         },
       });
-      setConfirmation(true);
-      console.log(user);
-    } catch (error) {
-      console.log("error signing up:", error);
-      if (error.code === "UsernameExistsException") {
-        setUsernameTaken(true);
-      } else if (error.message === "Invalid email address format.") {
-        setCorrectEmailFormat(false);
-      } else {
-        setErrorMessage(error.message);
-      }
-    }
-  };
-
-  const confirmSignUp = async () => {
-    var username = group ? signUpGroup.username : signUp.username;
-    var password = group ? signUpGroup.password : signUp.password;
-    var code = group ? signUpGroup.code : signUp.code;
-    setErrorMessage(null);
-
-    try {
-      await Auth.confirmSignUp(username, code);
-      await Auth.signIn(username, password);
       if (group) {
         var hourGoal = "None Specified";
         if (signUpGroup.hourGoal) {
@@ -179,6 +156,31 @@ const SignUpForm = () => {
       }
 
       // push data to dynamo
+      setConfirmation(true);
+      console.log(user);
+    } catch (error) {
+      console.log("error signing up:", error);
+      if (error.code === "UsernameExistsException") {
+        setUsernameTaken(true);
+      } else if (error.message === "Invalid email address format.") {
+        setCorrectEmailFormat(false);
+      } else {
+        setErrorMessage(error.message);
+      }
+    }
+  };
+
+  const confirmSignUp = async () => {
+    var username = group ? signUpGroup.username : signUp.username;
+    var password = group ? signUpGroup.password : signUp.password;
+    var code = group ? signUpGroup.code : signUp.code;
+    setErrorMessage(null);
+
+    try {
+      await Auth.confirmSignUp(username, code);
+      await Auth.signIn(username, password);
+
+      //Dynamo was here
       navigate("/home");
     } catch (error) {
       setErrorMessage(error.message);
@@ -187,18 +189,18 @@ const SignUpForm = () => {
   };
 
   return (
-    
     <Form
       className="signUpForm"
       style={{ padding: "40px", display: "flex", flexDirection: "column" }}
       onSubmit={confirmation ? confirmSignUp : signUpCognito}
-    >{(group || indiv) && !confirmation &&(
-      <Link to="/">
-        <Form.Button  content="Back to Sign In"/>
-      </Link>
-    )}
+    >
+      {(group || indiv) && !confirmation && (
+        <Link to="/">
+          <Form.Button content="Back to Sign In" />
+        </Link>
+      )}
 
-      <h1 style={{ color: "#4d602a", marginTop: '20px' }} size="huge">
+      <h1 style={{ color: "#4d602a", marginTop: "20px" }} size="huge">
         {confirmation
           ? "A verfication code has been sent to your email"
           : "SIGN UP"}
@@ -390,16 +392,16 @@ const SignUpForm = () => {
           </div>
           <div className="bool_top">
             <Checkbox
-              label="Community Service?"
               value={signUp.commService}
               onChange={(e, data) =>
                 setSignUp({ ...signUp, commService: data.checked })
               }
+              label="Community Service?"
             />
             <Checkbox
               label="Photo Permission?"
               value={signUp.photoStatus}
-              style={{ paddingBottom: "10px" }}
+              style={{ paddingBottom: "10px", paddingRight: "10%" }}
               required
               onChange={(e, data) =>
                 setSignUp({ ...signUp, photoStatus: data.checked })

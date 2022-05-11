@@ -14,10 +14,10 @@ h2 {
   text-align: center;
 }
 
-.announcements {
+/* .announcements {
   overflow: auto;
-  height: 18em;
-}
+  min-height: 18em;
+} */
 
 .announcementForm {
   padding-bottom: 10%;
