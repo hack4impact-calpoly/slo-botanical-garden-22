@@ -28,6 +28,27 @@ import { IconButton } from "@material-ui/core";
 import { GlobalContext } from "../../GlobalState";
 import Amplify, { Auth, API } from "aws-amplify";
 import Navbar from "../Navbar/navbar";
+const { CognitoIdentityServiceProvider } = require('aws-sdk');
+
+const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
+async function disableUser(username) {
+  const params = {
+    UserPoolId: process.env.REACT_APP_SECRET_USER_POOL_ID,
+    Username: username,
+  };
+
+  try {
+    const result = await cognitoIdentityServiceProvider.adminDisableUser(params).promise();
+    console.log(`Disabled ${username}`);
+    return {
+      message: `Disabled ${username}`,
+    };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 
 const VolunteerTable = () => {
   // const [data, setData] = useState();
@@ -246,7 +267,9 @@ const Table = (props) => {
 
   const handleDelete = async () => {
     // console.log("IN handle delete");
-    // console.log("UserDel: " + userToDelete);
+    console.log("UserDel: " + userToDelete);
+    const ret = await disableUser(userToDelete);
+    console.log(ret);
     deleteVolunteer(userToDelete, "volunteers_individual");
     setDelete(false);
     props.setReloadPage(props.reloadPage + 1);
@@ -569,8 +592,10 @@ const GroupTable = (props) => {
 
   const handleDelete = async () => {
     // console.log("IN handle delete");
-    // console.log("UserDel: " + userToDelete);
+    console.log("UserDel: " + userToDelete);
     deleteVolunteer(userToDelete, "volunteers_group");
+    const ret = await disableUser(userToDelete);
+    console.log(ret);
     setDelete(false);
     props.setReloadPage(props.reloadPage + 1);
   };
