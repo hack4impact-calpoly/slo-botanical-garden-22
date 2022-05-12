@@ -113,7 +113,15 @@ const VolunteerTable = () => {
       {console.log(groupData)}
       {console.log(loggedHours)}
       <Navbar />
-      <div style={{ textAlign: "center" }} className="boxes">
+      <div
+        style={{
+          textAlign: "center",
+          paddingLeft: "20%",
+          paddingTop: "5%",
+          borderRadius: "5px",
+        }}
+        className="boxes"
+      >
         <Checkbox
           label="Individual"
           style={{ background: "#CCDDBD", padding: "20px", fontSize: "20px" }}
@@ -154,7 +162,9 @@ const VolunteerTable = () => {
           textAlign="center"
           marginRight="50px"
           spacing="20px"
-          bgColor="#CCDDBD"
+          bgColor="rgb(87, 103, 84)"
+          padding="2%"
+          borderRadius="5px"
         >
           <CSVLink
             data={data}
@@ -170,21 +180,60 @@ const VolunteerTable = () => {
           >
             Export Group Volunteers
           </CSVLink>
+          <label
+            style={{
+              background: "rgb(230, 242, 217)",
+              padding: "5px",
+              borderRadius: "5px",
+              paddingBottom: "10px",
+            }}
+          >
+            Set Date Range for Logged Hours Records
+          </label>
           <div className="date">
-            <label style={{ background: "white", padding: "2px" }}>Start</label>
+            <label
+              style={{
+                background: "rgb(230, 242, 217)",
+                padding: "5px",
+                borderRadius: "5px",
+                paddingBottom: "10px",
+              }}
+            >
+              Start Date
+            </label>
             <br />
             <input
               type="date"
+              style={{
+                background: "rgb(230, 242, 217)",
+                borderRadius: "5px",
+                padding: "2px",
+              }}
               onChange={(e) => {
                 setStartDate(e);
               }}
             />
           </div>
+          <br />
+
           <div className="date" style={{ marginTop: "5px" }}>
-            <label style={{ background: "white", padding: "2px" }}>End</label>
+            <label
+              style={{
+                background: "rgb(230, 242, 217)",
+                padding: "5px",
+                borderRadius: "5px",
+              }}
+            >
+              End Date
+            </label>
             <br />
             <input
               type="date"
+              style={{
+                background: "rgb(230, 242, 217)",
+                borderRadius: "5px",
+                padding: "2px",
+              }}
               onChange={(e) => {
                 setEndDate(e);
               }}
@@ -217,6 +266,7 @@ const VolunteerTable = () => {
           </button>
           <CSVLink
             data={loggedHours}
+            style={{ background: "rgb(230, 242, 217)" }}
             filename="logged_volunteer_data"
             className="hidden"
             ref={csvLog}
