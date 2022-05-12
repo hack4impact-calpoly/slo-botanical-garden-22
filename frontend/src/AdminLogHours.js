@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { putData, getRandomId, addHours } from "./dynoFuncs";
 import { GlobalContext } from "./GlobalState";
+import { Message } from "semantic-ui-react";
 
 export default function AdminHourLog(props) {
   const [updateStatus, setUpdateStatus] = useState(false);
@@ -143,8 +144,14 @@ export default function AdminHourLog(props) {
   var styleSheet = document.createElement("style");
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
+  const [allFieldsRequired, setAllFieldsRequired] = useState(false);
+  const [hoursNumber, setHoursNumber] = useState(false);
+  const [numVolNumber, setNumVolNumber] = useState(false);
 
   async function submitForm() {
+    setAllFieldsRequired(false);
+    setHoursNumber(false);
+    setNumVolNumber(false);
     const item = {
       primary_id: getRandomId(),
       activity: document.getElementById("activityA").value,
@@ -157,6 +164,21 @@ export default function AdminHourLog(props) {
       volunteer: document.getElementById("volunteerName").value,
     };
     console.log(item);
+
+    if (item.date === '' || item.supervisor === '' || item.description === ''
+      || item.hours === '' || item.volunteerCount === '' || item.volunteer === '') {
+      setAllFieldsRequired(true);
+      return;
+    }
+
+    if (isNaN(parseFloat(item.hours))) {
+      setHoursNumber(true);
+      return;
+    }
+    if (isNaN(parseFloat(item.volunteerCount))) {
+      setNumVolNumber(true);
+      return;
+    }
     document.getElementById("activityA").value = "";
     document.getElementById("dateA").value = "";
     document.getElementById("supervisorA").value = "";
@@ -251,6 +273,17 @@ export default function AdminHourLog(props) {
         </div>
       </div>
       {console.log("Update: " + updateStatus)}
+      {allFieldsRequired && <Message negative style={{ margin: '20px' }}>
+        <Message.Header
+
+        >All fields are requried</Message.Header>
+      </Message>}
+      {hoursNumber && <Message negative style={{ margin: '20px' }}>
+        <Message.Header>Hours must be a number</Message.Header>
+      </Message>}
+      {numVolNumber && <Message negative style={{ margin: '20px' }}>
+        <Message.Header>Number of Volunteers must be a number</Message.Header>
+      </Message>}
     </div>
   );
 }

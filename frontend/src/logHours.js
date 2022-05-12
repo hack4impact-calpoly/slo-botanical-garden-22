@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { putData, getRandomId, changeHours } from "./dynoFuncs";
 import { GlobalContext } from "./GlobalState";
+import { Message } from "semantic-ui-react";
 
 export default function HourLog(props) {
   const [updateStatus, setUpdateStatus] = useState(false);
@@ -141,13 +142,25 @@ export default function HourLog(props) {
 
     }
 
+    .group {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
   `;
 
   var styleSheet = document.createElement("style");
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
+  const [allFieldsRequired, setAllFieldsRequired] = useState(false);
+  const [hoursNumber, setHoursNumber] = useState(false);
+  const [numVolNumber, setNumVolNumber] = useState(false);
 
   async function submitForm() {
+    setAllFieldsRequired(false);
+    setHoursNumber(false);
+    setNumVolNumber(false);
     var volunteerName = "";
     if (currentUserInfo.volunteerTable === "volunteers_group") {
       volunteerName = currentUserInfo.nameContact;
@@ -167,6 +180,23 @@ export default function HourLog(props) {
       username: currentUserInfo.username, //change based on cookie, wait for Arden meeting with Cole
       volunteer: volunteerName,
     };
+
+    if (item.date === '' || item.supervisor === '' || item.description === ''
+      || item.hours === '' || item.volunteerCount === '') {
+      setAllFieldsRequired(true);
+      return;
+    }
+
+    if (isNaN(parseFloat(item.hours))) {
+      setHoursNumber(true);
+      return;
+    }
+    if (isNaN(parseFloat(item.volunteerCount))) {
+      setNumVolNumber(true);
+      return;
+    }
+
+
     console.log(item);
     document.getElementById("activity").value = "";
     document.getElementById("date").value = "";
@@ -216,27 +246,27 @@ export default function HourLog(props) {
             <h1> </h1>
             <div className="lilbox">
               <label>Hours: </label>
-              <textarea id="hours"></textarea>
+              <textarea id="hours" required></textarea>
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <div className="date">
                 <label>Date: </label>
-                <input type="date" id="date" />
+                <input type="date" id="date" required />
               </div>
             </div>
           </div>
           <div className="boxcols">
             <div className="lilbox">
               <label>Supervisor: </label>
-              <textarea id="supervisor"></textarea>
+              <textarea id="supervisor" required></textarea>
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <label>Number of Volunteers: </label>
-              <textarea id="volunteerCount" type="number"></textarea>
+              <textarea id="volunteerCount" type="number" required></textarea>
             </div>
           </div>
           <div className="boxcols">
@@ -247,6 +277,7 @@ export default function HourLog(props) {
                 rows="3"
                 cols="20"
                 name="text"
+                required
               ></textarea>
             </div>
             <h1> </h1>
@@ -262,6 +293,17 @@ export default function HourLog(props) {
           </div>
         </div>
       </div>
+      {allFieldsRequired && <Message negative style={{ margin: '20px' }}>
+        <Message.Header
+
+        >All fields are requried</Message.Header>
+      </Message>}
+      {hoursNumber && <Message negative style={{ margin: '20px' }}>
+        <Message.Header>Hours must be a number</Message.Header>
+      </Message>}
+      {numVolNumber && <Message negative style={{ margin: '20px' }}>
+        <Message.Header>Number of Volunteers must be a number</Message.Header>
+      </Message>}
       {console.log("Update: " + updateStatus)}
     </div>
   );
