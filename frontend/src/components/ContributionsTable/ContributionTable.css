@@ -8,13 +8,13 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 
   height: 100%;
-  background-color: white;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #9c9c9c;
+  background-color: rgba(255, 255, 255, 0.45);
+  border-radius: 10px;
   box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
   margin-right: 5%;
   margin-left: 5%;
+  backdrop-filter: blur(60px);
+
 }
 
 .topRow {

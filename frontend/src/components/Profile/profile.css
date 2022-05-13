@@ -23,7 +23,7 @@ h1 {
 }
 
 .TopLabel {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.45);
   color: #576754;
   font-size: 45px;
   display: flex;
@@ -32,6 +32,9 @@ h1 {
   margin-right: 7%;
   margin-top: 2%;
   padding-left: 2%;
+  border-radius: 10px;
+  backdrop-filter: blur(60px);
+  padding: 20px;
 }
 
 .status {

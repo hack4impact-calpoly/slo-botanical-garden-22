@@ -22,7 +22,8 @@ export default function HourLog(props) {
   {
     padding: 3%;
     font-family: "Century Gothic", Verdana, monospace;
-    border:solid 1px #686868;
+    border: none;
+    border-radius: 10px;
   }
   
   .formtitle
@@ -34,19 +35,16 @@ export default function HourLog(props) {
   
   .dabox
   {
-      display: flex;
-      flex-direction: column;
-      padding: 0px;
-      background-color: white;
-      color: #556453;
-      border-style: solid;
-      border-width: 2px;
-      border-color: #9c9c9c;
-      box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
-      margin-right: 5%;
-      margin-left: 5%;
-
-
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    color: #556453;
+    box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
+    margin-right: 5%;
+    margin-left: 5%;
+    background-color: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(60px);
+    border-radius: 10px;
   }
   
   .boxesholder
@@ -120,12 +118,14 @@ export default function HourLog(props) {
       line-height: 10x;
       width: 100%;
       margin-bottom: 5%;
+      padding: 10px;
     }
 
     #activity {
-      border:solid 1px #686868;
       min-width: 170px;
       max-width: 200px;
+      border-radius: 5px;
+      border: none;
     }
 
     .activity {
@@ -134,12 +134,13 @@ export default function HourLog(props) {
       width: 200px;
     }
 
-    .date {
+    #date {
       display: flex;
-      flex-direction: column;
-      padding-bottom: 10px;
-      width: 200px;
-
+      flex-direction: row;
+      min-width: 170px;
+      max-width: 200px;
+      padding: 5px;
+      border-radius: 5px;
     }
 
     .group {
