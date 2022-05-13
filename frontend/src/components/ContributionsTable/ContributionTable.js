@@ -13,6 +13,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { GlobalContext } from "../../GlobalState";
 import ReactTable from "react-table";
 import { useSortBy, useTable, usePagination } from "react-table";
+import Milestone from "../Milestones/Milestones";
 
 const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
   const { currentUserInfo } = useContext(GlobalContext);
@@ -124,6 +125,7 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
           </tbody>
         </table>
       </div>
+      <Milestone hours={totalHours} />
     </div>
   );
 };
