@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { fetchData, deleteHour } from "../../dynoFuncs";
-import HourLog from "../../logHours";
-import AdminHourLog from "../../AdminLogHours";
+import HourLog from "../LogHours/logHours";
+import AdminHourLog from "../LogHours/AdminLogHours";
 import Navbar from "../Navbar/navbar";
 import { GlobalContext } from "../../GlobalState";
 import ContribitionTable from "../ContributionsTable/ContributionTable";

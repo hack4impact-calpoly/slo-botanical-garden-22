@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./ContributionTable.css";
 import { fetchData, deleteHour, changeHours } from "../../dynoFuncs";
-import HourLog from "../../logHours";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
 import Button from "@material-ui/core/Button";

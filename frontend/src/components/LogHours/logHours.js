@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import { putData, getRandomId, addHours } from "./dynoFuncs";
-import { GlobalContext } from "./GlobalState";
+import { putData, getRandomId, changeHours } from "../../dynoFuncs";
+import { GlobalContext } from "../../GlobalState";
 import { Message } from "semantic-ui-react";
 
-export default function AdminHourLog(props) {
+export default function HourLog(props) {
   const [updateStatus, setUpdateStatus] = useState(false);
   const { currentUserInfo } = useContext(GlobalContext);
 
@@ -44,7 +44,10 @@ export default function AdminHourLog(props) {
       border-color: #9c9c9c;
       box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
       margin-right: 5%;
-      margin-left: 5%;  }
+      margin-left: 5%;
+
+
+  }
   
   .boxesholder
   {
@@ -119,7 +122,7 @@ export default function AdminHourLog(props) {
       margin-bottom: 5%;
     }
 
-    #activityA {
+    #activity {
       border:solid 1px #686868;
       min-width: 170px;
       max-width: 200px;
@@ -139,6 +142,12 @@ export default function AdminHourLog(props) {
 
     }
 
+    .group {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
   `;
 
   var styleSheet = document.createElement("style");
@@ -152,21 +161,28 @@ export default function AdminHourLog(props) {
     setAllFieldsRequired(false);
     setHoursNumber(false);
     setNumVolNumber(false);
+    var volunteerName = "";
+    if (currentUserInfo.volunteerTable === "volunteers_group") {
+      volunteerName = currentUserInfo.nameContact;
+    } else {
+      volunteerName =
+        currentUserInfo["First Name"] + " " + currentUserInfo["Last Name"];
+    }
+
     const item = {
       primary_id: getRandomId(),
-      activity: document.getElementById("activityA").value,
-      date: document.getElementById("dateA").value,
-      supervisor: document.getElementById("supervisorA").value,
-      description: document.getElementById("descriptionA").value,
-      hours: document.getElementById("hoursA").value,
-      volunteerCount: document.getElementById("volunteerCountA").value,
-      username: "AdminLogged",
-      volunteer: document.getElementById("volunteerName").value,
+      activity: document.getElementById("activity").value,
+      date: document.getElementById("date").value,
+      supervisor: document.getElementById("supervisor").value,
+      description: document.getElementById("description").value,
+      hours: document.getElementById("hours").value,
+      volunteerCount: document.getElementById("volunteerCount").value,
+      username: currentUserInfo.username, //change based on cookie, wait for Arden meeting with Cole
+      volunteer: volunteerName,
     };
-    console.log(item);
 
     if (item.date === '' || item.supervisor === '' || item.description === ''
-      || item.hours === '' || item.volunteerCount === '' || item.volunteer === '') {
+      || item.hours === '' || item.volunteerCount === '') {
       setAllFieldsRequired(true);
       return;
     }
@@ -179,17 +195,29 @@ export default function AdminHourLog(props) {
       setNumVolNumber(true);
       return;
     }
-    document.getElementById("activityA").value = "";
-    document.getElementById("dateA").value = "";
-    document.getElementById("supervisorA").value = "";
-    document.getElementById("descriptionA").value = "";
-    document.getElementById("hoursA").value = "";
-    document.getElementById("volunteerCountA").value = "";
+
+
+    console.log(item);
+    document.getElementById("activity").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("supervisor").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("hours").value = "";
+    document.getElementById("volunteerCount").value = "";
 
     putData("logged_hours", item);
+    console.log("Total Hours Log");
+    console.log(currentUserInfo.totalHours);
+
+    changeHours(
+      currentUserInfo.username,
+      currentUserInfo.totalHours + parseFloat(item.hours),
+      currentUserInfo.volunteerTable
+    );
+
     props.setReloadPage(props.reloadPage + 1);
-    console.log("Item in Logged Hours Admin");
-    console.log(item);
+    //console.log("Item in Logged Hours");
+    //console.log(item);
   }
 
   return (
@@ -201,15 +229,9 @@ export default function AdminHourLog(props) {
         <div className="boxesholder">
           <div className="boxcols">
             <div className="lilbox">
-              <label>Volunteer(s): </label>
-              <textarea id="volunteerName"></textarea>
-            </div>
-            <h1> </h1>
-            <h1> </h1>
-            <div className="lilbox">
               <div className="activity">
                 <label for="activity">Activity:</label>
-                <select name="activity" id="activityA">
+                <select name="activity" id="activity">
                   <option value="Other">Other</option>
                   <option value="Administration">Administration</option>
                   <option value="Maintenance">Maintenance</option>
@@ -224,39 +246,38 @@ export default function AdminHourLog(props) {
             <h1> </h1>
             <div className="lilbox">
               <label>Hours: </label>
-              <textarea id="hoursA"></textarea>
-            </div>
-            <h1> </h1>
-            <h1> </h1>
-          </div>
-          <div className="boxcols">
-            <div className="lilbox">
-              <label>Supervisor: </label>
-              <textarea id="supervisorA"></textarea>
-            </div>
-            <h1> </h1>
-            <h1> </h1>
-            <div className="lilbox">
-              <label>Number of Volunteers: </label>
-              <textarea id="volunteerCountA" type="number"></textarea>
+              <textarea id="hours" required></textarea>
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <div className="date">
                 <label>Date: </label>
-                <input type="date" id="dateA" />
+                <input type="date" id="date" required />
               </div>
+            </div>
+          </div>
+          <div className="boxcols">
+            <div className="lilbox">
+              <label>Supervisor: </label>
+              <textarea id="supervisor" required></textarea>
+            </div>
+            <h1> </h1>
+            <h1> </h1>
+            <div className="lilbox">
+              <label>Number of Volunteers: </label>
+              <textarea id="volunteerCount" type="number" required></textarea>
             </div>
           </div>
           <div className="boxcols">
             <div className="lilbox">
               <label>Description: </label>
               <textarea
-                id="descriptionA"
-                rows="10"
+                id="description"
+                rows="3"
                 cols="20"
                 name="text"
+                required
               ></textarea>
             </div>
             <h1> </h1>
@@ -272,7 +293,6 @@ export default function AdminHourLog(props) {
           </div>
         </div>
       </div>
-      {console.log("Update: " + updateStatus)}
       {allFieldsRequired && <Message negative style={{ margin: '20px' }}>
         <Message.Header
 
@@ -284,6 +304,7 @@ export default function AdminHourLog(props) {
       {numVolNumber && <Message negative style={{ margin: '20px' }}>
         <Message.Header>Number of Volunteers must be a number</Message.Header>
       </Message>}
+      {console.log("Update: " + updateStatus)}
     </div>
   );
 }
