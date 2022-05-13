@@ -134,7 +134,7 @@ const SignUpForm = () => {
           Covid_Waiver_and_Release: covidWaiver,
           "First Name": signUp.firstName,
           Group: groupName,
-          "Total Hours Volunteered": 0,
+          totalHours: 0,
           Emergency_Contact: signUp.emergencyName,
           Email: signUp.email,
           Birth_date: startDate,
