@@ -8,7 +8,6 @@ import ContribitionTable from "../ContributionsTable/ContributionTable";
 import ContributionTableAdmin from "../ContributionsTable/ContributionTableAdmin";
 import "./profile.css";
 import ProfileSideBar from "./profileSideBar";
-import { getSystemErrorName } from "util";
 
 const Profile = () => {
   const { currentUserInfo } = useContext(GlobalContext);
