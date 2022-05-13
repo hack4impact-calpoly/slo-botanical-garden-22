@@ -63,7 +63,7 @@
 [data-amplify-authenticator] [data-amplify-router] {
   background-color: var(--amplify-colors-background-primary);
   box-shadow: none;
-  border-radius: 5%;
+  border: none;
 }
 
 .signIn {
