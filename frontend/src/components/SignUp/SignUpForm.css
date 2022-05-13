@@ -43,6 +43,13 @@
   min-height: 100vh;
 }
 
+html {
+  background-image: url("../../assets/garden.png");
+  background-repeat: repeat;
+  background-size: cover;
+  height: 100%;
+}
+
 .signUpForm {
   border-radius: 50px;
   background-color: white;
