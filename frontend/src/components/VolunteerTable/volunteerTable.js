@@ -668,7 +668,7 @@ const GroupTable = (props) => {
         accessor: "emailContact", //Email
       },
       {
-        Header: "Role",
+        Header: "Volunteer or Admin",
         accessor: "is_Admin",
         Cell: (row) => {
           if (row.row.original["is_Admin"] === "True") {
