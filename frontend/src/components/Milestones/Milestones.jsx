@@ -13,11 +13,16 @@ const Milestones = ({ hours }) => {
       style={{
         margin: "5%",
         padding: "20px",
-        background: "white",
+        backgroundColor: " rgba(255, 255, 255, 0.45)",
+        backdropFilter: "blur(60px)",
+        borderRadius: "10px",
       }}
     >
       <div>
         <ProgressBar
+          style={{
+            width: "80%",
+          }}
           percent={hours}
           filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
         >

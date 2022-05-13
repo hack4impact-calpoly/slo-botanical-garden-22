@@ -104,7 +104,7 @@ const ProfileSideBar = ({ setReloadPage, reloadPage, loggedHours }) => {
   return (
     <div className="SideBar">
       <div className="header">Profile</div>
-      {getName()}
+      <h className="name">About</h>
       <div className="info">{getInfo()}</div>
     </div>
   );

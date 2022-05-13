@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
-import { putData, getRandomId, addHours } from "./dynoFuncs";
-import { GlobalContext } from "./GlobalState";
+import { putData, getRandomId, addHours } from "../../dynoFuncs";
+import { GlobalContext } from "../../GlobalState";
+import { Message } from "semantic-ui-react";
 
 export default function AdminHourLog(props) {
   const [updateStatus, setUpdateStatus] = useState(false);
@@ -21,8 +22,10 @@ export default function AdminHourLog(props) {
   {
     padding: 3%;
     font-family: "Century Gothic", Verdana, monospace;
-    border:solid 1px #686868;
+    border: none;
+    border-radius: 10px;
   }
+  
   
   .formtitle
   {
@@ -33,17 +36,17 @@ export default function AdminHourLog(props) {
   
   .dabox
   {
-      display: flex;
-      flex-direction: column;
-      padding: 0px;
-      background-color: white;
-      color: #556453;
-      border-style: solid;
-      border-width: 2px;
-      border-color: #9c9c9c;
-      box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
-      margin-right: 5%;
-      margin-left: 5%;  }
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    color: #556453;
+    box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
+    margin-right: 5%;
+    margin-left: 5%;
+    background-color: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(60px);
+    border-radius: 10px;
+  }
   
   .boxesholder
   {
@@ -108,20 +111,22 @@ export default function AdminHourLog(props) {
   }
   
   #submit {
-      background-color: #556453;
-      border-radius: 8px;
-      border-width: 1px;
-      color: #FFFFFF;
-      font-size: 16px;
-      line-height: 10x;
-      width: 100%;
-      margin-bottom: 5%;
-    }
+    background-color: #556453;
+    border-radius: 8px;
+    border-width: 1px;
+    color: #FFFFFF;
+    font-size: 16px;
+    line-height: 10x;
+    width: 100%;
+    margin-bottom: 5%;
+    padding: 10px;
+  }
 
     #activityA {
-      border:solid 1px #686868;
       min-width: 170px;
       max-width: 200px;
+      border-radius: 5px;
+      border: none;
     }
 
     .activity {
@@ -135,7 +140,16 @@ export default function AdminHourLog(props) {
       flex-direction: column;
       padding-bottom: 10px;
       width: 200px;
+      padding: 10px;
+    }
 
+    #dateA {
+      display: flex;
+      flex-direction: row;
+      min-width: 170px;
+      max-width: 200px;
+      padding: 5px;
+      border-radius: 5px;
     }
 
   `;
@@ -143,8 +157,14 @@ export default function AdminHourLog(props) {
   var styleSheet = document.createElement("style");
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
+  const [allFieldsRequired, setAllFieldsRequired] = useState(false);
+  const [hoursNumber, setHoursNumber] = useState(false);
+  const [numVolNumber, setNumVolNumber] = useState(false);
 
   async function submitForm() {
+    setAllFieldsRequired(false);
+    setHoursNumber(false);
+    setNumVolNumber(false);
     const item = {
       primary_id: getRandomId(),
       activity: document.getElementById("activityA").value,
@@ -157,6 +177,21 @@ export default function AdminHourLog(props) {
       volunteer: document.getElementById("volunteerName").value,
     };
     console.log(item);
+
+    if (item.date === '' || item.supervisor === '' || item.description === ''
+      || item.hours === '' || item.volunteerCount === '' || item.volunteer === '') {
+      setAllFieldsRequired(true);
+      return;
+    }
+
+    if (isNaN(parseFloat(item.hours))) {
+      setHoursNumber(true);
+      return;
+    }
+    if (isNaN(parseFloat(item.volunteerCount))) {
+      setNumVolNumber(true);
+      return;
+    }
     document.getElementById("activityA").value = "";
     document.getElementById("dateA").value = "";
     document.getElementById("supervisorA").value = "";
@@ -251,6 +286,17 @@ export default function AdminHourLog(props) {
         </div>
       </div>
       {console.log("Update: " + updateStatus)}
+      {allFieldsRequired && <Message negative style={{ margin: '20px' }}>
+        <Message.Header
+
+        >All fields are requried</Message.Header>
+      </Message>}
+      {hoursNumber && <Message negative style={{ margin: '20px' }}>
+        <Message.Header>Hours must be a number</Message.Header>
+      </Message>}
+      {numVolNumber && <Message negative style={{ margin: '20px' }}>
+        <Message.Header>Number of Volunteers must be a number</Message.Header>
+      </Message>}
     </div>
   );
 }
