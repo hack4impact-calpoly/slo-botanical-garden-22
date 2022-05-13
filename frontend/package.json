@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "amazon-cognito-identity-js": "^5.2.8",
     "aws-amplify": "^4.3.14",
+    "aws-cli": "^0.0.2",
     "aws-sdk": "^2.1077.0",
     "cors": "^2.8.5",
     "framer-motion": "^6.2.8",

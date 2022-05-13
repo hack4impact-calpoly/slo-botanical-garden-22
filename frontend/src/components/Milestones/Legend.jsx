@@ -10,7 +10,7 @@ const Legend = () => {
       borderRadius="20px"
       textAlign="center"
       color="#cee4bb"
-      width="100%"
+      width="90%"
     >
       <div
         style={{
