@@ -55,7 +55,7 @@ export default function Home() {
     <>
       {!currentUserInfo ? (
         <Navigate replace to="/" />
-      ) : currentUserInfo.Emergency_Contact === "" ? (
+      ) : currentUserInfo["mailing_address"] === "Not Specified" ? (
         <Navigate replace to="/info" />
       ) : (
         <>
