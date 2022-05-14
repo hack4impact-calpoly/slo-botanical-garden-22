@@ -245,13 +245,19 @@ const VolunteerTable = () => {
               if (!startDate || !endDate) {
                 alert("Please select a start date and end date");
               } else {
-                const logged = loggedHours.filter((obj) => {
-                  return (
-                    new Date(obj.date).getTime() >=
-                      startDate.target.valueAsNumber &&
-                    new Date(obj.date).getTime() <= endDate.target.valueAsNumber
-                  );
-                });
+                const logged = loggedHours
+                  .filter((obj) => {
+                    return (
+                      new Date(obj.date).getTime() >=
+                        startDate.target.valueAsNumber &&
+                      new Date(obj.date).getTime() <=
+                        endDate.target.valueAsNumber
+                    );
+                  })
+                  .map((obj) => {
+                    delete obj.primary_id;
+                    return obj;
+                  });
                 console.log(logged);
                 if (logged.length === 0) {
                   alert("No hours were logged during this window");
@@ -264,6 +270,7 @@ const VolunteerTable = () => {
           >
             Export Logged Hours
           </button>
+          {console.log(loggedHours)}
           <CSVLink
             data={loggedHours}
             style={{ background: "rgb(230, 242, 217)" }}
@@ -340,7 +347,7 @@ const Table = (props) => {
     () => [
       {
         Header: "Name",
-        accessor: "name", // accessor is the "key" in the data
+        accessor: "Name", // accessor is the "key" in the data
         Cell: (row) => {
           return (
             <div>

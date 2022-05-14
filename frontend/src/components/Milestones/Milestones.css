@@ -12,3 +12,8 @@
 .indexedStep.accomplished {
   background-color: rgba(255, 242, 121, 0.938);
 }
+
+.bar {
+  width: 95%;
+  padding-left: 2%;
+}

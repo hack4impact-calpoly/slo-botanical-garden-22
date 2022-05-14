@@ -18,11 +18,8 @@ const Milestones = ({ hours }) => {
         borderRadius: "10px",
       }}
     >
-      <div>
+      <div className="bar">
         <ProgressBar
-          style={{
-            width: "80%",
-          }}
           percent={hours}
           filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
         >

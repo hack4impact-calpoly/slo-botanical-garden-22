@@ -106,7 +106,7 @@ export default function Home() {
                       <Center w="100%">
                         <Heading fontSize="144">
                           {" "}
-                          8{/* {getThisWeeksHoursTotal()}{" "} */}
+                          {getThisWeeksHoursTotal()}{" "}
                         </Heading>
                         <Heading mb={3} fontSize="lg">
                           total hours contributed by

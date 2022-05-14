@@ -93,9 +93,9 @@ const SignUpForm = () => {
           phonetwo = signUp.phonetwo;
         }
 
-        var medicalConditions = "None Specified";
-        if (signUp.medicalConditions) {
-          medicalConditions = signUp.medicalConditions;
+        var Medical_Conditions = "None Specified";
+        if (signUp.Medical_Conditions) {
+          Medical_Conditions = signUp.Medical_Conditions;
         }
 
         safetyStatus = "False";
@@ -139,7 +139,7 @@ const SignUpForm = () => {
           Email: signUp.email,
           Birth_date: startDate,
           is_Admin: "False",
-          medicalConditions: medicalConditions,
+          Medical_Conditions: Medical_Conditions,
           "Safety Training Status": safetyStatus,
           "Photo-Permission": photoStatus,
           "Secondary Phone": phonetwo,
@@ -358,12 +358,13 @@ const SignUpForm = () => {
               console.log(e.target.value);
               setStartDate(e.target.value);
             }}
+            required
           />
           <br />
           <Form.TextArea
             label="Medical Conditions"
-            name="medicalConditions"
-            value={signUp.medicalConditions}
+            name="Medical_Conditions"
+            value={signUp.Medical_Conditions}
             onChange={handleChange}
           />
           <div className="bool_top">
