@@ -36,7 +36,8 @@ export const getComp = () => {
           <h2>
             Returning users, please do not use the reset password link. Entering
             any password with your old username will prompt you through a
-            password reset.
+            password reset. You may need to resend code if one does not come
+            immediately. Then use your username and new password as usual.
           </h2>
           <br />
           <h2>If you have any problems, please contact mreed16@calpoly.edu.</h2>
