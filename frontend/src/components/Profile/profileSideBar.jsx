@@ -20,7 +20,9 @@ const ProfileSideBar = ({ hours }) => {
   };
 
   const booleanConverter = (item) => {
-    if (item === "True") {
+    console.log("Bool Converter");
+    console.log(item);
+    if (item === "True" || item === true) {
       return <p>Completed</p>;
     } else {
       return <p>Not Completed</p>;
@@ -53,6 +55,8 @@ const ProfileSideBar = ({ hours }) => {
   };
 
   const getInfo = () => {
+    console.log("Current User Info");
+    console.log(currentUserInfo);
     if (currentUserInfo.volunteerTable === "volunteers_group") {
       return (
         <div className="profInfoG">
@@ -105,9 +109,7 @@ const ProfileSideBar = ({ hours }) => {
             </p>
             <p>Volunteer Waiver and Release: </p>
             <p className="value">
-              {booleanConverter(
-                currentUserInfo["Volunteer_Waiver_and_Release"]
-              )}
+              {booleanConverter(currentUserInfo["Volunter_Waiver_and_Release"])}
             </p>
             <p>Covid Waiver and Release: </p>
             <p className="value">
@@ -115,11 +117,11 @@ const ProfileSideBar = ({ hours }) => {
             </p>
             <p>Photo Permissions: </p>
             <p className="value">
-              {booleanConverter(currentUserInfo["Photo-Permissions"])}
+              {booleanConverter(currentUserInfo["Photo-Permission"])}
             </p>
             <p>Live Scanned: </p>
             <p className="value">
-              {booleanConverter(currentUserInfo["livedScanned"])}{" "}
+              {booleanConverter(currentUserInfo["liveScanned"])}{" "}
             </p>
             <p>Community Service: </p>
             <p className="value">
