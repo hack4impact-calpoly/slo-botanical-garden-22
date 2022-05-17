@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { fetchData, deleteHour } from "../../dynoFuncs";
 import HourLog from "../LogHours/logHours";
 import AdminHourLog from "../LogHours/AdminLogHours";
@@ -14,9 +14,16 @@ const Profile = () => {
   const [reloadPage, setReloadPage] = useState(0);
   const [loggedHours, setLoggedHours] = useState();
   const [totalHours, setTotalHours] = useState(0);
+  const [startDate, setStartDate] = React.useState();
+  const [endDate, setEndDate] = React.useState();
+  const csvLog = useRef();
 
   useEffect(() => {
-    fetchData("logged_hours").then((data) => setLoggedHours(data));
+    fetchData("logged_hours").then((data) =>
+      setLoggedHours(
+        data.filter((con) => con.username === currentUserInfo.username)
+      )
+    );
     setTotalHours(currentUserInfo.totalHours);
   }, [reloadPage]);
 
@@ -78,7 +85,7 @@ const Profile = () => {
       <Navbar />
       <div className="wholePage">
         <div ClassName="LeftSide">
-          <ProfileSideBar />
+          <ProfileSideBar hours={loggedHours} />
         </div>
         <div ClassName="RightSide">
           <div className="TopLabel">

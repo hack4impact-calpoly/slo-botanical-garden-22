@@ -279,6 +279,7 @@ const VolunteerTable = () => {
             ref={csvLog}
             target="_blank"
           />
+          {console.log(loggedHours)}
         </VStack>
         {indiv && (
           <Table

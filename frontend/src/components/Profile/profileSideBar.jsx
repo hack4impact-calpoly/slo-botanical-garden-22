@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { GlobalContext } from "../../GlobalState";
 import "./profileSideBar.css";
+import { CSVLink } from "react-csv";
 
-const ProfileSideBar = ({ setReloadPage, reloadPage, loggedHours }) => {
+const ProfileSideBar = ({ hours }) => {
   const { currentUserInfo } = useContext(GlobalContext);
+  const csvLog = useRef();
 
   const getName = () => {
     if (currentUserInfo.volunteerTable === "volunteers_group") {
@@ -25,10 +27,36 @@ const ProfileSideBar = ({ setReloadPage, reloadPage, loggedHours }) => {
     }
   };
 
+  const getExport = () => {
+    console.log(hours);
+    if (hours.length !== 0) {
+      return (
+        <>
+          <button
+            className="csvStack"
+            onClick={() => {
+              csvLog.current.link.click();
+            }}
+          >
+            Click to Export Your Logged Hours
+          </button>
+          <CSVLink
+            data={hours}
+            filename="your_volunteer_data"
+            className="hidden"
+            ref={csvLog}
+            target="_blank"
+          />
+        </>
+      );
+    }
+  };
+
   const getInfo = () => {
     if (currentUserInfo.volunteerTable === "volunteers_group") {
       return (
         <div className="profInfoG">
+          {getExport()}
           <p className="BarHeader"> Contact Information</p>
           <p>Contact Name: </p>
           <p className="value">{currentUserInfo["nameContact"]}</p>
@@ -41,6 +69,8 @@ const ProfileSideBar = ({ setReloadPage, reloadPage, loggedHours }) => {
     } else {
       return (
         <div className="profInfoI">
+          {getExport()}
+
           <div className="left">
             <p className="BarHeader">Contact Information</p>
             <p>Primary Phone Number: </p>

@@ -1,12 +1,13 @@
 .profInfoI {
-  background: white;
   display: flex;
+  background-color: rgba(255, 255, 255, 0.45);
   flex-direction: column;
   justify-content: space-around;
-  box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
+  backdrop-filter: blur(60px);
+  width: 100%;
 }
 
 .header {
@@ -37,6 +38,7 @@
   border-radius: 10px;
   box-shadow: 0 1px 0px 0px rgb(161, 161, 161);
   backdrop-filter: blur(60px);
+  width: 100%;
 }
 
 .left {
@@ -64,7 +66,8 @@ p {
 }
 
 .SideBar {
-  margin: 10%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .info {
   display: block;

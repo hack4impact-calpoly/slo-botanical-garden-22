@@ -241,6 +241,10 @@ const SignUpForm = () => {
       <hr style={{ backgroundColor: "green", width: "100%" }} />
       {indiv && !confirmation && (
         <div>
+          <h2 style={{ margin: "2%" }}>
+            Note: Usernames must be comprised of only letters, symbols, numbers,
+            or punctuation.{" "}
+          </h2>
           <Form.Group widths="equal">
             <Form.Input
               label="Username"
@@ -351,6 +355,7 @@ const SignUpForm = () => {
               setSignUp({ ...signUp, birthDate: date });
             }}
           /> */}
+          <label style={{ fontWeight: "bold" }}>Date of Birth</label>
           <input
             type="date"
             onChange={(e) => {
@@ -425,13 +430,10 @@ const SignUpForm = () => {
       )}
       {group && !confirmation && (
         <Form>
-          <Form.Input
-            label="Group Name"
-            name="groupName"
-            value={signUpGroup.groupName}
-            onChange={handleChangeGroup}
-            required
-          />
+          <h2 style={{ margin: "2%" }}>
+            Note: Usernames must be comprised of only letters, symbols, numbers,
+            or punctuation.{" "}
+          </h2>
           <Form.Group widths="equal">
             <Form.Input
               label="Username"
@@ -481,11 +483,19 @@ const SignUpForm = () => {
             />
           </Form.Group>
           <Form.Input
+            label="Group Name"
+            name="groupName"
+            value={signUpGroup.groupName}
+            onChange={handleChangeGroup}
+            required
+          />
+          <Form.Input
             label="Hour Goal"
             name="hourGoal"
             value={signUpGroup.hourGoal}
             onChange={handleChangeGroup}
           />
+
           <Checkbox
             label="Safety Training Status Complete?"
             value={signUpGroup.safetyStatus}

@@ -33,7 +33,7 @@ export const getComp = () => {
       const { route } = useAuthenticator((context) => [context.route]);
       return route === "resetPassword" ? null : (
         <View textAlign="center">
-          <h2>
+          {/* <h2>
             Returning users, please do not use the reset password link. Entering
             any password with your old username will prompt you through a
             password reset. You may need to resend code if one does not come
@@ -41,7 +41,7 @@ export const getComp = () => {
           </h2>
           <br />
           <h2>If you have any problems, please contact mreed16@calpoly.edu.</h2>
-          <br />
+          <br /> */}
 
           <h2 style={{ marginTop: ".5em" }} className="OR">
             <span>OR</span>
