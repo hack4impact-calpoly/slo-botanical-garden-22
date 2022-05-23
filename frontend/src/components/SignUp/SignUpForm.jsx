@@ -59,7 +59,7 @@ const SignUpForm = () => {
           hourGoal = signUpGroup.hourGoal;
         }
 
-        var safetyStatus = "False";
+        var safetyStatus = false;
         if (signUp.safetyStatus) {
           safetyStatus = signUpGroup.safetyStatus;
         }
@@ -98,32 +98,32 @@ const SignUpForm = () => {
           Medical_Conditions = signUp.Medical_Conditions;
         }
 
-        safetyStatus = "False";
+        safetyStatus = false;
         if (signUp.safetyStatus) {
           safetyStatus = signUp.safetyStatus;
         }
 
-        var photoStatus = "False";
+        var photoStatus = false;
         if (signUp.photoStatus) {
           photoStatus = signUp.photoStatus;
         }
 
-        var volunteerWaiver = "False";
+        var volunteerWaiver = false;
         if (signUp.volunteerWaiver) {
           volunteerWaiver = signUp.volunteerWaiver;
         }
 
-        var commService = "False";
+        var commService = false;
         if (signUp.commService) {
           commService = signUp.commService;
         }
 
-        var scannedStatus = "False";
+        var scannedStatus = false;
         if (signUp.scannedStatus) {
           scannedStatus = signUp.scannedStatus;
         }
 
-        var covidWaiver = "False";
+        var covidWaiver = false;
         if (signUp.covidWaiver) {
           covidWaiver = signUp.covidWaiver;
         }

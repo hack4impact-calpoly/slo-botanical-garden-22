@@ -2,26 +2,15 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { GlobalContext } from "../../GlobalState";
 import "./profileSideBar.css";
 import { CSVLink } from "react-csv";
+import { Navigate, Link } from "react-router-dom";
 
 const ProfileSideBar = ({ hours }) => {
   const { currentUserInfo } = useContext(GlobalContext);
   const csvLog = useRef();
 
-  const getName = () => {
-    if (currentUserInfo.volunteerTable === "volunteers_group") {
-      return <h className="name">{currentUserInfo.groupName}</h>;
-    } else {
-      return (
-        <h className="name">
-          {currentUserInfo["First Name"]} {currentUserInfo["Last Name"]}
-        </h>
-      );
-    }
-  };
-
   const booleanConverter = (item) => {
-    console.log("Bool Converter");
-    console.log(item);
+    //console.log("Bool Converter");
+    //console.log(item);
     if (item === "True" || item === true) {
       return <p>Completed</p>;
     } else {
@@ -30,7 +19,7 @@ const ProfileSideBar = ({ hours }) => {
   };
 
   const getExport = () => {
-    console.log(hours);
+    //console.log(hours);
     if (hours.length !== 0) {
       return (
         <>
@@ -55,8 +44,8 @@ const ProfileSideBar = ({ hours }) => {
   };
 
   const getInfo = () => {
-    console.log("Current User Info");
-    console.log(currentUserInfo);
+    //console.log("Current User Info");
+    //console.log(currentUserInfo);
     if (currentUserInfo.volunteerTable === "volunteers_group") {
       return (
         <div className="profInfoG">
@@ -68,13 +57,15 @@ const ProfileSideBar = ({ hours }) => {
           <p className="value">{currentUserInfo["phoneContact"]}</p>
           <p>Email: </p>
           <p className="value">{currentUserInfo["emailContact"]}</p>
+          <Link to="/updateInfo">
+            <button className="csvStack">Modify My Information</button>
+          </Link>
         </div>
       );
     } else {
       return (
         <div className="profInfoI">
           {getExport()}
-
           <div className="left">
             <p className="BarHeader">Contact Information</p>
             <p>Primary Phone Number: </p>
@@ -127,6 +118,9 @@ const ProfileSideBar = ({ hours }) => {
             <p className="value">
               {booleanConverter(currentUserInfo["Community Service"])}
             </p>
+            <Link to="/updateInfo">
+              <button className="csvStack">Modify My Information</button>
+            </Link>
           </div>
         </div>
       );

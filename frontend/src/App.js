@@ -17,6 +17,7 @@ import { getComp, getUserInfoCandD } from "./components/Login/login";
 import { Link, Navigate } from "react-router-dom";
 import Login from "./components/Login/login";
 import { AuthRoute } from "./AuthRoutes";
+import UpdateInfoForm from "./components/updateInfo/UpdateInfo";
 
 function App(props) {
   const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
@@ -67,6 +68,14 @@ function App(props) {
                   element={
                     <AuthRoute disAllowedStatus="NONE">
                       <InfoForm />
+                    </AuthRoute>
+                  }
+                />
+                <Route
+                  path="/updateInfo"
+                  element={
+                    <AuthRoute disAllowedStatus="NONE">
+                      <UpdateInfoForm />
                     </AuthRoute>
                   }
                 />

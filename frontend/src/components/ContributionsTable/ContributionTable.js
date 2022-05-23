@@ -33,6 +33,7 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
     (contribution) => (totalHours += parseFloat(contribution.hours))
   );
 
+  console.log(loggedHours);
   if (loggedHours.length === 0 || loggedHours === undefined) {
     loggedHours = [
       {
