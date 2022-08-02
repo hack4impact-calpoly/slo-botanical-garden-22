@@ -54,7 +54,7 @@ export const fetchData = async (tableName) => {
     }
   }
 
-  console.log(ret);
+  //console.log(ret);
   return ret;
 };
 

@@ -69,31 +69,6 @@ const VolunteerTable = () => {
     fetchData("volunteers_individual").then((result) => setVolunteers(result));
   }, [reloadPage]);
 
-  // async function disableUser() {
-  //   let apiName = 'AdminQueries';
-  //   let path = '/disableUser';
-  //   let myInit = {
-  //     body: {
-  //       "username": userToDelete
-  //     },
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-  //     }
-  //   }
-  //   return await API.post(apiName, path, myInit);
-  // }
-
-  //   const handleDelete = async () => {
-  //     console.log("IN handle delete");
-  //     console.log("UserDel: " + userToDelete);
-  //     await disableUser();
-  //     //deleteVolunteer(userToDelete, "volunteers_group");
-  //     console.log(disableUser());
-  //     setDelete(false);
-  //     props.setReloadPage(props.reloadPage + 1);
-  //   };
-
   const data = volunteers;
   const groupData = group;
   console.log("VolunteerInfo 1");

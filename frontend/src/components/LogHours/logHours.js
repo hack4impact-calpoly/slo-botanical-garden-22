@@ -178,12 +178,17 @@ export default function HourLog(props) {
       description: document.getElementById("description").value,
       hours: document.getElementById("hours").value,
       volunteerCount: document.getElementById("volunteerCount").value,
-      username: currentUserInfo.username, //change based on cookie, wait for Arden meeting with Cole
+      username: currentUserInfo.username,
       volunteer: volunteerName,
     };
 
-    if (item.date === '' || item.supervisor === '' || item.description === ''
-      || item.hours === '' || item.volunteerCount === '') {
+    if (
+      item.date === "" ||
+      item.supervisor === "" ||
+      item.description === "" ||
+      item.hours === "" ||
+      item.volunteerCount === ""
+    ) {
       setAllFieldsRequired(true);
       return;
     }
@@ -196,7 +201,6 @@ export default function HourLog(props) {
       setNumVolNumber(true);
       return;
     }
-
 
     console.log(item);
     document.getElementById("activity").value = "";
@@ -294,17 +298,21 @@ export default function HourLog(props) {
           </div>
         </div>
       </div>
-      {allFieldsRequired && <Message negative style={{ margin: '20px' }}>
-        <Message.Header
-
-        >All fields are requried</Message.Header>
-      </Message>}
-      {hoursNumber && <Message negative style={{ margin: '20px' }}>
-        <Message.Header>Hours must be a number</Message.Header>
-      </Message>}
-      {numVolNumber && <Message negative style={{ margin: '20px' }}>
-        <Message.Header>Number of Volunteers must be a number</Message.Header>
-      </Message>}
+      {allFieldsRequired && (
+        <Message negative style={{ margin: "20px" }}>
+          <Message.Header>All fields are requried</Message.Header>
+        </Message>
+      )}
+      {hoursNumber && (
+        <Message negative style={{ margin: "20px" }}>
+          <Message.Header>Hours must be a number</Message.Header>
+        </Message>
+      )}
+      {numVolNumber && (
+        <Message negative style={{ margin: "20px" }}>
+          <Message.Header>Number of Volunteers must be a number</Message.Header>
+        </Message>
+      )}
       {console.log("Update: " + updateStatus)}
     </div>
   );

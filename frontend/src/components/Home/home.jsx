@@ -1,7 +1,7 @@
 import "../../App.css";
 import AnnouncementBar from "../AnnouncementBar/AnnouncementBar.js";
 import React, { useState, useEffect, useContext } from "react";
-import { fetchUser, fetchData } from "../../dynoFuncs";
+import { fetchData } from "../../dynoFuncs";
 import { Navigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { GlobalContext } from "../../GlobalState";

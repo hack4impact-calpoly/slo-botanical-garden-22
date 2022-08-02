@@ -1,7 +1,13 @@
 import React, { useState, useContext } from "react";
-import { putData, getRandomId, addHours } from "../../dynoFuncs";
+import { putData, getRandomId, fetchUser } from "../../dynoFuncs";
 import { GlobalContext } from "../../GlobalState";
 import { Message } from "semantic-ui-react";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
 
 export default function AdminHourLog(props) {
   const [updateStatus, setUpdateStatus] = useState(false);
@@ -160,6 +166,78 @@ export default function AdminHourLog(props) {
   const [allFieldsRequired, setAllFieldsRequired] = useState(false);
   const [hoursNumber, setHoursNumber] = useState(false);
   const [numVolNumber, setNumVolNumber] = useState(false);
+  const [hourlog, setHourLog] = React.useState();
+  const [openStatus, setStatus] = React.useState(false);
+
+  async function checkVolunteer(volunteer) {
+    console.log(volunteer);
+    var userInfo;
+    // Still Very buggy
+    var groupData = await fetchUser("volunteers_group", volunteer).then(
+      (data) => {
+        return data;
+      }
+    );
+    if (groupData) {
+      console.log("Group Volunteer");
+      groupData["volunteerTable"] = "volunteers_group";
+      return groupData;
+    }
+
+    var individualData = await fetchUser(
+      "volunteers_individual",
+      volunteer
+    ).then((data) => {
+      return data;
+    });
+
+    if (individualData) {
+      console.log("Indiviual Volunteer");
+      individualData["volunteerTable"] = "volunteers_individual";
+      return individualData;
+    }
+
+    return { username: "No user found" };
+
+    // fetchUser("volunteers_group", volunteer).then((r) => {
+    //   console.log("user 1");
+    //   console.log(r);
+    //   if (r) {
+    //     setVolunteer(r);
+    //   } else {
+    //     fetchUser("volunteers_individual", volunteer).then((r2) => {
+    //       console.log("user 2");
+    //       console.log(r2);
+    //       if (r2) {
+    //         console.log("Here");
+    //         setVolunteer(r2);
+    //       } else {
+    //         console.log("In fake");
+    //         setVolunteer({ username: "y tho" });
+    //       }
+    //     });
+    //   }
+    // });
+  }
+
+  const handleCancel = () => {
+    console.log("Cancelled");
+    setStatus(false);
+  };
+
+  const handleLogHours = async () => {
+    console.log("In Log Hours");
+    console.log("hours to log: " + hourlog);
+    putData("logged_hours", hourlog);
+    setStatus(false);
+    props.setReloadPage(props.reloadPage + 1);
+  };
+
+  function getToast() {
+    console.log("In Toast");
+    setStatus(true);
+    console.log(openStatus);
+  }
 
   async function submitForm() {
     setAllFieldsRequired(false);
@@ -178,8 +256,14 @@ export default function AdminHourLog(props) {
     };
     console.log(item);
 
-    if (item.date === '' || item.supervisor === '' || item.description === ''
-      || item.hours === '' || item.volunteerCount === '' || item.volunteer === '') {
+    if (
+      item.date === "" ||
+      item.supervisor === "" ||
+      item.description === "" ||
+      item.hours === "" ||
+      item.volunteerCount === "" ||
+      item.volunteer === ""
+    ) {
       setAllFieldsRequired(true);
       return;
     }
@@ -192,17 +276,32 @@ export default function AdminHourLog(props) {
       setNumVolNumber(true);
       return;
     }
+
+    var volunteerData = await checkVolunteer(item.volunteer);
+
+    console.log("Volunteer Data");
+    console.log(volunteerData);
+    setHourLog(item);
+    console.log("Hour Log");
+    console.log(hourlog);
+    if (volunteerData.username === "No user found") {
+      getToast();
+    } else {
+      item.username = volunteerData.username;
+      putData("logged_hours", item);
+    }
+
+    props.setReloadPage(props.reloadPage + 1);
+    console.log("Item in Logged Hours Admin");
+    console.log(item);
+
     document.getElementById("activityA").value = "";
     document.getElementById("dateA").value = "";
     document.getElementById("supervisorA").value = "";
     document.getElementById("descriptionA").value = "";
     document.getElementById("hoursA").value = "";
     document.getElementById("volunteerCountA").value = "";
-
-    putData("logged_hours", item);
-    props.setReloadPage(props.reloadPage + 1);
-    console.log("Item in Logged Hours Admin");
-    console.log(item);
+    document.getElementById("volunteerName").value = "";
   }
 
   return (
@@ -214,7 +313,7 @@ export default function AdminHourLog(props) {
         <div className="boxesholder">
           <div className="boxcols">
             <div className="lilbox">
-              <label>Volunteer(s): </label>
+              <label>Volunteer Username: </label>
               <textarea id="volunteerName"></textarea>
             </div>
             <h1> </h1>
@@ -286,17 +385,50 @@ export default function AdminHourLog(props) {
         </div>
       </div>
       {console.log("Update: " + updateStatus)}
-      {allFieldsRequired && <Message negative style={{ margin: '20px' }}>
-        <Message.Header
-
-        >All fields are requried</Message.Header>
-      </Message>}
-      {hoursNumber && <Message negative style={{ margin: '20px' }}>
-        <Message.Header>Hours must be a number</Message.Header>
-      </Message>}
-      {numVolNumber && <Message negative style={{ margin: '20px' }}>
-        <Message.Header>Number of Volunteers must be a number</Message.Header>
-      </Message>}
+      {allFieldsRequired && (
+        <Message negative style={{ margin: "20px" }}>
+          <Message.Header>All fields are requried</Message.Header>
+        </Message>
+      )}
+      {hoursNumber && (
+        <Message negative style={{ margin: "20px" }}>
+          <Message.Header>Hours must be a number</Message.Header>
+        </Message>
+      )}
+      {numVolNumber && (
+        <Message negative style={{ margin: "20px" }}>
+          <Message.Header>Number of Volunteers must be a number</Message.Header>
+        </Message>
+      )}
+      <div>
+        <Dialog
+          open={openStatus}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"We did not find a volunteer for this username."}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              If you log these hours, they will account for the organization
+              total but will not be connected to an account.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancel} color="#CCDDBD">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleLogHours(hourlog)}
+              color="#CCDDBD"
+              autoFocus
+            >
+              Log Hours
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 }
