@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { putData, getRandomId, fetchUser } from "../../dynoFuncs";
+import { putData, getRandomId, fetchUser, changeHours } from "../../dynoFuncs";
 import { GlobalContext } from "../../GlobalState";
 import { Message } from "semantic-ui-react";
 import Dialog from "@material-ui/core/Dialog";
@@ -225,10 +225,12 @@ export default function AdminHourLog(props) {
     setStatus(false);
   };
 
+  // CHANGE changeHours params
   const handleLogHours = async () => {
     console.log("In Log Hours");
     console.log("hours to log: " + hourlog);
     putData("logged_hours", hourlog);
+    // Note: Since not connecting the hours to a specific user, there is no volunteer table to update
     setStatus(false);
     props.setReloadPage(props.reloadPage + 1);
   };
@@ -288,7 +290,16 @@ export default function AdminHourLog(props) {
       getToast();
     } else {
       item.username = volunteerData.username;
-      putData("logged_hours", item);
+      //putData("logged_hours", item);
+      console.log(volunteerData.username);
+      console.log(parseFloat(volunteerData.totalHours));
+      console.log(parseFloat(hourlog.hours));
+      console.log(volunteerData.volunteerTable);
+      changeHours(
+        volunteerData.username,
+        volunteerData.totalHours + parseFloat(hourlog.hours),
+        volunteerData.volunteerTable
+      );
     }
 
     props.setReloadPage(props.reloadPage + 1);
@@ -419,11 +430,7 @@ export default function AdminHourLog(props) {
             <Button onClick={handleCancel} color="#CCDDBD">
               Cancel
             </Button>
-            <Button
-              onClick={() => handleLogHours(hourlog)}
-              color="#CCDDBD"
-              autoFocus
-            >
+            <Button onClick={() => handleLogHours()} color="#CCDDBD" autoFocus>
               Log Hours
             </Button>
           </DialogActions>
