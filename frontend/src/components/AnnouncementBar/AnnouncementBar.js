@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Box } from "@chakra-ui/react";
 import { fetchData } from "../../dynoFuncs";
 import Announcement from "./Announcement";
-import { Box } from "@chakra-ui/react";
 import "./AnnouncementBar.css";
 import AnnouncementForm from "./announcementForm";
 import { GlobalContext } from "../../GlobalState";
 
-const AnnouncementBar = ({ reloadPageVar, reloadPageFunc }) => {
+function AnnouncementBar({ reloadPageVar, reloadPageFunc }) {
   const [messages, setMessages] = useState();
   const { currentUserInfo } = useContext(GlobalContext);
 
@@ -16,7 +16,7 @@ const AnnouncementBar = ({ reloadPageVar, reloadPageFunc }) => {
 
   if (!messages) return null;
 
-  const getAnnouncementForm = () => {
+  const getAnnouncementForm = () => { // eslint-disable-line
     if (currentUserInfo.is_Admin === "True") {
       return (
         <div className="announcementForm">
@@ -37,9 +37,9 @@ const AnnouncementBar = ({ reloadPageVar, reloadPageFunc }) => {
 
         <div className="announcements">
           {messages
-            .sort(function (a, b) {
-              var keyA = new Date(a.date),
-                keyB = new Date(b.date);
+            .sort((a, b) => {
+              const keyA = new Date(a.date);
+              const keyB = new Date(b.date);
               if (keyA < keyB) return 1;
               if (keyA > keyB) return -1;
               return 0;
@@ -60,6 +60,6 @@ const AnnouncementBar = ({ reloadPageVar, reloadPageFunc }) => {
       </Box>
     </div>
   );
-};
+}
 
 export default AnnouncementBar;

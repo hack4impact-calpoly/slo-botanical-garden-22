@@ -1,23 +1,21 @@
 import React, { useContext } from "react";
-import logo from "../../assets/logo.png";
-import vector from "../../assets/vector.png";
-import userIcon from "../../assets/user-icon.png";
 import { Link as ReactLink, useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import {
   Box,
-  Text,
   Flex,
   Image,
   Spacer,
   HStack,
   Heading,
-  Button,
   Link,
 } from "@chakra-ui/react";
+import logo from "../../assets/logo.png";
+import vector from "../../assets/vector.png";
+import userIcon from "../../assets/user-icon.png";
 import { GlobalContext } from "../../GlobalState";
 
-export default function Navbar(props) {
+export default function Navbar() {
   const navigate = useNavigate();
   const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
 
@@ -32,6 +30,7 @@ export default function Navbar(props) {
   }
 
   const getVolunteerOption = () => {
+    //
     if (currentUserInfo.is_Admin === "True") {
       return (
         <div>
@@ -51,6 +50,8 @@ export default function Navbar(props) {
         </div>
       );
     }
+
+    return null;
   };
 
   return (

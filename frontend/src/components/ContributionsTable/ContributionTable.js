@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import "./ContributionTable.css";
-import { fetchData, deleteHour, changeHours } from "../../dynoFuncs";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -9,12 +8,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+// import ReactTable,{ useSortBy, useTable, usePagination } from "react-table";
+
 import { GlobalContext } from "../../GlobalState";
-import ReactTable from "react-table";
-import { useSortBy, useTable, usePagination } from "react-table";
+import { deleteHour, changeHours } from "../../dynoFuncs";
 import Milestone from "../Milestones/Milestones";
 
-const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
+function ContributionTable({ setReloadPage, reloadPage, loggedHours }) {
   const { currentUserInfo } = useContext(GlobalContext);
   const [open, setOpen] = React.useState(false);
   const [toDelete, setToDelete] = useState();
@@ -28,14 +28,14 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
     setOpen(false);
   };
 
-  var totalHours = 0;
+  let totalHours = 0;
   loggedHours.map(
-    (contribution) => (totalHours += parseFloat(contribution.hours))
+    (contribution) => (totalHours += parseFloat(contribution.hours)) // eslint-disable-line
   );
 
   console.log(loggedHours);
   if (loggedHours.length === 0 || loggedHours === undefined) {
-    loggedHours = [
+    loggedHours = [ // eslint-disable-line
       {
         date: " ",
         hours: " ",
@@ -47,9 +47,10 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
 
   const handleDelete = async () => {
     deleteHour(toDelete);
-    var totalHoursNew = 0;
+    let totalHoursNew = 0;
     loggedHours.map(
-      (contribution) => (totalHoursNew += parseFloat(contribution.hours))
+      // this is probably the broken part :/
+      (contribution) => (totalHoursNew += parseFloat(contribution.hours)) // eslint-disable-line
     );
     changeHours(
       currentUserInfo.username,
@@ -76,7 +77,7 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to delete this volunteering instance?"}
+              Are you sure you want to delete this volunteering instance?
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
@@ -95,6 +96,8 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
         </div>
       );
     }
+
+    return null;
   };
   return (
     <div className="Page">
@@ -103,7 +106,7 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
           <h1 id="title">Your Most Recent Contributions:</h1>
           <h1 id="numHours">{totalHours} Total Hours</h1>
         </div>
-        <table class="fixed_header">
+        <table className="fixed_header">
           <thead>
             <tr id="header">
               <th>Date</th>
@@ -128,6 +131,6 @@ const ContributionTable = ({ setReloadPage, reloadPage, loggedHours }) => {
       <Milestone hours={totalHours} />
     </div>
   );
-};
+}
 
 export default ContributionTable;

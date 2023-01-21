@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { deleteAnnouncement } from "../../dynoFuncs";
 import { Box, Text, Heading } from "@chakra-ui/react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
@@ -9,10 +8,19 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { deleteAnnouncement } from "../../dynoFuncs";
 import "./Announcement.css";
 import { GlobalContext } from "../../GlobalState";
 
-const Announcement = (props) => {
+function Announcement({
+  id,
+  reloadPageVar,
+  title,
+  date,
+  body,
+  poster,
+  reloadPageFunc,
+}) {
   const [open, setOpen] = React.useState(false);
   const { currentUserInfo } = useContext(GlobalContext);
 
@@ -21,16 +29,16 @@ const Announcement = (props) => {
   };
 
   const handleDelete = async () => {
-    deleteAnnouncement(props.id);
+    deleteAnnouncement(id);
     setOpen(false);
-    props.reloadPageFunc(props.reloadPageVar + 1);
+    reloadPageFunc(reloadPageVar + 1);
   };
 
   const handleCancel = () => {
     setOpen(false);
   };
 
-  const getDeleteIcon = () => {
+  const getDeleteIcon = () => { //eslint-disable-line
     if (currentUserInfo.is_Admin === "True") {
       return (
         <IconButton style={{ color: "#cee4bb" }} onClick={handleClickOpen}>
@@ -45,18 +53,18 @@ const Announcement = (props) => {
       <Box pb={4}>
         <Heading color="#CCDDBD" size="md">
           {" "}
-          {props.title}{" "}
+          {title}{" "}
         </Heading>
         <Heading color="#CCDDBD" size="sm">
           {" "}
-          {props.date}{" "}
+          {date}{" "}
         </Heading>
       </Box>
       <Box align="center">
-        <Text color="white"> {props.body} </Text>
+        <Text color="white"> {body} </Text>
         <Text pt={3} color="#CCDDBD">
           {" "}
-          - {props.poster}{" "}
+          - {poster}{" "}
         </Text>
       </Box>
       <div className="trash">{getDeleteIcon()}</div>
@@ -66,7 +74,7 @@ const Announcement = (props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to delete this announcement?"}
+          Are you sure you want to delete this announcement?
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -84,6 +92,6 @@ const Announcement = (props) => {
       </Dialog>
     </Box>
   );
-};
+}
 
 export default Announcement;

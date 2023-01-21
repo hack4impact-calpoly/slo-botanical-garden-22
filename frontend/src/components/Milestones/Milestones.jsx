@@ -1,13 +1,13 @@
 import React from "react";
-import { Label } from "semantic-ui-react";
+// import { Label } from "semantic-ui-react";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar, Step } from "react-step-progress-bar";
 import "./Milestones.css";
 import Legend from "./Legend";
 
-const Milestones = ({ hours }) => {
-  hours = (hours / 50) * 100;
-  console.log(hours);
+function Milestones({ hours }) {
+  const newHours = (hours / 50) * 100;
+  console.log(newHours);
   return (
     <div
       style={{
@@ -20,7 +20,7 @@ const Milestones = ({ hours }) => {
     >
       <div className="bar">
         <ProgressBar
-          percent={hours}
+          percent={newHours}
           filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
         >
           <Step>
@@ -29,7 +29,7 @@ const Milestones = ({ hours }) => {
                 className={`indexedStep ${
                   accomplished ? "accomplished" : null
                 }`}
-              ></div>
+              />
             )}
           </Step>
           <Step>
@@ -60,7 +60,7 @@ const Milestones = ({ hours }) => {
       <Legend />
     </div>
   );
-};
+}
 
 Milestones.defaultProps = {
   hours: 0,

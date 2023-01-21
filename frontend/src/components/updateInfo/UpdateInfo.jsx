@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Form, Checkbox, Message } from "semantic-ui-react";
-import DatePicker from "react-datepicker";
-import { Auth } from "aws-amplify";
+import { Form, Checkbox } from "semantic-ui-react";
+// import DatePicker from "react-datepicker";
+// import { Auth } from "aws-amplify";
 import { useNavigate, Link } from "react-router-dom";
 import { updatePersonalInfo, fetchUser } from "../../dynoFuncs";
 import { GlobalContext } from "../../GlobalState";
 
-const UpdateInfoForm = () => {
+function UpdateInfoForm() {
   const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
   const formType = currentUserInfo.volunteerTable;
   const [signUp, setSignUp] = useState({
@@ -52,8 +52,8 @@ const UpdateInfoForm = () => {
     setSignUpGroup({ ...signUpGroup, [name]: value });
   const handleChange = (e, { name, value }) =>
     setSignUp({ ...signUp, [name]: value });
-  const [startDate, setStartDate] = useState();
-  const [refresh, setRefresh] = useState();
+  const [startDate, setStartDate] = useState(); // eslint-disable-line
+  const [refresh, setRefresh] = useState(); // eslint-disable-line
   const [updateUser, setUpdateUser] = useState(0);
   const navigate = useNavigate();
 
@@ -62,22 +62,22 @@ const UpdateInfoForm = () => {
   useEffect(() => {
     console.log("UPDATING CONTEXT");
     fetchUser("volunteers_group", currentUserInfo.username).then((data) => {
-      var userInfo;
+      let userInfo;
       console.log("Fetch Group Data");
       console.log(data);
       userInfo = data;
       if (!userInfo) {
         fetchUser("volunteers_individual", currentUserInfo.username).then(
-          (data) => {
+          (data) => { // eslint-disable-line
             userInfo = data;
-            userInfo["volunteerTable"] = "volunteers_individual";
-            userInfo["userLoggedIn"] = true;
+            userInfo.volunteerTable = "volunteers_individual";
+            userInfo.userLoggedIn = true;
             setCurrentUser(userInfo);
           }
         );
       } else {
-        userInfo["volunteerTable"] = "volunteers_group";
-        userInfo["userLoggedIn"] = true;
+        userInfo.volunteerTable = "volunteers_group";
+        userInfo.userLoggedIn = true;
         console.log(userInfo);
         setCurrentUser(userInfo);
       }
@@ -320,13 +320,13 @@ const UpdateInfoForm = () => {
           </Link>
         )}
         {formType !== "" && (
-          //<Link to="/profile">
+          // <Link to="/profile">
           <Form.Button content="Update My Information" onSubmit={updateData} />
-          //</Link>
+          // </Link>
         )}
       </div>
     </Form>
   );
-};
+}
 
 export default UpdateInfoForm;

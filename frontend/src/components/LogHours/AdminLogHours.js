@@ -1,6 +1,4 @@
 import React, { useState, useContext } from "react";
-import { putData, getRandomId, fetchUser, changeHours } from "../../dynoFuncs";
-import { GlobalContext } from "../../GlobalState";
 import { Message } from "semantic-ui-react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -8,12 +6,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
+import { GlobalContext } from "../../GlobalState";
+import { putData, getRandomId, fetchUser, changeHours } from "../../dynoFuncs";
 
-export default function AdminHourLog(props) {
-  const [updateStatus, setUpdateStatus] = useState(false);
-  const { currentUserInfo } = useContext(GlobalContext);
+export default function AdminHourLog({ reloadPage, setReloadPage }) {
+  const [updateStatus, setUpdateStatus] = useState(false); // eslint-disable-line
+  const { currentUserInfo } = useContext(GlobalContext); // eslint-disable-line
 
-  var styles = `
+  const styles = `
   body
   {
       background: #f8edeb;
@@ -31,15 +31,15 @@ export default function AdminHourLog(props) {
     border: none;
     border-radius: 10px;
   }
-  
-  
+
+
   .formtitle
   {
     padding: 1%;
     font-family: "Century Gothic", Verdana, monospace;
     font-weight: bold;
   }
-  
+
   .dabox
   {
     display: flex;
@@ -53,21 +53,21 @@ export default function AdminHourLog(props) {
     backdrop-filter: blur(60px);
     border-radius: 10px;
   }
-  
+
   .boxesholder
   {
       display: flex;
       flex-direction: row;
       justify-content: space-around;
   }
-  
+
   .boxcols
   {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
   }
-  
+
   .lilbox
   {
       display: flex;
@@ -77,8 +77,8 @@ export default function AdminHourLog(props) {
       margin-bottom: 0px;
       min-width: 170px;
   }
-  
-  
+
+
   .littlerbox
   {
       box-sizing: border-box;
@@ -104,18 +104,18 @@ export default function AdminHourLog(props) {
       border-color:rgb(185, 185, 185);
       border-radius: 4%;
   }
-  
+
   label
   {
       padding-bottom: 10px;
       color: #535e51;
   }
-  
+
   .num
   {
       max-width: 100px;
   }
-  
+
   #submit {
     background-color: #556453;
     border-radius: 8px;
@@ -160,7 +160,7 @@ export default function AdminHourLog(props) {
 
   `;
 
-  var styleSheet = document.createElement("style");
+  const styleSheet = document.createElement("style");
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
   const [allFieldsRequired, setAllFieldsRequired] = useState(false);
@@ -171,29 +171,25 @@ export default function AdminHourLog(props) {
 
   async function checkVolunteer(volunteer) {
     console.log(volunteer);
-    var userInfo;
+    // let userInfo;
     // Still Very buggy
-    var groupData = await fetchUser("volunteers_group", volunteer).then(
-      (data) => {
-        return data;
-      }
+    const groupData = await fetchUser("volunteers_group", volunteer).then(
+      (data) => data
     );
     if (groupData) {
       console.log("Group Volunteer");
-      groupData["volunteerTable"] = "volunteers_group";
+      groupData.volunteerTable = "volunteers_group";
       return groupData;
     }
 
-    var individualData = await fetchUser(
+    const individualData = await fetchUser(
       "volunteers_individual",
       volunteer
-    ).then((data) => {
-      return data;
-    });
+    ).then((data) => data);
 
     if (individualData) {
       console.log("Indiviual Volunteer");
-      individualData["volunteerTable"] = "volunteers_individual";
+      individualData.volunteerTable = "volunteers_individual";
       return individualData;
     }
 
@@ -228,11 +224,11 @@ export default function AdminHourLog(props) {
   // CHANGE changeHours params
   const handleLogHours = async () => {
     console.log("In Log Hours");
-    console.log("hours to log: " + hourlog);
+    console.log(`hours to log: ${hourlog}`);
     putData("logged_hours", hourlog);
     // Note: Since not connecting the hours to a specific user, there is no volunteer table to update
     setStatus(false);
-    props.setReloadPage(props.reloadPage + 1);
+    setReloadPage(reloadPage + 1);
   };
 
   function getToast() {
@@ -270,16 +266,16 @@ export default function AdminHourLog(props) {
       return;
     }
 
-    if (isNaN(parseFloat(item.hours))) {
+    if (Number.isNaN(parseFloat(item.hours))) {
       setHoursNumber(true);
       return;
     }
-    if (isNaN(parseFloat(item.volunteerCount))) {
+    if (Number.isNaN(parseFloat(item.volunteerCount))) {
       setNumVolNumber(true);
       return;
     }
 
-    var volunteerData = await checkVolunteer(item.volunteer);
+    const volunteerData = await checkVolunteer(item.volunteer);
 
     console.log("Volunteer Data");
     console.log(volunteerData);
@@ -290,7 +286,7 @@ export default function AdminHourLog(props) {
       getToast();
     } else {
       item.username = volunteerData.username;
-      //putData("logged_hours", item);
+      // putData("logged_hours", item);
       console.log(volunteerData.username);
       console.log(parseFloat(volunteerData.totalHours));
       console.log(parseFloat(hourlog.hours));
@@ -302,7 +298,7 @@ export default function AdminHourLog(props) {
       );
     }
 
-    props.setReloadPage(props.reloadPage + 1);
+    setReloadPage(reloadPage + 1);
     console.log("Item in Logged Hours Admin");
     console.log(item);
 
@@ -325,13 +321,13 @@ export default function AdminHourLog(props) {
           <div className="boxcols">
             <div className="lilbox">
               <label>Volunteer Username: </label>
-              <textarea id="volunteerName"></textarea>
+              <textarea id="volunteerName" />
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <div className="activity">
-                <label for="activity">Activity:</label>
+                <label htmlFor="activity">Activity:</label>
                 <select name="activity" id="activityA">
                   <option value="Other">Other</option>
                   <option value="Administration">Administration</option>
@@ -347,7 +343,7 @@ export default function AdminHourLog(props) {
             <h1> </h1>
             <div className="lilbox">
               <label>Hours: </label>
-              <textarea id="hoursA"></textarea>
+              <textarea id="hoursA" />
             </div>
             <h1> </h1>
             <h1> </h1>
@@ -355,13 +351,13 @@ export default function AdminHourLog(props) {
           <div className="boxcols">
             <div className="lilbox">
               <label>Supervisor: </label>
-              <textarea id="supervisorA"></textarea>
+              <textarea id="supervisorA" />
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <label>Number of Volunteers: </label>
-              <textarea id="volunteerCountA" type="number"></textarea>
+              <textarea id="volunteerCountA" type="number" />
             </div>
             <h1> </h1>
             <h1> </h1>
@@ -375,12 +371,7 @@ export default function AdminHourLog(props) {
           <div className="boxcols">
             <div className="lilbox">
               <label>Description: </label>
-              <textarea
-                id="descriptionA"
-                rows="10"
-                cols="20"
-                name="text"
-              ></textarea>
+              <textarea id="descriptionA" rows="10" cols="20" name="text" />
             </div>
             <h1> </h1>
             <h1> </h1>
@@ -395,7 +386,7 @@ export default function AdminHourLog(props) {
           </div>
         </div>
       </div>
-      {console.log("Update: " + updateStatus)}
+      {console.log(`Update: ${updateStatus}`)}
       {allFieldsRequired && (
         <Message negative style={{ margin: "20px" }}>
           <Message.Header>All fields are requried</Message.Header>
@@ -418,7 +409,7 @@ export default function AdminHourLog(props) {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {"We did not find a volunteer for this username."}
+            We did not find a volunteer for this username.
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">

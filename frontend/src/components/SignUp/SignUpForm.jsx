@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Checkbox, Message } from "semantic-ui-react";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import { Auth } from "aws-amplify";
 import { useNavigate, Link } from "react-router-dom";
-import { putData, getRandomId } from "../../dynoFuncs";
+import { putData } from "../../dynoFuncs";
 
 import "./SignUpForm.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const SignUpForm = () => {
+function SignUpForm() {
   const [signUp, setSignUp] = useState({});
   const [signUpGroup, setSignUpGroup] = useState({});
   const [startDate, setStartDate] = useState();
@@ -30,16 +30,19 @@ const SignUpForm = () => {
     setSignUpGroup({ ...signUpGroup, [name]: value });
 
   const signUpCognito = async () => {
+    let hourGoal;
+    let safetyStatus;
+    let item;
     setPasswordsMatch(true);
     setUsernameTaken(false);
     setCorrectEmailFormat(true);
     setErrorMessage(null);
-    var username = group ? signUpGroup.username : signUp.username;
-    var password = group ? signUpGroup.password : signUp.password;
-    var confirmPassword = group
+    const username = group ? signUpGroup.username : signUp.username;
+    const password = group ? signUpGroup.password : signUp.password;
+    const confirmPassword = group
       ? signUpGroup.confirmPassword
       : signUp.confirmPassword;
-    var email = group ? signUpGroup.emailContact : signUp.email;
+    const email = group ? signUpGroup.emailContact : signUp.email;
     if (password !== confirmPassword) {
       setPasswordsMatch(false);
       return;
@@ -54,31 +57,31 @@ const SignUpForm = () => {
         },
       });
       if (group) {
-        var hourGoal = "None Specified";
+        hourGoal = "None Specified";
         if (signUpGroup.hourGoal) {
           hourGoal = signUpGroup.hourGoal;
         }
 
-        var safetyStatus = false;
+        safetyStatus = false;
         if (signUp.safetyStatus) {
           safetyStatus = signUpGroup.safetyStatus;
         }
 
-        var item = {
+        item = {
           username: signUpGroup.username,
           groupName: signUpGroup.groupName,
           nameContact: signUpGroup.nameContact,
           phoneContact: signUpGroup.phoneContact,
           emailContact: signUpGroup.emailContact,
-          hourGoal: hourGoal,
+          hourGoal,
           totalHours: 0,
-          safetyStatus: safetyStatus,
+          safetyStatus,
           is_Admin: "False",
         };
         console.log(item);
         putData("volunteers_group", item);
       } else {
-        var groupName = "None Specified";
+        let groupName = "None Specified";
         if (signUp.groupName) {
           groupName = signUp.groupName;
         }
@@ -88,14 +91,14 @@ const SignUpForm = () => {
           hourGoal = signUp.hourGoal;
         }
 
-        var phonetwo = "None Specified";
+        let phonetwo = "None Specified";
         if (signUp.phonetwo) {
           phonetwo = signUp.phonetwo;
         }
 
-        var Medical_Conditions = "None Specified";
-        if (signUp.Medical_Conditions) {
-          Medical_Conditions = signUp.Medical_Conditions;
+        let medicalConditions = "None Specified";
+        if (signUp.medicalConditions) {
+          medicalConditions = signUp.medicalConditions;
         }
 
         safetyStatus = false;
@@ -103,27 +106,27 @@ const SignUpForm = () => {
           safetyStatus = signUp.safetyStatus;
         }
 
-        var photoStatus = false;
+        let photoStatus = false;
         if (signUp.photoStatus) {
           photoStatus = signUp.photoStatus;
         }
 
-        var volunteerWaiver = false;
+        let volunteerWaiver = false;
         if (signUp.volunteerWaiver) {
           volunteerWaiver = signUp.volunteerWaiver;
         }
 
-        var commService = false;
+        let commService = false;
         if (signUp.commService) {
           commService = signUp.commService;
         }
 
-        var scannedStatus = false;
+        let scannedStatus = false;
         if (signUp.scannedStatus) {
           scannedStatus = signUp.scannedStatus;
         }
 
-        var covidWaiver = false;
+        let covidWaiver = false;
         if (signUp.covidWaiver) {
           covidWaiver = signUp.covidWaiver;
         }
@@ -139,7 +142,7 @@ const SignUpForm = () => {
           Email: signUp.email,
           Birth_date: startDate,
           is_Admin: "False",
-          Medical_Conditions: Medical_Conditions,
+          medicalConditions,
           "Safety Training Status": safetyStatus,
           "Photo-Permission": photoStatus,
           "Secondary Phone": phonetwo,
@@ -147,7 +150,7 @@ const SignUpForm = () => {
           Volunter_Waiver_and_Release: volunteerWaiver,
           "Community Service": commService,
           username: signUp.username,
-          hourGoal: hourGoal,
+          hourGoal,
           mailing_address: signUp.address,
           liveScanned: scannedStatus,
         };
@@ -171,16 +174,16 @@ const SignUpForm = () => {
   };
 
   const confirmSignUp = async () => {
-    var username = group ? signUpGroup.username : signUp.username;
-    var password = group ? signUpGroup.password : signUp.password;
-    var code = group ? signUpGroup.code : signUp.code;
+    const username = group ? signUpGroup.username : signUp.username;
+    const password = group ? signUpGroup.password : signUp.password;
+    const code = group ? signUpGroup.code : signUp.code;
     setErrorMessage(null);
 
     try {
       await Auth.confirmSignUp(username, code);
       await Auth.signIn(username, password);
 
-      //Dynamo was here
+      // Dynamo was here
       navigate("/home");
     } catch (error) {
       setErrorMessage(error.message);
@@ -368,8 +371,8 @@ const SignUpForm = () => {
           <br />
           <Form.TextArea
             label="Medical Conditions"
-            name="Medical_Conditions"
-            value={signUp.Medical_Conditions}
+            name="medicalConditions"
+            value={signUp.medicalConditions}
             onChange={handleChange}
           />
           <div className="bool_top">
@@ -542,6 +545,6 @@ const SignUpForm = () => {
       )}
     </Form>
   );
-};
+}
 
 export default SignUpForm;

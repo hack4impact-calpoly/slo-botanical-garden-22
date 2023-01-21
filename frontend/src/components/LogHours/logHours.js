@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
+import { Message } from "semantic-ui-react";
 import { putData, getRandomId, changeHours } from "../../dynoFuncs";
 import { GlobalContext } from "../../GlobalState";
-import { Message } from "semantic-ui-react";
 
-export default function HourLog(props) {
-  const [updateStatus, setUpdateStatus] = useState(false);
+export default function HourLog({ reloadPage, setReloadPage }) {
+  const [updateStatus, setUpdateStatus] = useState(false); // eslint-disable-line
   const { currentUserInfo } = useContext(GlobalContext);
 
-  var styles = `
+  const styles = `
   body
   {
       background: #f8edeb;
@@ -25,14 +25,14 @@ export default function HourLog(props) {
     border: none;
     border-radius: 10px;
   }
-  
+
   .formtitle
   {
     padding: 1%;
     font-family: "Century Gothic", Verdana, monospace;
     font-weight: bold;
   }
-  
+
   .dabox
   {
     display: flex;
@@ -46,21 +46,21 @@ export default function HourLog(props) {
     backdrop-filter: blur(60px);
     border-radius: 10px;
   }
-  
+
   .boxesholder
   {
       display: flex;
       flex-direction: row;
       justify-content: space-around;
   }
-  
+
   .boxcols
   {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
   }
-  
+
   .lilbox
   {
       display: flex;
@@ -70,8 +70,8 @@ export default function HourLog(props) {
       margin-bottom: 0px;
       min-width: 170px;
   }
-  
-  
+
+
   .littlerbox
   {
       box-sizing: border-box;
@@ -97,18 +97,18 @@ export default function HourLog(props) {
       border-color:rgb(185, 185, 185);
       border-radius: 4%;
   }
-  
+
   label
   {
       padding-bottom: 10px;
       color: #535e51;
   }
-  
+
   .num
   {
       max-width: 100px;
   }
-  
+
   #submit {
       background-color: #556453;
       border-radius: 8px;
@@ -151,7 +151,7 @@ export default function HourLog(props) {
 
   `;
 
-  var styleSheet = document.createElement("style");
+  const styleSheet = document.createElement("style");
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
   const [allFieldsRequired, setAllFieldsRequired] = useState(false);
@@ -162,12 +162,11 @@ export default function HourLog(props) {
     setAllFieldsRequired(false);
     setHoursNumber(false);
     setNumVolNumber(false);
-    var volunteerName = "";
+    let volunteerName = "";
     if (currentUserInfo.volunteerTable === "volunteers_group") {
       volunteerName = currentUserInfo.nameContact;
     } else {
-      volunteerName =
-        currentUserInfo["First Name"] + " " + currentUserInfo["Last Name"];
+      volunteerName = `${currentUserInfo["First Name"]} ${currentUserInfo["Last Name"]}`;
     }
 
     const item = {
@@ -193,11 +192,11 @@ export default function HourLog(props) {
       return;
     }
 
-    if (isNaN(parseFloat(item.hours))) {
+    if (Number.isNaN(parseFloat(item.hours))) {
       setHoursNumber(true);
       return;
     }
-    if (isNaN(parseFloat(item.volunteerCount))) {
+    if (Number.isNaN(parseFloat(item.volunteerCount))) {
       setNumVolNumber(true);
       return;
     }
@@ -220,9 +219,9 @@ export default function HourLog(props) {
       currentUserInfo.volunteerTable
     );
 
-    props.setReloadPage(props.reloadPage + 1);
-    //console.log("Item in Logged Hours");
-    //console.log(item);
+    setReloadPage(reloadPage + 1);
+    // console.log("Item in Logged Hours");
+    // console.log(item);
   }
 
   return (
@@ -235,7 +234,7 @@ export default function HourLog(props) {
           <div className="boxcols">
             <div className="lilbox">
               <div className="activity">
-                <label for="activity">Activity:</label>
+                <label htmlFor="activity">Activity:</label>
                 <select name="activity" id="activity">
                   <option value="Other">Other</option>
                   <option value="Administration">Administration</option>
@@ -251,7 +250,7 @@ export default function HourLog(props) {
             <h1> </h1>
             <div className="lilbox">
               <label>Hours: </label>
-              <textarea id="hours" required></textarea>
+              <textarea id="hours" required />
             </div>
             <h1> </h1>
             <h1> </h1>
@@ -265,13 +264,13 @@ export default function HourLog(props) {
           <div className="boxcols">
             <div className="lilbox">
               <label>Supervisor: </label>
-              <textarea id="supervisor" required></textarea>
+              <textarea id="supervisor" required />
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <label>Number of Volunteers: </label>
-              <textarea id="volunteerCount" type="number" required></textarea>
+              <textarea id="volunteerCount" type="number" required />
             </div>
           </div>
           <div className="boxcols">
@@ -283,7 +282,7 @@ export default function HourLog(props) {
                 cols="20"
                 name="text"
                 required
-              ></textarea>
+              />
             </div>
             <h1> </h1>
             <h1> </h1>
@@ -313,7 +312,7 @@ export default function HourLog(props) {
           <Message.Header>Number of Volunteers must be a number</Message.Header>
         </Message>
       )}
-      {console.log("Update: " + updateStatus)}
+      {console.log(`Update: ${updateStatus}`)}
     </div>
   );
 }
