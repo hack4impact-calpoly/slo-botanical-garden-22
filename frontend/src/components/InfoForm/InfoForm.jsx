@@ -83,24 +83,28 @@ function InfoForm() {
 
     let userInfo;
 
-    fetchUser("volunteers_group", currentUserInfo.username).then((data) => {
-      userInfo = data;
-      if (userInfo) {
-        userInfo.volunteerTable = "volunteers_group";
-      }
-      console.log(userInfo);
-      if (!userInfo) {
-        fetchUser("volunteers_individual", currentUserInfo.username).then(
-          (data) => { // eslint-disable-line
+    fetchUser("volunteers_group-TEST", currentUserInfo.username).then(
+      (data) => {
+        userInfo = data;
+        if (userInfo) {
+          userInfo.volunteerTable = "volunteers_group-TEST";
+        }
+        console.log(userInfo);
+        if (!userInfo) {
+          fetchUser(
+            "volunteers_individual-TEST",
+            currentUserInfo.username
+          ).then((data) => {
+            // eslint-disable-line
             userInfo = data;
-            userInfo.volunteerTable = "volunteers_individual";
+            userInfo.volunteerTable = "volunteers_individual-TEST";
             setCurrentUser(data);
-          }
-        );
-      } else {
-        setCurrentUser(userInfo);
+          });
+        } else {
+          setCurrentUser(userInfo);
+        }
       }
-    });
+    );
 
     navigate("/home");
   };

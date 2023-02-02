@@ -173,35 +173,35 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
     console.log(volunteer);
     // let userInfo;
     // Still Very buggy
-    const groupData = await fetchUser("volunteers_group", volunteer).then(
+    const groupData = await fetchUser("volunteers_group-TEST", volunteer).then(
       (data) => data
     );
     if (groupData) {
       console.log("Group Volunteer");
-      groupData.volunteerTable = "volunteers_group";
+      groupData.volunteerTable = "volunteers_group-TEST";
       return groupData;
     }
 
     const individualData = await fetchUser(
-      "volunteers_individual",
+      "volunteers_individual-TEST",
       volunteer
     ).then((data) => data);
 
     if (individualData) {
       console.log("Indiviual Volunteer");
-      individualData.volunteerTable = "volunteers_individual";
+      individualData.volunteerTable = "volunteers_individual-TEST";
       return individualData;
     }
 
     return { username: "No user found" };
 
-    // fetchUser("volunteers_group", volunteer).then((r) => {
+    // fetchUser("volunteers_group-TEST", volunteer).then((r) => {
     //   console.log("user 1");
     //   console.log(r);
     //   if (r) {
     //     setVolunteer(r);
     //   } else {
-    //     fetchUser("volunteers_individual", volunteer).then((r2) => {
+    //     fetchUser("volunteers_individual-TEST", volunteer).then((r2) => {
     //       console.log("user 2");
     //       console.log(r2);
     //       if (r2) {
@@ -225,7 +225,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
   const handleLogHours = async () => {
     console.log("In Log Hours");
     console.log(`hours to log: ${hourlog}`);
-    putData("logged_hours", hourlog);
+    putData("logged_hours-TEST", hourlog);
     // Note: Since not connecting the hours to a specific user, there is no volunteer table to update
     setStatus(false);
     setReloadPage(reloadPage + 1);
@@ -286,7 +286,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
       getToast();
     } else {
       item.username = volunteerData.username;
-      // putData("logged_hours", item);
+      // putData("logged_hours-TEST", item);
       console.log(volunteerData.username);
       console.log(parseFloat(volunteerData.totalHours));
       console.log(parseFloat(hourlog.hours));

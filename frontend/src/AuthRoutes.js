@@ -14,19 +14,19 @@ export const AuthRoute = ({ disAllowedStatus, children }) => {
   useEffect(() => {
     if (route === "authenticated" && cognitoUser) {
       var userInfo;
-      fetchUser("volunteers_group", cognitoUser.username).then((data) => {
+      fetchUser("volunteers_group-TEST", cognitoUser.username).then((data) => {
         userInfo = data;
         if (!userInfo) {
-          fetchUser("volunteers_individual", cognitoUser.username).then(
+          fetchUser("volunteers_individual-TEST", cognitoUser.username).then(
             (data) => {
               userInfo = data;
-              userInfo["volunteerTable"] = "volunteers_individual";
+              userInfo["volunteerTable"] = "volunteers_individual-TEST";
               userInfo["userLoggedIn"] = true;
               setCurrentUser(userInfo);
             }
           );
         } else {
-          userInfo["volunteerTable"] = "volunteers_group";
+          userInfo["volunteerTable"] = "volunteers_group-TEST";
           userInfo["userLoggedIn"] = true;
           console.log(userInfo);
           setCurrentUser(userInfo);

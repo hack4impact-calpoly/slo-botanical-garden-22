@@ -13,7 +13,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 export const getRandomId = () => (Math.random() * Date.now()).toString(36);
 
 // Grab all data from a table
-//  tableName: admin_announcements | users | hoursLog
+//  tableName: admin_announcements-TEST | users | hoursLog
 export const fetchData = async (tableName) => {
   let params = { TableName: tableName };
   let cont = true;
@@ -36,7 +36,8 @@ export const fetchData = async (tableName) => {
   };
 
   while (cont) {
-    entries = await new Promise((resolve, reject) => { // eslint-disable-line
+    entries = await new Promise((resolve, reject) => {
+      // eslint-disable-line
       docClient.scan(params, (err, data) => {
         if (err) reject(err);
         else resolve(data);
@@ -75,7 +76,7 @@ export const fetchUser = async (tableName, user) => {
 };
 
 // Store `data` in `tableName`
-//  tableName: admin_announcements | users | hoursLog
+//  tableName: admin_announcements-TEST | users | hoursLog
 export const putData = (tableName, data) => {
   console.log("PUTDATA");
   console.log(data);
@@ -84,7 +85,8 @@ export const putData = (tableName, data) => {
     Item: data,
   };
 
-  docClient.put(params, (err, data) => { // eslint-disable-line
+  docClient.put(params, (err, data) => {
+    // eslint-disable-line
     if (err) {
       console.log("Error", err);
     } else {
@@ -99,7 +101,7 @@ export const deleteAnnouncement = (itemKey) => {
     Key: {
       primary_id: itemKey,
     },
-    TableName: "admin_announcements",
+    TableName: "admin_announcements-TEST",
   };
 
   docClient.delete(params, (err, data) => {
@@ -141,7 +143,7 @@ export const deleteHour = (itemKey) => {
     Key: {
       primary_id: itemKey,
     },
-    TableName: "logged_hours",
+    TableName: "logged_hours-TEST",
   };
 
   docClient.delete(params, (err, data) => {
@@ -187,7 +189,7 @@ export const updateVolunteerInformation = (user, item) => {
   console.log(user);
   console.log(item);
   const params = {
-    TableName: "volunteers_individual",
+    TableName: "volunteers_individual-TEST",
     Key: {
       username: user,
     },
@@ -267,9 +269,9 @@ export const updatePersonalInfo = (item, table) => {
   console.log(item);
   console.log(table);
   let params;
-  if (table === "volunteers_individual") {
+  if (table === "volunteers_individual-TEST") {
     params = {
-      TableName: "volunteers_individual",
+      TableName: "volunteers_individual-TEST",
       Key: {
         username: item.username,
       },
@@ -316,7 +318,7 @@ export const updatePersonalInfo = (item, table) => {
     };
   } else {
     params = {
-      TableName: "volunteers_group",
+      TableName: "volunteers_group-TEST",
       Key: {
         username: item.username,
       },

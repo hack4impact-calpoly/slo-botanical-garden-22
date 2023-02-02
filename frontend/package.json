@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/ui-react": "^2.6.2",
+    "@aws-amplify/ui-react": "^4.3.6",
     "@aws-sdk/client-cognito-identity-provider": "^3.81.0",
     "@chakra-ui/react": "^1.8.6",
     "@emotion/react": "^11.8.1",
@@ -15,7 +15,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "amazon-cognito-identity-js": "^5.2.8",
-    "aws-amplify": "^4.3.14",
+    "aws-amplify": "^5.0.12",
     "aws-cli": "^0.0.2",
     "aws-sdk": "^2.1077.0",
     "cors": "^2.8.5",

@@ -77,9 +77,10 @@ export const getUserInfoCandD = (user, setCurrentUser) => {
     }
     console.log(userInfo);
     if (!userInfo) {
-      fetchUser("volunteers_individual", user.username).then((data) => { // eslint-disable-line
+      fetchUser("volunteers_individual-TEST", user.username).then((data) => {
+        // eslint-disable-line
         userInfo = data;
-        userInfo.volunteerTable = "volunteers_individual";
+        userInfo.volunteerTable = "volunteers_individual-TEST";
         setCurrentUser(data);
       });
     } else {
@@ -95,7 +96,8 @@ export default function Login({ children }) {
 
   const from = location.state?.from?.pathname || "/home";
 
-  function getUserInfoCandD(user) { // eslint-disable-line
+  function getUserInfoCandD(user) {
+    // eslint-disable-line
     let userInfo;
 
     fetchUser("volunteers_group", user.username).then((data) => {
@@ -106,9 +108,10 @@ export default function Login({ children }) {
       }
       // console.log(userInfo);
       if (!userInfo) {
-        fetchUser("volunteers_individual", user.username).then((data) => { // eslint-disable-line
+        fetchUser("volunteers_individual-TEST", user.username).then((data) => {
+          // eslint-disable-line
           userInfo = data;
-          userInfo.volunteerTable = "volunteers_individual";
+          userInfo.volunteerTable = "volunteers_individual-TEST";
           userInfo.userLoggedIn = true;
 
           setCurrentUser(data);
@@ -122,7 +125,9 @@ export default function Login({ children }) {
   return (
     <div className="signInPage">
       <Authenticator className="signIn" hideSignUp components={getComp()}>
-        {({ signOut, user }) => ( // eslint-disable-line
+        {(
+          { signOut, user } // eslint-disable-line
+        ) => (
           <main>
             {getUserInfoCandD(user)}
             {children}

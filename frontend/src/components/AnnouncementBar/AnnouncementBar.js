@@ -11,12 +11,13 @@ function AnnouncementBar({ reloadPageVar, reloadPageFunc }) {
   const { currentUserInfo } = useContext(GlobalContext);
 
   useEffect(() => {
-    fetchData("admin_announcements").then((data) => setMessages(data));
+    fetchData("admin_announcements-TEST").then((data) => setMessages(data));
   }, [reloadPageVar]);
 
   if (!messages) return null;
 
-  const getAnnouncementForm = () => { // eslint-disable-line
+  const getAnnouncementForm = () => {
+    // eslint-disable-line
     if (currentUserInfo.is_Admin === "True") {
       return (
         <div className="announcementForm">

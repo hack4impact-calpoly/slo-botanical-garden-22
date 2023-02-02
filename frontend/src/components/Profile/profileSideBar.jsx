@@ -47,7 +47,7 @@ function ProfileSideBar({ hours }) {
   const getInfo = () => {
     // console.log("Current User Info");
     // console.log(currentUserInfo);
-    if (currentUserInfo.volunteerTable === "volunteers_group") {
+    if (currentUserInfo.volunteerTable === "volunteers_group-TEST") {
       return (
         <div className="profInfoG">
           {getExport()}

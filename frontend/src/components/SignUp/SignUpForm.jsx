@@ -79,7 +79,7 @@ function SignUpForm() {
           is_Admin: "False",
         };
         console.log(item);
-        putData("volunteers_group", item);
+        putData("volunteers_group-TEST", item);
       } else {
         let groupName = "None Specified";
         if (signUp.groupName) {
@@ -155,7 +155,7 @@ function SignUpForm() {
           liveScanned: scannedStatus,
         };
         console.log(item);
-        putData("volunteers_individual", item);
+        putData("volunteers_individual-TEST", item);
       }
 
       // push data to dynamo

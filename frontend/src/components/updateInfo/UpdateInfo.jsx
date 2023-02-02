@@ -61,37 +61,41 @@ function UpdateInfoForm() {
 
   useEffect(() => {
     console.log("UPDATING CONTEXT");
-    fetchUser("volunteers_group", currentUserInfo.username).then((data) => {
-      let userInfo;
-      console.log("Fetch Group Data");
-      console.log(data);
-      userInfo = data;
-      if (!userInfo) {
-        fetchUser("volunteers_individual", currentUserInfo.username).then(
-          (data) => { // eslint-disable-line
+    fetchUser("volunteers_group-TEST", currentUserInfo.username).then(
+      (data) => {
+        let userInfo;
+        console.log("Fetch Group Data");
+        console.log(data);
+        userInfo = data;
+        if (!userInfo) {
+          fetchUser(
+            "volunteers_individual-TEST",
+            currentUserInfo.username
+          ).then((data) => {
+            // eslint-disable-line
             userInfo = data;
-            userInfo.volunteerTable = "volunteers_individual";
+            userInfo.volunteerTable = "volunteers_individual-TEST";
             userInfo.userLoggedIn = true;
             setCurrentUser(userInfo);
-          }
-        );
-      } else {
-        userInfo.volunteerTable = "volunteers_group";
-        userInfo.userLoggedIn = true;
-        console.log(userInfo);
-        setCurrentUser(userInfo);
+          });
+        } else {
+          userInfo.volunteerTable = "volunteers_group-TEST";
+          userInfo.userLoggedIn = true;
+          console.log(userInfo);
+          setCurrentUser(userInfo);
+        }
       }
-    });
+    );
     if (updateUser !== 0) {
       navigate("/profile");
     }
   }, [updateUser]);
 
   const updateData = () => {
-    if (currentUserInfo.volunteerTable === "volunteers_group") {
-      updatePersonalInfo(signUpGroup, "volunteers_group");
+    if (currentUserInfo.volunteerTable === "volunteers_group-TEST") {
+      updatePersonalInfo(signUpGroup, "volunteers_group-TEST");
     } else {
-      updatePersonalInfo(signUp, "volunteers_individual");
+      updatePersonalInfo(signUp, "volunteers_individual-TEST");
     }
     setUpdateUser(updateUser + 1);
   };
@@ -103,7 +107,7 @@ function UpdateInfoForm() {
       style={{ padding: "40px", display: "flex", flexDirection: "column" }}
       onSubmit={updateData}
     >
-      {formType === "volunteers_individual" && (
+      {formType === "volunteers_individual-TEST" && (
         <div>
           <h1
             style={{
@@ -256,7 +260,7 @@ function UpdateInfoForm() {
           <br />
         </div>
       )}
-      {formType === "volunteers_group" && (
+      {formType === "volunteers_group-TEST" && (
         <Form>
           <h1
             style={{

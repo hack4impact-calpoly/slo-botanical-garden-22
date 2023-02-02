@@ -99,7 +99,7 @@ export default function AnnouncementForm({ reloadPageVar, reloadPageFunc }) {
     console.log("Announcement Form props");
     console.log(reloadPageVar);
     console.log(reloadPageFunc);
-    putData("admin_announcements", item);
+    putData("admin_announcements-TEST", item);
     reloadPageFunc(reloadPageVar + 1);
     console.log(newAnnouncement);
     console.log(item);

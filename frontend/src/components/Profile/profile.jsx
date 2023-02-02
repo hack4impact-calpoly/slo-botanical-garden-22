@@ -20,7 +20,7 @@ function Profile() {
   const csvLog = useRef(); // eslint-disable-line
 
   useEffect(() => {
-    fetchData("logged_hours").then((data) => {
+    fetchData("logged_hours-TEST").then((data) => {
       setAdminLoggedHours(
         data
           .filter((con) => con.username === "AdminLogged")
@@ -42,7 +42,7 @@ function Profile() {
   useEffect(() => {}, [setTotalHours]);
 
   const getName = () => {
-    if (currentUserInfo.volunteerTable === "volunteers_group") {
+    if (currentUserInfo.volunteerTable === "volunteers_group-TEST") {
       return <h className="hName">{currentUserInfo.groupName}</h>;
     }
     return (

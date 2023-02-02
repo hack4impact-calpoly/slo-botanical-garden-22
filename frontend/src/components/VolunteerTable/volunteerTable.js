@@ -60,9 +60,11 @@ function VolunteerTable() {
   const csvLog = useRef();
 
   useEffect(() => {
-    fetchData("logged_hours").then((result) => setLoggedHours(result));
-    fetchData("volunteers_group").then((result) => setGroup(result));
-    fetchData("volunteers_individual").then((result) => setVolunteers(result));
+    fetchData("logged_hours-TEST").then((result) => setLoggedHours(result));
+    fetchData("volunteers_group-TEST").then((result) => setGroup(result));
+    fetchData("volunteers_individual-TEST").then((result) =>
+      setVolunteers(result)
+    );
   }, [reloadPage]);
 
   const data = volunteers;
@@ -294,7 +296,7 @@ function Table(props) {
     console.log(`UserDel: ${userToDelete}`);
     const ret = await disableUser(userToDelete);
     console.log(ret);
-    deleteVolunteer(userToDelete, "volunteers_individual");
+    deleteVolunteer(userToDelete, "volunteers_individual-TEST");
     setDelete(false);
     props.setReloadPage(props.reloadPage + 1);
   };
@@ -302,7 +304,7 @@ function Table(props) {
   const handleStatusChange = async () => {
     changeVolunteerStatus(
       userToStatusChage,
-      "volunteers_individual",
+      "volunteers_individual-TEST",
       userStatus
     );
     setStatus(false);
@@ -602,7 +604,7 @@ function GroupTable(props) {
   const handleDelete = async () => {
     // console.log("IN handle delete");
     console.log(`UserDel: ${userToDelete}`);
-    deleteVolunteer(userToDelete, "volunteers_group");
+    deleteVolunteer(userToDelete, "volunteers_group-TEST");
     const ret = await disableUser(userToDelete);
     console.log(ret);
     setDelete(false);
@@ -610,7 +612,11 @@ function GroupTable(props) {
   };
 
   const handleStatusChange = async () => {
-    changeVolunteerStatus(userToStatusChage, "volunteers_group", userStatus);
+    changeVolunteerStatus(
+      userToStatusChage,
+      "volunteers_group-TEST",
+      userStatus
+    );
     setStatus(false);
     props.setReloadPage(props.reloadPage + 1);
   };
@@ -768,7 +774,8 @@ function GroupTable(props) {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {page.map((row) => { // eslint-disable-line
+              {page.map((row) => {
+                // eslint-disable-line
                 if (row.values.Email === "") return;
                 prepareRow(row);
                 return (

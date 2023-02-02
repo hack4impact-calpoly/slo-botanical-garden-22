@@ -163,7 +163,7 @@ export default function HourLog({ reloadPage, setReloadPage }) {
     setHoursNumber(false);
     setNumVolNumber(false);
     let volunteerName = "";
-    if (currentUserInfo.volunteerTable === "volunteers_group") {
+    if (currentUserInfo.volunteerTable === "volunteers_group-TEST") {
       volunteerName = currentUserInfo.nameContact;
     } else {
       volunteerName = `${currentUserInfo["First Name"]} ${currentUserInfo["Last Name"]}`;
@@ -209,7 +209,7 @@ export default function HourLog({ reloadPage, setReloadPage }) {
     document.getElementById("hours").value = "";
     document.getElementById("volunteerCount").value = "";
 
-    putData("logged_hours", item);
+    putData("logged_hours-TEST", item);
     console.log("Total Hours Log");
     console.log(currentUserInfo.totalHours);
 
