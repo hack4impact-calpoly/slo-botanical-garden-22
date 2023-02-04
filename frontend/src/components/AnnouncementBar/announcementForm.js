@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-//import styles from "./AnnouncementForm.module.css";
+// import styles from "./AnnouncementForm.module.css";
 import { putData, getRandomId } from "../../dynoFuncs";
 
-export default function AnnouncementForm(props) {
+export default function AnnouncementForm({ reloadPageVar, reloadPageFunc }) {
   const [newAnnouncement, setNewAnnouncement] = useState({
     Message: "Nothing Yet",
   });
 
-  var styles = `    
+  const styles = `
     #formtitle {
       margin: 10px;
       display: flex;
@@ -15,7 +15,7 @@ export default function AnnouncementForm(props) {
       font-size=1em;
       color="#465344"
     }
-    
+
     #lilbox {
       display: flex;
       flex-direction: column;
@@ -24,14 +24,14 @@ export default function AnnouncementForm(props) {
       background-color: #576754;
       color: #CCDDBD;
     }
-    
+
     #lilbuttons {
       display: flex;
       padding: 10px;
       flex-basis: 10px;
       justify-content: space-evenly;
     }
-    
+
     #publish {
       font-family: "Century Gothic", Verdana, monospace;
       font-weight: bold;
@@ -44,14 +44,14 @@ export default function AnnouncementForm(props) {
       padding: 10px;
       width: 100%;
     }
-    
+
     .textBoxes {
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding: 10%;
     }
-    
+
     .littlestbox {
       box-sizing: border-box;
       background-color: #cee4bb;
@@ -66,14 +66,14 @@ export default function AnnouncementForm(props) {
       height: 10%;
       width: 95%;
       color: #576754;
-    } 
+    }
 
     textarea::placeholder {
-      color: #576754;  
+      color: #576754;
     }
   `;
 
-  var styleSheet = document.createElement("style");
+  const styleSheet = document.createElement("style");
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
 
@@ -81,11 +81,11 @@ export default function AnnouncementForm(props) {
     setNewAnnouncement("TEST", () => {
       console.log(newAnnouncement);
     });
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy;
+    let today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
+    const yyyy = today.getFullYear();
+    today = `${mm}/${dd}/${yyyy}`;
     const item = {
       primary_id: getRandomId(),
       content: document.getElementById("content").value,
@@ -97,10 +97,10 @@ export default function AnnouncementForm(props) {
     document.getElementById("poster").value = "";
     document.getElementById("title").value = "";
     console.log("Announcement Form props");
-    console.log(props.reloadPageVar);
-    console.log(props.reloadPageFunc);
-    putData("admin_announcements", item);
-    props.reloadPageFunc(props.reloadPageVar + 1);
+    console.log(reloadPageVar);
+    console.log(reloadPageFunc);
+    putData("admin_announcements-TEST", item);
+    reloadPageFunc(reloadPageVar + 1);
     console.log(newAnnouncement);
     console.log(item);
     console.log(newAnnouncement);
@@ -119,7 +119,7 @@ export default function AnnouncementForm(props) {
               cols="100%"
               name="title"
               placeholder="Title"
-            ></textarea>
+            />
             <textarea
               id="poster"
               className="littlestbox"
@@ -127,7 +127,7 @@ export default function AnnouncementForm(props) {
               cols="100%"
               name="poster"
               placeholder="Poster"
-            ></textarea>
+            />
             <textarea
               className="littlestbox"
               id="content"
@@ -135,7 +135,7 @@ export default function AnnouncementForm(props) {
               cols="100%"
               name="content"
               placeholder="Message"
-            ></textarea>
+            />
             <br />
           </div>
           <div id="lilbuttons" className={styles.lilbuttons}>

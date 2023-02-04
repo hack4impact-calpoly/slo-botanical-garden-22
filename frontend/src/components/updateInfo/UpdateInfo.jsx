@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Form, Checkbox, Message } from "semantic-ui-react";
-import DatePicker from "react-datepicker";
-import { Auth } from "aws-amplify";
+import { Form, Checkbox } from "semantic-ui-react";
+// import DatePicker from "react-datepicker";
+// import { Auth } from "aws-amplify";
 import { useNavigate, Link } from "react-router-dom";
 import { updatePersonalInfo, fetchUser } from "../../dynoFuncs";
 import { GlobalContext } from "../../GlobalState";
 
-const UpdateInfoForm = () => {
+function UpdateInfoForm() {
   const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
   const formType = currentUserInfo.volunteerTable;
   const [signUp, setSignUp] = useState({
@@ -52,8 +52,8 @@ const UpdateInfoForm = () => {
     setSignUpGroup({ ...signUpGroup, [name]: value });
   const handleChange = (e, { name, value }) =>
     setSignUp({ ...signUp, [name]: value });
-  const [startDate, setStartDate] = useState();
-  const [refresh, setRefresh] = useState();
+  const [startDate, setStartDate] = useState(); // eslint-disable-line
+  const [refresh, setRefresh] = useState(); // eslint-disable-line
   const [updateUser, setUpdateUser] = useState(0);
   const navigate = useNavigate();
 
@@ -61,37 +61,41 @@ const UpdateInfoForm = () => {
 
   useEffect(() => {
     console.log("UPDATING CONTEXT");
-    fetchUser("volunteers_group", currentUserInfo.username).then((data) => {
-      var userInfo;
-      console.log("Fetch Group Data");
-      console.log(data);
-      userInfo = data;
-      if (!userInfo) {
-        fetchUser("volunteers_individual", currentUserInfo.username).then(
-          (data) => {
+    fetchUser("volunteers_group-TEST", currentUserInfo.username).then(
+      (data) => {
+        let userInfo;
+        console.log("Fetch Group Data");
+        console.log(data);
+        userInfo = data;
+        if (!userInfo) {
+          fetchUser(
+            "volunteers_individual-TEST",
+            currentUserInfo.username
+          ).then((data) => {
+            // eslint-disable-line
             userInfo = data;
-            userInfo["volunteerTable"] = "volunteers_individual";
-            userInfo["userLoggedIn"] = true;
+            userInfo.volunteerTable = "volunteers_individual-TEST";
+            userInfo.userLoggedIn = true;
             setCurrentUser(userInfo);
-          }
-        );
-      } else {
-        userInfo["volunteerTable"] = "volunteers_group";
-        userInfo["userLoggedIn"] = true;
-        console.log(userInfo);
-        setCurrentUser(userInfo);
+          });
+        } else {
+          userInfo.volunteerTable = "volunteers_group-TEST";
+          userInfo.userLoggedIn = true;
+          console.log(userInfo);
+          setCurrentUser(userInfo);
+        }
       }
-    });
+    );
     if (updateUser !== 0) {
       navigate("/profile");
     }
   }, [updateUser]);
 
   const updateData = () => {
-    if (currentUserInfo.volunteerTable === "volunteers_group") {
-      updatePersonalInfo(signUpGroup, "volunteers_group");
+    if (currentUserInfo.volunteerTable === "volunteers_group-TEST") {
+      updatePersonalInfo(signUpGroup, "volunteers_group-TEST");
     } else {
-      updatePersonalInfo(signUp, "volunteers_individual");
+      updatePersonalInfo(signUp, "volunteers_individual-TEST");
     }
     setUpdateUser(updateUser + 1);
   };
@@ -103,7 +107,7 @@ const UpdateInfoForm = () => {
       style={{ padding: "40px", display: "flex", flexDirection: "column" }}
       onSubmit={updateData}
     >
-      {formType === "volunteers_individual" && (
+      {formType === "volunteers_individual-TEST" && (
         <div>
           <h1
             style={{
@@ -256,7 +260,7 @@ const UpdateInfoForm = () => {
           <br />
         </div>
       )}
-      {formType === "volunteers_group" && (
+      {formType === "volunteers_group-TEST" && (
         <Form>
           <h1
             style={{
@@ -320,13 +324,13 @@ const UpdateInfoForm = () => {
           </Link>
         )}
         {formType !== "" && (
-          //<Link to="/profile">
+          // <Link to="/profile">
           <Form.Button content="Update My Information" onSubmit={updateData} />
-          //</Link>
+          // </Link>
         )}
       </div>
     </Form>
   );
-};
+}
 
 export default UpdateInfoForm;

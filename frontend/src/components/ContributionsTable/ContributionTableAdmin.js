@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import "./ContributionTable.css";
-import { fetchData, deleteHour } from "../../dynoFuncs";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -9,12 +8,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { GlobalContext } from "../../GlobalState";
-import ReactTable from "react-table";
-import { useSortBy, useTable, usePagination } from "react-table";
+// import ReactTable, { useSortBy, useTable, usePagination } from "react-table";
 
-const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
-  const { currentUserInfo } = useContext(GlobalContext);
+// import { GlobalContext } from "../../GlobalState";
+import { deleteHour } from "../../dynoFuncs";
+
+function ContributionTableAdmin({ setReloadPage, reloadPage, loggedHours }) {
+  // const { currentUserInfo } = useContext(GlobalContext);
   const [open, setOpen] = React.useState(false);
   const [toDelete, setToDelete] = useState();
 
@@ -34,7 +34,7 @@ const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
   };
 
   if (loggedHours.length === 0 || loggedHours === undefined) {
-    loggedHours = [
+    loggedHours = [ // eslint-disable-line
       {
         date: " ",
         hours: " ",
@@ -60,7 +60,7 @@ const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to delete this volunteering instance?"}
+              Are you sure you want to delete this volunteering instance?
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
@@ -79,6 +79,8 @@ const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
         </div>
       );
     }
+
+    return null;
   };
 
   return (
@@ -89,7 +91,7 @@ const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
         </div>
         <h1> </h1>
         <h1> </h1>
-        <table class="fixed_header">
+        <table className="fixed_header">
           <thead>
             <tr id="header">
               <th>Date</th>
@@ -113,12 +115,11 @@ const ContributionTableAdmin = ({ setReloadPage, reloadPage, loggedHours }) => {
       </div>
     </div>
   );
-};
+}
 
 export default ContributionTableAdmin;
 
-{
-  /* <ReactTable
+/* <ReactTable
           data={loggedHours}
           pageSizeOptions={[20, 30, 50, 100, 200, 500]}
           columns={[
@@ -141,10 +142,8 @@ export default ContributionTableAdmin;
             };
           }}
         /> */
-}
 
-{
-  /* <table className="table">
+/* <table className="table">
           <tbody>
             <tr id="header">
               <th>Date</th>
@@ -163,4 +162,3 @@ export default ContributionTableAdmin;
             ))}
           </tbody>
         </table> */
-}

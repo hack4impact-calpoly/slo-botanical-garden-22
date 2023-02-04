@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { fetchData, deleteHour } from "../../dynoFuncs";
+import { fetchData } from "../../dynoFuncs";
 import HourLog from "../LogHours/logHours";
 import AdminHourLog from "../LogHours/AdminLogHours";
 import Navbar from "../Navbar/navbar";
@@ -9,24 +9,24 @@ import ContributionTableAdmin from "../ContributionsTable/ContributionTableAdmin
 import "./profile.css";
 import ProfileSideBar from "./profileSideBar";
 
-const Profile = () => {
+function Profile() {
   const { currentUserInfo } = useContext(GlobalContext);
   const [reloadPage, setReloadPage] = useState(0);
   const [loggedHours, setLoggedHours] = useState();
   const [adminLoggedHours, setAdminLoggedHours] = useState();
-  const [totalHours, setTotalHours] = useState(0);
-  const [startDate, setStartDate] = React.useState();
-  const [endDate, setEndDate] = React.useState();
-  const csvLog = useRef();
+  const [totalHours, setTotalHours] = useState(0); // eslint-disable-line
+  const [startDate, setStartDate] = React.useState(); // eslint-disable-line
+  const [endDate, setEndDate] = React.useState(); // eslint-disable-line
+  const csvLog = useRef(); // eslint-disable-line
 
   useEffect(() => {
-    fetchData("logged_hours").then((data) => {
+    fetchData("logged_hours-TEST").then((data) => {
       setAdminLoggedHours(
         data
           .filter((con) => con.username === "AdminLogged")
-          .sort(function (a, b) {
-            var keyA = new Date(a.date),
-              keyB = new Date(b.date);
+          .sort((a, b) => {
+            const keyA = new Date(a.date);
+            const keyB = new Date(b.date);
             if (keyA < keyB) return 1;
             if (keyA > keyB) return -1;
             return 0;
@@ -42,23 +42,21 @@ const Profile = () => {
   useEffect(() => {}, [setTotalHours]);
 
   const getName = () => {
-    if (currentUserInfo.volunteerTable === "volunteers_group") {
+    if (currentUserInfo.volunteerTable === "volunteers_group-TEST") {
       return <h className="hName">{currentUserInfo.groupName}</h>;
-    } else {
-      return (
-        <h className="hName">
-          {currentUserInfo["First Name"]} {currentUserInfo["Last Name"]}
-        </h>
-      );
     }
+    return (
+      <h className="hName">
+        {currentUserInfo["First Name"]} {currentUserInfo["Last Name"]}
+      </h>
+    );
   };
 
   const getStatus = () => {
     if (currentUserInfo.is_Admin === "True") {
       return <h className="status">Administration</h>;
-    } else {
-      return <h className="status">Volunteer</h>;
     }
+    return <h className="status">Volunteer</h>;
   };
 
   const getAdminLogger = () => {
@@ -86,6 +84,8 @@ const Profile = () => {
         </div>
       );
     }
+
+    return null;
   };
 
   if (!loggedHours || !currentUserInfo) return null;
@@ -93,10 +93,10 @@ const Profile = () => {
     <>
       <Navbar />
       <div className="wholePage">
-        <div ClassName="LeftSide">
+        <div className="LeftSide">
           <ProfileSideBar hours={loggedHours} />
         </div>
-        <div ClassName="RightSide">
+        <div className="RightSide">
           <div className="TopLabel">
             {getName()}
             {getStatus()}
@@ -107,9 +107,9 @@ const Profile = () => {
               reloadPage={reloadPage}
               loggedHours={loggedHours
                 .filter((con) => con.username === currentUserInfo.username)
-                .sort(function (a, b) {
-                  var keyA = new Date(a.date),
-                    keyB = new Date(b.date);
+                .sort((a, b) => {
+                  const keyA = new Date(a.date);
+                  const keyB = new Date(b.date);
                   if (keyA < keyB) return 1;
                   if (keyA > keyB) return -1;
                   return 0;
@@ -124,6 +124,6 @@ const Profile = () => {
       </div>
     </>
   );
-};
+}
 
 export default Profile;

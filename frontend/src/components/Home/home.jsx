@@ -1,11 +1,11 @@
 import "../../App.css";
-import AnnouncementBar from "../AnnouncementBar/AnnouncementBar.js";
 import React, { useState, useEffect, useContext } from "react";
-import { fetchData } from "../../dynoFuncs";
 import { Navigate } from "react-router-dom";
-import { Auth } from "aws-amplify";
-import { GlobalContext } from "../../GlobalState";
+// import { Auth } from "aws-amplify";
 import { Box, Flex, Center, Spacer, Heading } from "@chakra-ui/react";
+import { GlobalContext } from "../../GlobalState";
+import { fetchData } from "../../dynoFuncs";
+import AnnouncementBar from "../AnnouncementBar/AnnouncementBar";
 import Navbar from "../Navbar/navbar";
 
 export default function Home() {
@@ -13,8 +13,14 @@ export default function Home() {
   const [loggedHours, setLoggedHours] = useState();
   const [reloadPage, setReloadPage] = useState(0);
 
+  const lastWeekWindowStart = () => {
+    const date = new Date();
+    date.setDate(date.getDate() - 7);
+    return date; // eslint-disable-line
+  };
+
   useEffect(() => {
-    fetchData("logged_hours").then((data) => {
+    fetchData("logged_hours-TEST").then((data) => {
       setLoggedHours(
         data.filter(
           (h) =>
@@ -25,28 +31,22 @@ export default function Home() {
     });
   }, []);
 
-  const lastWeekWindowStart = () => {
-    var date = new Date();
-    date.setDate(date.getDate() - 7);
-    return date;
-  };
-
   function getThisWeeksHoursTotal() {
     let totalHoursPre = 0;
-    loggedHours.map((h) => (totalHoursPre += parseFloat(h.hours)));
-    return totalHoursPre;
+    loggedHours.map((h) => (totalHoursPre += parseFloat(h.hours))); // eslint-disable-line
+    return totalHoursPre; // eslint-disable-line
   }
 
   function getThisWeeksHoursTotalByDepartment(department) {
     let totalHoursPre = 0;
     loggedHours
       .filter((h) => h.activity === department)
-      .map((h) => (totalHoursPre += parseFloat(h.hours)));
+      .map((h) => (totalHoursPre += parseFloat(h.hours))); // eslint-disable-line
     return totalHoursPre;
   }
 
   function countVolunteersThisWeek() {
-    let volunteerCount = new Set(loggedHours.map((toV) => toV.username)).size;
+    const volunteerCount = new Set(loggedHours.map((toV) => toV.username)).size;
     return volunteerCount;
   }
   if (!currentUserInfo || !loggedHours) return null;
@@ -55,7 +55,7 @@ export default function Home() {
     <>
       {!currentUserInfo ? (
         <Navigate replace to="/" />
-      ) : currentUserInfo["mailing_address"] === "Not Specified" ? (
+      ) : currentUserInfo.mailing_address === "Not Specified" ? (
         <Navigate replace to="/info" />
       ) : (
         <>
@@ -64,7 +64,7 @@ export default function Home() {
             <Flex w="100%">
               <Box
                 w="25%"
-                borderRadius={"12px"}
+                borderRadius="12px"
                 p={3}
                 boxShadow="dark-lg"
                 backdropFilter="blur(60px)"
@@ -84,18 +84,18 @@ export default function Home() {
               <Box
                 w="72%"
                 h="100vh"
-                borderRadius={"12px"}
+                borderRadius="12px"
                 boxShadow="dark-lg"
                 backdropFilter="blur(60px)"
               >
                 <Box
-                  borderRadius={"12px"}
+                  borderRadius="12px"
                   boxShadow="lg"
                   bg="#F5F5F559"
                   backdropFilter="blur(60px)"
                   bgOpacity="0.75"
                 >
-                  <Box bg="#576754" borderRadius={"12px"} boxShadow="dark-lg">
+                  <Box bg="#576754" borderRadius="12px" boxShadow="dark-lg">
                     <Heading p={3} size="lg" color="white">
                       {" "}
                       In the Last Week:{" "}
@@ -134,7 +134,7 @@ export default function Home() {
                     <Box
                       bg="#576754"
                       w="30%"
-                      borderRadius={"12px"}
+                      borderRadius="12px"
                       boxShadow="dark-lg"
                       backdropFilter="blur(60px)"
                     >
@@ -161,7 +161,7 @@ export default function Home() {
                     <Box
                       bg="#576754"
                       w="30%"
-                      borderRadius={"12px"}
+                      borderRadius="12px"
                       boxShadow="dark-lg"
                       backdropFilter="blur(60px)"
                     >
@@ -186,7 +186,7 @@ export default function Home() {
                     <Box
                       bg="#576754"
                       w="30%"
-                      borderRadius={"12px"}
+                      borderRadius="12px"
                       boxShadow="dark-lg"
                       backdropFilter="blur(60px)"
                     >
@@ -216,7 +216,7 @@ export default function Home() {
                     <Box
                       bg="#576754"
                       w="30%"
-                      borderRadius={"12px"}
+                      borderRadius="12px"
                       boxShadow="dark-lg"
                       backdropFilter="blur(60px)"
                     >
@@ -243,7 +243,7 @@ export default function Home() {
                     <Box
                       bg="#576754"
                       w="30%"
-                      borderRadius={"12px"}
+                      borderRadius="12px"
                       boxShadow="dark-lg"
                       backdropFilter="blur(60px)"
                     >
@@ -270,7 +270,7 @@ export default function Home() {
                     <Box
                       bg="#576754"
                       w="30%"
-                      borderRadius={"12px"}
+                      borderRadius="12px"
                       boxShadow="dark-lg"
                       backdropFilter="blur(60px)"
                     >

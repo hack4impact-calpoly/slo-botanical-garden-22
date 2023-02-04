@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import {
   Authenticator,
   useTheme,
@@ -7,33 +7,32 @@ import {
   View,
   Button,
 } from "@aws-amplify/ui-react";
-import "@aws-amplify/ui-react/styles.css";
+import "@aws-amplify/ui-react/styles.css"; // eslint-disable-line
 import "./login.css";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../GlobalState";
 import { fetchUser } from "../../dynoFuncs";
 
-export const getComp = () => {
-  return {
-    SignIn: {
-      Header() {
-        const { tokens } = useTheme();
-        return (
-          <Heading
-            padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-            level={3}
-            className="signInHeading"
-          >
-            PLEASE SIGN IN
-          </Heading>
-        );
-      },
+export const getComp = () => ({
+  SignIn: {
+    Header() {
+      const { tokens } = useTheme();
+      return (
+        <Heading
+          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
+          level={3}
+          className="signInHeading"
+        >
+          PLEASE SIGN IN
+        </Heading>
+      );
     },
-    Footer() {
-      const { route } = useAuthenticator((context) => [context.route]);
-      return route === "resetPassword" ? null : (
-        <View textAlign="center">
-          {/* <h2>
+  },
+  Footer() {
+    const { route } = useAuthenticator((context) => [context.route]);
+    return route === "resetPassword" ? null : (
+      <View textAlign="center">
+        {/* <h2>
             Returning users, please do not use the reset password link. Entering
             any password with your old username will prompt you through a
             password reset. You may need to resend code if one does not come
@@ -43,45 +42,45 @@ export const getComp = () => {
           <h2>If you have any problems, please contact mreed16@calpoly.edu.</h2>
           <br /> */}
 
-          <h2 style={{ marginTop: ".5em" }} className="OR">
-            <span>OR</span>
-          </h2>
-          <Link to="/signup">
-            <Button
-              fontWeight="normal"
-              variation="primary"
-              size="Large"
-              isFullWidth={true}
-              style={{
-                width: "45%",
-                marginTop: "1em",
-                background: "#aeb5ad",
-                color: "#576754",
-                fontFamily: "SBG",
-              }}
-            >
-              Sign Up
-            </Button>
-          </Link>
-        </View>
-      );
-    },
-  };
-};
+        <h2 style={{ marginTop: ".5em" }} className="OR">
+          <span>OR</span>
+        </h2>
+        <Link to="/signup">
+          <Button
+            fontWeight="normal"
+            variation="primary"
+            size="Large"
+            isFullWidth
+            style={{
+              width: "45%",
+              marginTop: "1em",
+              background: "#aeb5ad",
+              color: "#576754",
+              fontFamily: "SBG",
+            }}
+          >
+            Sign Up
+          </Button>
+        </Link>
+      </View>
+    );
+  },
+});
 
 export const getUserInfoCandD = (user, setCurrentUser) => {
-  var userInfo;
+  let userInfo;
 
   fetchUser("volunteers_group", user.username).then((data) => {
     userInfo = data;
     if (userInfo) {
-      userInfo["volunteerTable"] = "volunteers_group";
+      userInfo.volunteerTable = "volunteers_group";
     }
     console.log(userInfo);
     if (!userInfo) {
-      fetchUser("volunteers_individual", user.username).then((data) => {
+      fetchUser("volunteers_individual-TEST", user.username).then((data) => {
+        // eslint-disable-line
         userInfo = data;
-        userInfo["volunteerTable"] = "volunteers_individual";
+        userInfo.volunteerTable = "volunteers_individual-TEST";
         setCurrentUser(data);
       });
     } else {
@@ -90,28 +89,30 @@ export const getUserInfoCandD = (user, setCurrentUser) => {
   });
 };
 
-export default function Login(props) {
-  const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
-  let location = useLocation();
-  let navigate = useNavigate();
+export default function Login({ children }) {
+  const { setCurrentUser, currentUserInfo } = useContext(GlobalContext); // eslint-disable-line
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  let from = location.state?.from?.pathname || "/home";
+  const from = location.state?.from?.pathname || "/home";
 
   function getUserInfoCandD(user) {
-    var userInfo;
+    // eslint-disable-line
+    let userInfo;
 
     fetchUser("volunteers_group", user.username).then((data) => {
       userInfo = data;
       if (userInfo) {
-        userInfo["volunteerTable"] = "volunteers_group";
-        userInfo["userLoggedIn"] = true;
+        userInfo.volunteerTable = "volunteers_group";
+        userInfo.userLoggedIn = true;
       }
-      //console.log(userInfo);
+      // console.log(userInfo);
       if (!userInfo) {
-        fetchUser("volunteers_individual", user.username).then((data) => {
+        fetchUser("volunteers_individual-TEST", user.username).then((data) => {
+          // eslint-disable-line
           userInfo = data;
-          userInfo["volunteerTable"] = "volunteers_individual";
-          userInfo["userLoggedIn"] = true;
+          userInfo.volunteerTable = "volunteers_individual-TEST";
+          userInfo.userLoggedIn = true;
 
           setCurrentUser(data);
         });
@@ -123,15 +124,13 @@ export default function Login(props) {
 
   return (
     <div className="signInPage">
-      <Authenticator
-        className="signIn"
-        hideSignUp={true}
-        components={getComp()}
-      >
-        {({ signOut, user }) => (
+      <Authenticator className="signIn" hideSignUp components={getComp()}>
+        {(
+          { signOut, user } // eslint-disable-line
+        ) => (
           <main>
             {getUserInfoCandD(user)}
-            {props.children}
+            {children}
             {navigate(from, { replace: true })}
           </main>
         )}

@@ -1,21 +1,11 @@
-import React, {
-  useState,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useContext,
-} from "react";
+/* eslint-disable */
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useSortBy, useTable, usePagination } from "react-table";
 import "./volunteerTable.css";
-import { Flex, Box, Spacer, VStack } from "@chakra-ui/react";
+import { Flex, Box, VStack } from "@chakra-ui/react";
 import { CSVLink } from "react-csv";
 import { Checkbox } from "semantic-ui-react";
 
-import {
-  fetchData,
-  deleteVolunteer,
-  changeVolunteerStatus,
-} from "../../dynoFuncs";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -24,9 +14,15 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton } from "@material-ui/core";
+// import Amplify, { Auth, API } from "aws-amplify";
 import { GlobalContext } from "../../GlobalState";
-import Amplify, { Auth, API } from "aws-amplify";
+import {
+  fetchData,
+  deleteVolunteer,
+  changeVolunteerStatus,
+} from "../../dynoFuncs";
 import Navbar from "../Navbar/navbar";
+
 const { CognitoIdentityServiceProvider } = require("aws-sdk");
 
 const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
@@ -37,7 +33,7 @@ async function disableUser(username) {
   };
 
   try {
-    const result = await cognitoIdentityServiceProvider
+    const result = await cognitoIdentityServiceProvider // eslint-disable-line
       .adminDisableUser(params)
       .promise();
     console.log(`Disabled ${username}`);
@@ -50,7 +46,7 @@ async function disableUser(username) {
   }
 }
 
-const VolunteerTable = () => {
+function VolunteerTable() {
   // const [data, setData] = useState();
   const [reloadPage, setReloadPage] = useState(0);
   const { currentUserInfo } = useContext(GlobalContext);
@@ -64,9 +60,11 @@ const VolunteerTable = () => {
   const csvLog = useRef();
 
   useEffect(() => {
-    fetchData("logged_hours").then((result) => setLoggedHours(result));
-    fetchData("volunteers_group").then((result) => setGroup(result));
-    fetchData("volunteers_individual").then((result) => setVolunteers(result));
+    fetchData("logged_hours-TEST").then((result) => setLoggedHours(result));
+    fetchData("volunteers_group-TEST").then((result) => setGroup(result));
+    fetchData("volunteers_individual-TEST").then((result) =>
+      setVolunteers(result)
+    );
   }, [reloadPage]);
 
   const data = volunteers;
@@ -221,16 +219,15 @@ const VolunteerTable = () => {
                 alert("Please select a start date and end date");
               } else {
                 const logged = loggedHours
-                  .filter((obj) => {
-                    return (
+                  .filter(
+                    (obj) =>
                       new Date(obj.date).getTime() >=
                         startDate.target.valueAsNumber &&
                       new Date(obj.date).getTime() <=
                         endDate.target.valueAsNumber
-                    );
-                  })
+                  )
                   .map((obj) => {
-                    delete obj.primary_id;
+                    delete obj.primary_id; // eslint-disable-line
                     return obj;
                   });
                 console.log(logged);
@@ -273,9 +270,9 @@ const VolunteerTable = () => {
       </Flex>
     </>
   );
-};
+}
 
-const Table = (props) => {
+function Table(props) {
   const { data } = props;
   const [openDelete, setDelete] = React.useState(false);
   const [userToDelete, setUserToDelete] = React.useState();
@@ -296,10 +293,10 @@ const Table = (props) => {
 
   const handleDelete = async () => {
     // console.log("IN handle delete");
-    console.log("UserDel: " + userToDelete);
+    console.log(`UserDel: ${userToDelete}`);
     const ret = await disableUser(userToDelete);
     console.log(ret);
-    deleteVolunteer(userToDelete, "volunteers_individual");
+    deleteVolunteer(userToDelete, "volunteers_individual-TEST");
     setDelete(false);
     props.setReloadPage(props.reloadPage + 1);
   };
@@ -307,7 +304,7 @@ const Table = (props) => {
   const handleStatusChange = async () => {
     changeVolunteerStatus(
       userToStatusChage,
-      "volunteers_individual",
+      "volunteers_individual-TEST",
       userStatus
     );
     setStatus(false);
@@ -324,94 +321,81 @@ const Table = (props) => {
       {
         Header: "Name",
         accessor: "Name", // accessor is the "key" in the data
-        Cell: (row) => {
-          return (
-            <div>
-              <span>
-                {row.row.original["First Name"] +
-                  " " +
-                  row.row.original["Last Name"]}
-              </span>
-            </div>
-          );
-        },
+        Cell: (row) => (
+          <div>
+            <span>
+              {`${row.row.original["First Name"]} ${row.row.original["Last Name"]}`}
+            </span>
+          </div>
+        ),
       },
       {
         Header: "Email",
-        accessor: "Email", //Email
+        accessor: "Email", // Email
       },
       {
         Header: "Volunteer or Admin",
         accessor: "is_Admin",
         Cell: (row) => {
-          if (row.row.original["is_Admin"] === "True") {
+          if (row.row.original.is_Admin === "True") {
             return (
               <div>
                 <p>Administration</p>
               </div>
             );
-          } else {
-            return (
-              <div>
-                <p>Volunteer</p>
-              </div>
-            );
           }
+          return (
+            <div>
+              <p>Volunteer</p>
+            </div>
+          );
         },
       },
       {
         Header: "Change Status",
         accessor: "status",
         Cell: (row) => {
-          if (row.row.original["is_Admin"] === "True") {
+          if (row.row.original.is_Admin === "True") {
             return (
               <div>
                 <button
                   onClick={() =>
-                    handleClickOpenStatus(row.row.original["username"], "False")
+                    handleClickOpenStatus(row.row.original.username, "False")
                   }
                 >
                   Revoke Admin Privledges 🔽
                 </button>
               </div>
             );
-          } else {
-            return (
-              <div>
-                <div>
-                  <button
-                    onClick={() =>
-                      handleClickOpenStatus(
-                        row.row.original["username"],
-                        "True"
-                      )
-                    }
-                  >
-                    Invoke Admin Privileges 🔼
-                  </button>
-                </div>
-              </div>
-            );
           }
+          return (
+            <div>
+              <div>
+                <button
+                  onClick={() =>
+                    handleClickOpenStatus(row.row.original.username, "True")
+                  }
+                >
+                  Invoke Admin Privileges 🔼
+                </button>
+              </div>
+            </div>
+          );
         },
       },
       {
         Header: "Delete Volunteer",
         accessor: "Delete",
-        Cell: (row) => {
-          return (
-            <div>
-              <IconButton
-                style={{ color: "#cee4bb" }}
-                onClick={() =>
-                  handleClickOpenDelete(row.row.original["username"])
-                }
-              >
-                <DeleteIcon />
-              </IconButton>
-            </div>
-          );
-        },
+        Cell: (row) => (
+          <div>
+            <IconButton
+              style={{ color: "#cee4bb" }}
+              onClick={() => handleClickOpenDelete(row.row.original.username)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        ),
       },
     ],
     []
@@ -492,18 +476,16 @@ const Table = (props) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td
-                          {...cell.getCellProps()}
-                          style={{
-                            background: "#e6f2d9",
-                          }}
-                        >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        style={{
+                          background: "#e6f2d9",
+                        }}
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
                   </tr>
                 );
               })}
@@ -539,7 +521,7 @@ const Table = (props) => {
                 type="number"
                 defaultValue={pageIndex + 1}
                 onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0; // eslint-disable-line
                   gotoPage(page);
                 }}
                 style={{ paddingLeft: "10px", width: "40px" }}
@@ -558,7 +540,7 @@ const Table = (props) => {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to delete this volunteer?"}
+              Are you sure you want to delete this volunteer?
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
@@ -580,9 +562,9 @@ const Table = (props) => {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to change the status of this user?"}
+              Are you sure you want to change the status of this user?
             </DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogContent />
             <DialogActions>
               <DialogActions>
                 <Button onClick={handleCancel} color="#CCDDBD">
@@ -598,9 +580,9 @@ const Table = (props) => {
       </Flex>
     </div>
   );
-};
+}
 
-const GroupTable = (props) => {
+function GroupTable(props) {
   const { data } = props;
   const [openDelete, setDelete] = React.useState(false);
   const [userToDelete, setUserToDelete] = React.useState();
@@ -621,8 +603,8 @@ const GroupTable = (props) => {
 
   const handleDelete = async () => {
     // console.log("IN handle delete");
-    console.log("UserDel: " + userToDelete);
-    deleteVolunteer(userToDelete, "volunteers_group");
+    console.log(`UserDel: ${userToDelete}`);
+    deleteVolunteer(userToDelete, "volunteers_group-TEST");
     const ret = await disableUser(userToDelete);
     console.log(ret);
     setDelete(false);
@@ -630,7 +612,11 @@ const GroupTable = (props) => {
   };
 
   const handleStatusChange = async () => {
-    changeVolunteerStatus(userToStatusChage, "volunteers_group", userStatus);
+    changeVolunteerStatus(
+      userToStatusChage,
+      "volunteers_group-TEST",
+      userStatus
+    );
     setStatus(false);
     props.setReloadPage(props.reloadPage + 1);
   };
@@ -648,80 +634,71 @@ const GroupTable = (props) => {
       },
       {
         Header: "Email",
-        accessor: "emailContact", //Email
+        accessor: "emailContact", // Email
       },
       {
         Header: "Volunteer or Admin",
         accessor: "is_Admin",
         Cell: (row) => {
-          if (row.row.original["is_Admin"] === "True") {
+          if (row.row.original.is_Admin === "True") {
             return (
               <div>
                 <p>Administration</p>
               </div>
             );
-          } else {
-            return (
-              <div>
-                <p>Volunteer</p>
-              </div>
-            );
           }
+          return (
+            <div>
+              <p>Volunteer</p>
+            </div>
+          );
         },
       },
       {
         Header: "Change Status",
         accessor: "status",
         Cell: (row) => {
-          if (row.row.original["is_Admin"] === "True") {
+          if (row.row.original.is_Admin === "True") {
             return (
               <div>
                 <button
                   onClick={() =>
-                    handleClickOpenStatus(row.row.original["username"], "False")
+                    handleClickOpenStatus(row.row.original.username, "False")
                   }
                 >
                   Revoke Admin Privledges 🔽
                 </button>
               </div>
             );
-          } else {
-            return (
-              <div>
-                <div>
-                  <button
-                    onClick={() =>
-                      handleClickOpenStatus(
-                        row.row.original["username"],
-                        "True"
-                      )
-                    }
-                  >
-                    Invoke Admin Privileges 🔼
-                  </button>
-                </div>
-              </div>
-            );
           }
+          return (
+            <div>
+              <div>
+                <button
+                  onClick={() =>
+                    handleClickOpenStatus(row.row.original.username, "True")
+                  }
+                >
+                  Invoke Admin Privileges 🔼
+                </button>
+              </div>
+            </div>
+          );
         },
       },
       {
         Header: "Delete Volunteer",
         accessor: "Delete",
-        Cell: (row) => {
-          return (
-            <div>
-              <IconButton
-                style={{ color: "#cee4bb" }}
-                onClick={() =>
-                  handleClickOpenDelete(row.row.original["username"])
-                }
-              >
-                <DeleteIcon />
-              </IconButton>
-            </div>
-          );
-        },
+        Cell: (row) => (
+          <div>
+            <IconButton
+              style={{ color: "#cee4bb" }}
+              onClick={() => handleClickOpenDelete(row.row.original.username)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        ),
       },
     ],
     []
@@ -798,22 +775,21 @@ const GroupTable = (props) => {
             </thead>
             <tbody {...getTableBodyProps()}>
               {page.map((row) => {
+                // eslint-disable-line
                 if (row.values.Email === "") return;
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td
-                          {...cell.getCellProps()}
-                          style={{
-                            background: "#e6f2d9",
-                          }}
-                        >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        style={{
+                          background: "#e6f2d9",
+                        }}
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
                   </tr>
                 );
               })}
@@ -849,7 +825,7 @@ const GroupTable = (props) => {
                 type="number"
                 defaultValue={pageIndex + 1}
                 onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0; // eslint-disable-line
                   gotoPage(page);
                 }}
                 style={{ paddingLeft: "10px", width: "40px" }}
@@ -868,7 +844,7 @@ const GroupTable = (props) => {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to delete this volunteer?"}
+              Are you sure you want to delete this volunteer?
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
@@ -890,9 +866,9 @@ const GroupTable = (props) => {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"Are you sure you want to change the status of this user?"}
+              Are you sure you want to change the status of this user?
             </DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogContent />
             <DialogActions>
               <DialogActions>
                 <Button onClick={handleCancel} color="#CCDDBD">
@@ -908,6 +884,6 @@ const GroupTable = (props) => {
       </Flex>
     </div>
   );
-};
+}
 
 export default VolunteerTable;

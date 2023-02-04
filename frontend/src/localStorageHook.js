@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 
-export const useLocalStorage = function (key, initialValue) {
+export const useLocalStorage = function (key, initialValue) { // eslint-disable-line
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {

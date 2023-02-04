@@ -13,14 +13,14 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 export const getRandomId = () => (Math.random() * Date.now()).toString(36);
 
 // Grab all data from a table
-//  tableName: admin_announcements | users | hoursLog
+//  tableName: admin_announcements-TEST | users | hoursLog
 export const fetchData = async (tableName) => {
-  var params = { TableName: tableName };
-  var cont = true;
-  var ret = [];
+  let params = { TableName: tableName };
+  let cont = true;
+  let ret = [];
 
-  const entries = await new Promise((resolve, reject) => {
-    docClient.scan(params, function (err, data) {
+  let entries = await new Promise((resolve, reject) => {
+    docClient.scan(params, (err, data) => {
       if (err) reject(err);
       else resolve(data);
     });
@@ -29,16 +29,16 @@ export const fetchData = async (tableName) => {
 
   if (!("LastEvaluatedKey" in entries)) {
     return entries.Items;
-  } else {
-    params = {
-      TableName: tableName,
-      ExclusiveStartKey: entries.LastEvaluatedKey,
-    };
   }
+  params = {
+    TableName: tableName,
+    ExclusiveStartKey: entries.LastEvaluatedKey,
+  };
 
   while (cont) {
-    const entries = await new Promise((resolve, reject) => {
-      docClient.scan(params, function (err, data) {
+    entries = await new Promise((resolve, reject) => {
+      // eslint-disable-line
+      docClient.scan(params, (err, data) => {
         if (err) reject(err);
         else resolve(data);
       });
@@ -54,19 +54,19 @@ export const fetchData = async (tableName) => {
     }
   }
 
-  //console.log(ret);
+  // console.log(ret);
   return ret;
 };
 
 export const fetchUser = async (tableName, user) => {
-  var params = {
+  const params = {
     Key: {
       username: user,
     },
     TableName: tableName,
   };
   const entries = await new Promise((resolve, reject) => {
-    docClient.get(params, function (err, data) {
+    docClient.get(params, (err, data) => {
       if (err) reject(err);
       else resolve(data.Item);
     });
@@ -76,16 +76,17 @@ export const fetchUser = async (tableName, user) => {
 };
 
 // Store `data` in `tableName`
-//  tableName: admin_announcements | users | hoursLog
+//  tableName: admin_announcements-TEST | users | hoursLog
 export const putData = (tableName, data) => {
   console.log("PUTDATA");
   console.log(data);
-  var params = {
+  const params = {
     TableName: tableName,
     Item: data,
   };
 
-  docClient.put(params, function (err, data) {
+  docClient.put(params, (err, data) => {
+    // eslint-disable-line
     if (err) {
       console.log("Error", err);
     } else {
@@ -96,14 +97,14 @@ export const putData = (tableName, data) => {
 
 export const deleteAnnouncement = (itemKey) => {
   console.log(itemKey);
-  var params = {
+  const params = {
     Key: {
       primary_id: itemKey,
     },
-    TableName: "admin_announcements",
+    TableName: "admin_announcements-TEST",
   };
 
-  docClient.delete(params, function (err, data) {
+  docClient.delete(params, (err, data) => {
     if (err) {
       console.error(
         "Unable to delete item. Error JSON:",
@@ -117,14 +118,14 @@ export const deleteAnnouncement = (itemKey) => {
 
 export const deleteVolunteer = (itemKey, tableName) => {
   console.log(itemKey);
-  var params = {
+  const params = {
     Key: {
       username: itemKey,
     },
     TableName: tableName,
   };
 
-  docClient.delete(params, function (err, data) {
+  docClient.delete(params, (err, data) => {
     if (err) {
       console.error(
         "Unable to delete item. Error JSON:",
@@ -138,14 +139,14 @@ export const deleteVolunteer = (itemKey, tableName) => {
 
 export const deleteHour = (itemKey) => {
   console.log(itemKey);
-  var params = {
+  const params = {
     Key: {
       primary_id: itemKey,
     },
-    TableName: "logged_hours",
+    TableName: "logged_hours-TEST",
   };
 
-  docClient.delete(params, function (err, data) {
+  docClient.delete(params, (err, data) => {
     if (err) {
       console.error(
         "Unable to delete item. Error JSON:",
@@ -161,7 +162,7 @@ export const changeHours = (user, newHours, tableName) => {
   console.log("In Change Hours");
   console.log(user);
   console.log(newHours);
-  var params = {
+  const params = {
     TableName: tableName,
     Key: {
       username: user,
@@ -171,7 +172,7 @@ export const changeHours = (user, newHours, tableName) => {
     ExpressionAttributeValues: { ":x": newHours },
   };
 
-  docClient.update(params, function (err, data) {
+  docClient.update(params, (err, data) => {
     if (err) {
       console.error(
         "Unable to update item. Error JSON:",
@@ -187,8 +188,8 @@ export const updateVolunteerInformation = (user, item) => {
   console.log("In Update Volunteer Information");
   console.log(user);
   console.log(item);
-  var params = {
-    TableName: "volunteers_individual",
+  const params = {
+    TableName: "volunteers_individual-TEST",
     Key: {
       username: user,
     },
@@ -224,7 +225,7 @@ export const updateVolunteerInformation = (user, item) => {
     },
   };
 
-  docClient.update(params, function (err, data) {
+  docClient.update(params, (err, data) => {
     if (err) {
       console.error(
         "Unable to update item. Error JSON:",
@@ -241,7 +242,7 @@ export const changeVolunteerStatus = (user, tableName, newValue) => {
   console.log(tableName);
   console.log(newValue);
 
-  var params = {
+  const params = {
     TableName: tableName,
     Key: {
       username: user,
@@ -251,7 +252,7 @@ export const changeVolunteerStatus = (user, tableName, newValue) => {
     ExpressionAttributeValues: { ":x": newValue },
   };
 
-  docClient.update(params, function (err, data) {
+  docClient.update(params, (err, data) => {
     if (err) {
       console.error(
         "Unable to update item. Error JSON:",
@@ -267,10 +268,10 @@ export const updatePersonalInfo = (item, table) => {
   console.log("Modifying I");
   console.log(item);
   console.log(table);
-
-  if (table === "volunteers_individual") {
-    var params = {
-      TableName: "volunteers_individual",
+  let params;
+  if (table === "volunteers_individual-TEST") {
+    params = {
+      TableName: "volunteers_individual-TEST",
       Key: {
         username: item.username,
       },
@@ -317,7 +318,7 @@ export const updatePersonalInfo = (item, table) => {
     };
   } else {
     params = {
-      TableName: "volunteers_group",
+      TableName: "volunteers_group-TEST",
       Key: {
         username: item.username,
       },
@@ -340,7 +341,7 @@ export const updatePersonalInfo = (item, table) => {
     };
   }
 
-  docClient.update(params, function (err, data) {
+  docClient.update(params, (err, data) => {
     if (err) {
       console.error(
         "Unable to update item. Error JSON:",

@@ -1,7 +1,7 @@
-import { Box, Flex, Spacer } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React from "react";
 
-const Legend = () => {
+function Legend() {
   return (
     <Box
       bgColor="#576754"
@@ -33,6 +33,6 @@ const Legend = () => {
       <strong>All Volunteers:</strong> Attend Quarterly Volunteer Luncheons
     </Box>
   );
-};
+}
 
 export default Legend;

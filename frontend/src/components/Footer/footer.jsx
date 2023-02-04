@@ -1,9 +1,9 @@
-import { React, useContext } from "react";
+import { React } from "react";
 import "./footer.css";
+// import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import vector from "../../assets/vector.png";
-import userIcon from "../../assets/user-icon.png";
-import { Link } from "react-router-dom";
+// import vector from "../../assets/vector.png";
+// import userIcon from "../../assets/user-icon.png";
 
 export default function Footer() {
   return (
