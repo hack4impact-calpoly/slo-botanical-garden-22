@@ -70,10 +70,10 @@ export const getComp = () => ({
 export const getUserInfoCandD = (user, setCurrentUser) => {
   let userInfo;
 
-  fetchUser("volunteers_group", user.username).then((data) => {
+  fetchUser("volunteers_group-TEST", user.username).then((data) => {
     userInfo = data;
     if (userInfo) {
-      userInfo.volunteerTable = "volunteers_group";
+      userInfo.volunteerTable = "volunteers_group-TEST";
     }
     console.log(userInfo);
     if (!userInfo) {
@@ -100,10 +100,10 @@ export default function Login({ children }) {
     // eslint-disable-line
     let userInfo;
 
-    fetchUser("volunteers_group", user.username).then((data) => {
+    fetchUser("volunteers_group-TEST", user.username).then((data) => {
       userInfo = data;
       if (userInfo) {
-        userInfo.volunteerTable = "volunteers_group";
+        userInfo.volunteerTable = "volunteers_group-TEST";
         userInfo.userLoggedIn = true;
       }
       // console.log(userInfo);
