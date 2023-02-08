@@ -54,6 +54,7 @@ function VolunteerTable() {
   const [startDate, setStartDate] = React.useState();
   const [endDate, setEndDate] = React.useState();
   const [loggedHours, setLoggedHours] = React.useState([]);
+  const [filteredLoggedHours, setFilteredLoggedHours] = React.useState([]);
   const [volunteers, setVolunteers] = React.useState([]);
   const [group, setGroup] = React.useState([]);
   const [csvReady, setCSVReady] = React.useState(false);
@@ -73,11 +74,9 @@ function VolunteerTable() {
 
   useEffect(() => {
     if (csvReady == true) {
-      reloadData();
       csvLog.current.link.click();
-      setCSVReady(false);
     }
-  }, [loggedHours]);
+  }, [filteredLoggedHours]);
 
   const data = volunteers;
   const groupData = group;
@@ -248,7 +247,7 @@ function VolunteerTable() {
                   return;
                 }
                 setCSVReady(true);
-                setLoggedHours(logged);
+                setFilteredLoggedHours(logged);
               }
             }}
           >
@@ -256,7 +255,7 @@ function VolunteerTable() {
           </button>
           {console.log(loggedHours)}
           <CSVLink
-            data={loggedHours}
+            data={filteredLoggedHours}
             style={{ background: "rgb(230, 242, 217)" }}
             filename="logged_volunteer_data"
             className="hidden"
