@@ -5,7 +5,6 @@ import "./volunteerTable.css";
 import { Flex, Box, VStack } from "@chakra-ui/react";
 import { CSVLink } from "react-csv";
 import { Checkbox } from "semantic-ui-react";
-
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -55,17 +54,29 @@ function VolunteerTable() {
   const [startDate, setStartDate] = React.useState();
   const [endDate, setEndDate] = React.useState();
   const [loggedHours, setLoggedHours] = React.useState([]);
+  const [filteredLoggedHours, setFilteredLoggedHours] = React.useState([]);
   const [volunteers, setVolunteers] = React.useState([]);
   const [group, setGroup] = React.useState([]);
+  const [csvReady, setCSVReady] = React.useState(false);
   const csvLog = useRef();
 
-  useEffect(() => {
+  const reloadData = (() => {
     fetchData("logged_hours-TEST").then((result) => setLoggedHours(result));
     fetchData("volunteers_group-TEST").then((result) => setGroup(result));
     fetchData("volunteers_individual-TEST").then((result) =>
       setVolunteers(result)
     );
+  });
+
+  useEffect(() => {
+    reloadData();
   }, [reloadPage]);
+
+  useEffect(() => {
+    if (csvReady == true) {
+      csvLog.current.link.click();
+    }
+  }, [filteredLoggedHours]);
 
   const data = volunteers;
   const groupData = group;
@@ -220,7 +231,7 @@ function VolunteerTable() {
               } else {
                 const logged = loggedHours
                   .filter(
-                    (obj) =>
+                    (obj) => 
                       new Date(obj.date).getTime() >=
                         startDate.target.valueAsNumber &&
                       new Date(obj.date).getTime() <=
@@ -235,8 +246,8 @@ function VolunteerTable() {
                   alert("No hours were logged during this window");
                   return;
                 }
-                setLoggedHours(logged);
-                csvLog.current.link.click();
+                setCSVReady(true);
+                setFilteredLoggedHours(logged);
               }
             }}
           >
@@ -244,7 +255,7 @@ function VolunteerTable() {
           </button>
           {console.log(loggedHours)}
           <CSVLink
-            data={loggedHours}
+            data={filteredLoggedHours}
             style={{ background: "rgb(230, 242, 217)" }}
             filename="logged_volunteer_data"
             className="hidden"
