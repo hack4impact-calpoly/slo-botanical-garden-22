@@ -21,6 +21,7 @@ import {
   changeVolunteerStatus,
 } from "../../dynoFuncs";
 import Navbar from "../Navbar/navbar";
+import UpdateInfoForm from "./updateUserInfo.jsx";
 
 const { CognitoIdentityServiceProvider } = require("aws-sdk");
 
@@ -60,13 +61,15 @@ function VolunteerTable() {
   const [csvReady, setCSVReady] = React.useState(false);
   const csvLog = useRef();
 
-  const reloadData = (() => {
-    fetchData("logged_hours-TEST").then((result) => setLoggedHours(result));
+  const reloadData = () => {
+    fetchData("logged_hours_empty_2_TEST").then((result) =>
+      setLoggedHours(result)
+    ); /// should be logged_hours-TEST
     fetchData("volunteers_group-TEST").then((result) => setGroup(result));
     fetchData("volunteers_individual-TEST").then((result) =>
       setVolunteers(result)
     );
-  });
+  };
 
   useEffect(() => {
     reloadData();
@@ -231,7 +234,7 @@ function VolunteerTable() {
               } else {
                 const logged = loggedHours
                   .filter(
-                    (obj) => 
+                    (obj) =>
                       new Date(obj.date).getTime() >=
                         startDate.target.valueAsNumber &&
                       new Date(obj.date).getTime() <=
@@ -291,6 +294,9 @@ function Table(props) {
   const [userToStatusChage, setUserToStatusChage] = React.useState();
   const [userStatus, setUserStatus] = React.useState("False");
 
+  const [showModify, setShowModify] = useState(false);
+  const [modifyingUserName, setModifyingUser] = useState("");
+
   const handleClickOpenDelete = (username) => {
     setUserToDelete(username);
     setDelete(true);
@@ -325,6 +331,15 @@ function Table(props) {
   const handleCancel = () => {
     setDelete(false);
     setStatus(false);
+  };
+
+  const handleModifyUser = (username) => {
+    setShowModify(true);
+    setModifyingUser(username);
+  };
+
+  const handleModifyCancel = () => {
+    setShowModify(false);
   };
 
   const columns = React.useMemo(
@@ -393,6 +408,21 @@ function Table(props) {
             </div>
           );
         },
+      },
+      {
+        Header: "Modify Info",
+        accessor: "Modify",
+        Cell: (row) => (
+          <div>
+            <div>
+              <button
+                onClick={() => handleModifyUser(row.row.original.username)}
+              >
+                Modify User Info
+              </button>
+            </div>
+          </div>
+        ),
       },
       {
         Header: "Delete Volunteer",
@@ -582,6 +612,28 @@ function Table(props) {
                   Cancel
                 </Button>
                 <Button onClick={handleStatusChange} color="#CCDDBD" autoFocus>
+                  Change User Status
+                </Button>
+              </DialogActions>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={showModify}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            maxWidth={1400}
+          >
+            <DialogTitle id="alert-dialog-title">
+              Modify user: {modifyingUserName}
+            </DialogTitle>
+            <DialogContent />
+            <DialogActions>
+              <UpdateInfoForm></UpdateInfoForm>
+              <DialogActions>
+                <Button onClick={handleModifyCancel} color="#CCDDBD">
+                  Cancel
+                </Button>
+                <Button onClick={handleModifyCancel} color="#CCDDBD" autoFocus>
                   Change User Status
                 </Button>
               </DialogActions>

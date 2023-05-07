@@ -20,7 +20,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchData("logged_hours-TEST").then((data) => {
+    fetchData("logged_hours_empty_2_TEST").then((data) => {
+      /// SHOULD BE logged_hours-TEST
       setLoggedHours(
         data.filter(
           (h) =>
