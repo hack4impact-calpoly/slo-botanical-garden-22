@@ -6,14 +6,39 @@ import { useNavigate, Link } from "react-router-dom";
 import { updatePersonalInfo, fetchUser } from "../../dynoFuncs";
 import { GlobalContext } from "../../GlobalState";
 
-function UpdateInfoForm() {
-  const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
+function UpdateInfoForm(props) {
+  // console.log("PROPS");
+  // console.log(props);
+  const [currentUserInfo, setCurrentUser] = useState(props.userMod);
+
+  // console.log("state");
+  // console.log(currentUserInfo);
+  // useEffect(() => {
+  //   console.log("new useeffect");
+  // }, []);
+  // const { currentUserInfo, setCurrentUser } = useState({});
   // pass in user to user info in table
   /// use fetch user from dynamo
   // set that suer here, should be able to use the rest elsewhere
-  console.log("USER INFO_____________________________");
-  console.log(setCurrentUser);
-  console.log(currentUserInfo);
+  // const { userToMod, setUserToMod } = fetchUser(
+  //   "volunteers_individual-TEST",
+  //   props.name
+  // );
+
+  // fetchUser("volunteers_individual-TEST", props.userName).then((data) => {
+  //   let userInfo;
+  //   // eslint-disable-line
+  //   userInfo = data;
+  //   console.log("userInfo");
+  //   console.log(userInfo);
+  //   userInfo.volunteerTable = "volunteers_individual-TEST";
+  //   userInfo.userLoggedIn = true;
+  //   setCurrentUser(userInfo);
+  // });
+  // console.log("PROPS:");
+  // console.log(props);
+  // console.log("PASSED USER INFO_____________________________");
+  // console.log(currentUserInfo);
   const formType = currentUserInfo.volunteerTable;
   const [signUp, setSignUp] = useState({
     Birth_date: currentUserInfo.Birth_date,
@@ -93,7 +118,7 @@ function UpdateInfoForm() {
       }
     );
     if (updateUser !== 0) {
-      navigate("/profile");
+      navigate("/volunteer");
     }
   }, [updateUser]);
 
@@ -104,6 +129,7 @@ function UpdateInfoForm() {
       updatePersonalInfo(signUp, "volunteers_individual-TEST");
     }
     setUpdateUser(updateUser + 1);
+    props.showFunc(false);
   };
 
   console.log(currentUserInfo);
@@ -198,7 +224,6 @@ function UpdateInfoForm() {
             onChange={(e) => {
               setStartDate(e.target.value);
             }}
-            required
           />
           <br />
           <Form.TextArea
@@ -325,13 +350,21 @@ function UpdateInfoForm() {
         }}
       >
         {formType !== "" && (
-          <Link to="/profile">
-            <Form.Button content="Cancel Changes" />
-          </Link>
+          <Form.Button
+            content="Cancel Changes"
+            onClick={(e) => {
+              e.preventDefault();
+              // console.log("hiding modal_______________________________-");
+              props.showFunc(false);
+            }}
+          />
         )}
         {formType !== "" && (
           // <Link to="/profile">
-          <Form.Button content="Update My Information" onSubmit={updateData} />
+          <Form.Button
+            content="Update User's Information"
+            onSubmit={updateData}
+          />
           // </Link>
         )}
       </div>
