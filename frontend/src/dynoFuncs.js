@@ -19,10 +19,14 @@ export const fetchData = async (tableName) => {
   let cont = true;
   let ret = [];
 
+  console.log("params1:");
+  console.log(params);
   let entries = await new Promise((resolve, reject) => {
     docClient.scan(params, (err, data) => {
-      if (err) reject(err);
-      else resolve(data);
+      if (err) {
+        console.log(err);
+        reject(err);
+      } else resolve(data);
     });
   });
   ret = ret.concat(entries.Items);
@@ -34,7 +38,8 @@ export const fetchData = async (tableName) => {
     TableName: tableName,
     ExclusiveStartKey: entries.LastEvaluatedKey,
   };
-
+  console.log("params2:");
+  console.log(params);
   while (cont) {
     entries = await new Promise((resolve, reject) => {
       // eslint-disable-line
@@ -43,6 +48,7 @@ export const fetchData = async (tableName) => {
         else resolve(data);
       });
     });
+    // console.log("here");
     ret = ret.concat(entries.Items);
     if (!("LastEvaluatedKey" in entries)) {
       cont = false;
@@ -54,7 +60,8 @@ export const fetchData = async (tableName) => {
     }
   }
 
-  // console.log(ret);
+  console.log("RETURNED");
+  console.log(ret);
   return ret;
 };
 

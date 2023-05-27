@@ -21,6 +21,8 @@ import {
   changeVolunteerStatus,
 } from "../../dynoFuncs";
 import Navbar from "../Navbar/navbar";
+import UpdateInfoForm from "./updateUserInfo.jsx";
+import { fetchUser } from "../../dynoFuncs";
 
 const { CognitoIdentityServiceProvider } = require("aws-sdk");
 
@@ -60,13 +62,15 @@ function VolunteerTable() {
   const [csvReady, setCSVReady] = React.useState(false);
   const csvLog = useRef();
 
-  const reloadData = (() => {
-    fetchData("logged_hours-TEST").then((result) => setLoggedHours(result));
+  const reloadData = () => {
+    fetchData("logged_hours_empty_2_TEST").then((result) =>
+      setLoggedHours(result)
+    ); /// should be logged_hours-TEST
     fetchData("volunteers_group-TEST").then((result) => setGroup(result));
     fetchData("volunteers_individual-TEST").then((result) =>
       setVolunteers(result)
     );
-  });
+  };
 
   useEffect(() => {
     reloadData();
@@ -80,22 +84,22 @@ function VolunteerTable() {
 
   const data = volunteers;
   const groupData = group;
-  console.log("VolunteerInfo 1");
-  console.log(data);
-  console.log(volunteers);
-  console.log(groupData);
-  console.log(group);
-  console.log(loggedHours);
-  console.log(groupData.length);
+  // console.log("VolunteerInfo 1");
+  // console.log(data);
+  // console.log(volunteers);
+  // console.log(groupData);
+  // console.log(group);
+  // console.log(loggedHours);
+  // console.log(groupData.length);
 
   if (!loggedHours || !currentUserInfo || !data || !groupData) return null;
 
   return (
     <>
-      {console.log("VolunteerInfo")}
+      {/* {console.log("VolunteerInfo")}
       {console.log(data)}
       {console.log(groupData)}
-      {console.log(loggedHours)}
+      {console.log(loggedHours)} */}
       <Navbar />
       <div
         style={{
@@ -231,7 +235,7 @@ function VolunteerTable() {
               } else {
                 const logged = loggedHours
                   .filter(
-                    (obj) => 
+                    (obj) =>
                       new Date(obj.date).getTime() >=
                         startDate.target.valueAsNumber &&
                       new Date(obj.date).getTime() <=
@@ -291,6 +295,9 @@ function Table(props) {
   const [userToStatusChage, setUserToStatusChage] = React.useState();
   const [userStatus, setUserStatus] = React.useState("False");
 
+  const [showModify, setShowModify] = useState(false);
+  const [modifyingUser, setModifyingUser] = useState("");
+
   const handleClickOpenDelete = (username) => {
     setUserToDelete(username);
     setDelete(true);
@@ -325,6 +332,22 @@ function Table(props) {
   const handleCancel = () => {
     setDelete(false);
     setStatus(false);
+  };
+
+  const handleModifyUser = async (username) => {
+    await fetchUser("volunteers_individual-TEST", username).then((data) => {
+      let userInfo;
+      // eslint-disable-line
+      userInfo = data;
+
+      userInfo.volunteerTable = "volunteers_individual-TEST";
+      userInfo.userLoggedIn = false; ///////MAY NEED TO SET THS TO FALSE
+      // console.log("userInfo");
+      // console.log(userInfo);
+      setModifyingUser(userInfo);
+      // setCurrentUser(userInfo);
+    });
+    setShowModify(true);
   };
 
   const columns = React.useMemo(
@@ -393,6 +416,23 @@ function Table(props) {
             </div>
           );
         },
+      },
+      {
+        Header: "Modify Info",
+        accessor: "Modify",
+        Cell: (row) => (
+          <div>
+            <div>
+              <button
+                onClick={async () =>
+                  handleModifyUser(row.row.original.username)
+                }
+              >
+                Modify User Info
+              </button>
+            </div>
+          </div>
+        ),
       },
       {
         Header: "Delete Volunteer",
@@ -587,6 +627,31 @@ function Table(props) {
               </DialogActions>
             </DialogActions>
           </Dialog>
+          <Dialog
+            open={showModify}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            maxWidth={1400}
+          >
+            <DialogTitle id="alert-dialog-title">
+              Modify user: {modifyingUser.username}
+            </DialogTitle>
+            <DialogContent />
+            <DialogActions>
+              <UpdateInfoForm
+                userMod={modifyingUser}
+                showFunc={setShowModify}
+              ></UpdateInfoForm>
+              {/* <DialogActions>
+                <Button onClick={handleModifyCancel} color="#CCDDBD">
+                  Cancel
+                </Button>
+                <Button onClick={handleModifyCancel} color="#CCDDBD" autoFocus>
+                  Change User Status
+                </Button>
+              </DialogActions> */}
+            </DialogActions>
+          </Dialog>
         </Box>
       </Flex>
     </div>
@@ -600,6 +665,9 @@ function GroupTable(props) {
   const [openStatus, setStatus] = React.useState(false);
   const [userToStatusChage, setUserToStatusChage] = React.useState();
   const [userStatus, setUserStatus] = React.useState("False");
+
+  const [showModify, setShowModify] = useState(false);
+  const [modifyingGroup, setModifyingGroup] = useState("");
 
   const handleClickOpenDelete = (username) => {
     setUserToDelete(username);
@@ -635,6 +703,22 @@ function GroupTable(props) {
   const handleCancel = () => {
     setDelete(false);
     setStatus(false);
+  };
+
+  const handleModifyGroup = async (username) => {
+    await fetchUser("volunteers_group-TEST", username).then((data) => {
+      let groupInfo;
+      // eslint-disable-line
+      groupInfo = data;
+
+      groupInfo.volunteerTable = "volunteers_group-TEST";
+      groupInfo.userLoggedIn = false; ///////MAY NEED TO SET THS TO FALSE
+      // console.log("groupInfo");
+      // console.log(groupInfo);
+      setModifyingGroup(groupInfo);
+      // setCurrentUser(groupInfo);
+    });
+    setShowModify(true);
   };
 
   const columns = React.useMemo(
@@ -696,6 +780,23 @@ function GroupTable(props) {
             </div>
           );
         },
+      },
+      {
+        Header: "Modify Info",
+        accessor: "Modify",
+        Cell: (row) => (
+          <div>
+            <div>
+              <button
+                onClick={async () =>
+                  handleModifyGroup(row.row.original.username)
+                }
+              >
+                Modify User Info
+              </button>
+            </div>
+          </div>
+        ),
       },
       {
         Header: "Delete Volunteer",
@@ -889,6 +990,31 @@ function GroupTable(props) {
                   Change User Status
                 </Button>
               </DialogActions>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={showModify}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            maxWidth={1400}
+          >
+            <DialogTitle id="alert-dialog-title">
+              Modify group: {modifyingGroup.username}
+            </DialogTitle>
+            <DialogContent />
+            <DialogActions>
+              <UpdateInfoForm
+                userMod={modifyingGroup}
+                showFunc={setShowModify}
+              ></UpdateInfoForm>
+              {/* <DialogActions>
+                <Button onClick={handleModifyCancel} color="#CCDDBD">
+                  Cancel
+                </Button>
+                <Button onClick={handleModifyCancel} color="#CCDDBD" autoFocus>
+                  Change User Status
+                </Button>
+              </DialogActions> */}
             </DialogActions>
           </Dialog>
         </Box>

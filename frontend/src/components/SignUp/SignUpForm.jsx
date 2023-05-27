@@ -96,9 +96,9 @@ function SignUpForm() {
           phonetwo = signUp.phonetwo;
         }
 
-        let medicalConditions = "None Specified";
-        if (signUp.medicalConditions) {
-          medicalConditions = signUp.medicalConditions;
+        let Medical_Conditions = "None Specified";
+        if (signUp.Medical_Conditions) {
+          Medical_Conditions = signUp.Medical_Conditions;
         }
 
         safetyStatus = false;
@@ -142,7 +142,7 @@ function SignUpForm() {
           Email: signUp.email,
           Birth_date: startDate,
           is_Admin: "False",
-          medicalConditions,
+          Medical_Conditions,
           "Safety Training Status": safetyStatus,
           "Photo-Permission": photoStatus,
           "Secondary Phone": phonetwo,
@@ -371,8 +371,8 @@ function SignUpForm() {
           <br />
           <Form.TextArea
             label="Medical Conditions"
-            name="medicalConditions"
-            value={signUp.medicalConditions}
+            name="Medical_Conditions"
+            value={signUp.Medical_Conditions}
             onChange={handleChange}
           />
           <div className="bool_top">
