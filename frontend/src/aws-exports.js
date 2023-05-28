@@ -9,3 +9,5 @@ Amplify.configure({
 });
 // You can get the current config object
 const currentConfig = Auth.configure();
+
+export default { currentConfig };

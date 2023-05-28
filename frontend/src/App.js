@@ -18,6 +18,7 @@ import { Link, Navigate } from "react-router-dom";
 import Login from "./components/Login/login";
 import { AuthRoute } from "./AuthRoutes";
 import UpdateInfoForm from "./components/updateInfo/UpdateInfo";
+import AdminPassReset from "./components/AdminPassReset/AdminPassReset";
 
 function App(props) {
   const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
@@ -34,6 +35,7 @@ function App(props) {
           <ChakraProvider>
             <Router>
               <Routes>
+                <Route exact path="/testpass" element={<AdminPassReset />} />
                 <Route
                   exact
                   path="/home"
