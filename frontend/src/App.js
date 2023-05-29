@@ -2,6 +2,7 @@ import "./App.css";
 import Navbar from "./components/Navbar/navbar";
 import Footer from "./components/Footer/footer";
 import Home from "./components/Home/home";
+import ResetPassword from "./components/resetPassword/resetPassword";
 import InfoForm from "./components/InfoForm/InfoForm";
 import SignUpForm from "./components/SignUp/SignUpForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -76,6 +77,14 @@ function App(props) {
                   element={
                     <AuthRoute disAllowedStatus="NONE">
                       <UpdateInfoForm />
+                    </AuthRoute>
+                  }
+                />
+                <Route
+                  path="/resetPassword"
+                  element={
+                    <AuthRoute disAllowedStatus="False">
+                      <ResetPassword />
                     </AuthRoute>
                   }
                 />
