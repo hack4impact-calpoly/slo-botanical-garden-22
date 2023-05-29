@@ -16,6 +16,7 @@ const bodyParser = require("body-parser");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 
 const {
+  adminResetUserPassword,
   addUserToGroup,
   removeUserFromGroup,
   confirmUserSignUp,
@@ -47,7 +48,7 @@ app.use((req, res, next) => {
 // Only perform tasks if the user is in a specific group
 const allowedGroup = process.env.GROUP;
 
-const checkGroup = function(req, res, next) {
+const checkGroup = function (req, res, next) {
   if (req.path == "/signUserOut") {
     return next();
   }
@@ -58,9 +59,10 @@ const checkGroup = function(req, res, next) {
 
   // Fail if group enforcement is being used
   if (req.apiGateway.event.requestContext.authorizer.claims["cognito:groups"]) {
-    const groups = req.apiGateway.event.requestContext.authorizer.claims[
-      "cognito:groups"
-    ].split(",");
+    const groups =
+      req.apiGateway.event.requestContext.authorizer.claims[
+        "cognito:groups"
+      ].split(",");
     if (!(allowedGroup && groups.indexOf(allowedGroup) > -1)) {
       const err = new Error(
         `User does not have permissions to perform administrative tasks`
@@ -311,10 +313,7 @@ app.post("/adminResetUserPassword", async (req, res, next) => {
 app.use((err, req, res, next) => {
   console.error(err.message);
   if (!err.statusCode) err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
-  res
-    .status(err.statusCode)
-    .json({ message: err.message })
-    .end();
+  res.status(err.statusCode).json({ message: err.message }).end();
 });
 
 app.listen(3000, () => {

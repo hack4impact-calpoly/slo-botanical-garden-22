@@ -16,8 +16,8 @@ async function resetPassCall() {
   let path = "/adminResetUserPassword";
   let myInit = {
     body: {
-      username: "richard",
-      groupname: "Editors",
+      // username: "test",
+      // groupname: "test",
     },
     headers: {
       "Content-Type": "application/json",
@@ -30,20 +30,9 @@ async function resetPassCall() {
 }
 
 function AdminPassReset() {
-  // var params = {
-  //   Password: 'STRING_VALUE', /* required */
-  //   UserPoolId: 'STRING_VALUE', /* required */
-  //   Username: 'STRING_VALUE', /* required */
-  //   Permanent: true || false
-  // };
-
   const clickReset = () => {
     console.log("CLICK");
     resetPassCall();
-    // cognitoidentityserviceprovider.adminSetUserPassword(params, function(err, data) {
-    //   if (err) console.log(err, err.stack); // an error occurred
-    //   else     console.log(data);           // successful response
-    // });
   };
 
   return (

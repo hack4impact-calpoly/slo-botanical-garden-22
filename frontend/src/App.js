@@ -6,7 +6,7 @@ import InfoForm from "./components/InfoForm/InfoForm";
 import SignUpForm from "./components/SignUp/SignUpForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import awsconfig from "./aws-exports";
-import Amplify, { Auth } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 import React, { useState, useContext, useEffect } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import VolunteerTable from "./components/VolunteerTable/volunteerTable";
@@ -19,6 +19,8 @@ import Login from "./components/Login/login";
 import { AuthRoute } from "./AuthRoutes";
 import UpdateInfoForm from "./components/updateInfo/UpdateInfo";
 import AdminPassReset from "./components/AdminPassReset/AdminPassReset";
+
+// Amplify.configure(awsconfig);
 
 function App(props) {
   const { setCurrentUser, currentUserInfo } = useContext(GlobalContext);
