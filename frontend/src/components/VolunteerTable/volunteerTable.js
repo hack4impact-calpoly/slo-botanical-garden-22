@@ -22,6 +22,7 @@ import {
 } from "../../dynoFuncs";
 import Navbar from "../Navbar/navbar";
 import UpdateInfoForm from "./updateUserInfo.jsx";
+import LogUserHoursForm from "./logUserHours.jsx";
 import { fetchUser } from "../../dynoFuncs";
 
 const { CognitoIdentityServiceProvider } = require("aws-sdk");
@@ -297,6 +298,8 @@ function Table(props) {
 
   const [showModify, setShowModify] = useState(false);
   const [modifyingUser, setModifyingUser] = useState("");
+  const [showLogging, setShowLogging] = useState(false);
+  const [loggingUser, setLoggingUser] = useState("");
 
   const handleClickOpenDelete = (username) => {
     setUserToDelete(username);
@@ -348,6 +351,12 @@ function Table(props) {
       // setCurrentUser(userInfo);
     });
     setShowModify(true);
+  };
+
+  const handleLogHours = async (username) => {
+    setShowLogging(true);
+    setLoggingUser({ username: username });
+    console.log(`logging for ${username}`);
   };
 
   const columns = React.useMemo(
@@ -429,6 +438,21 @@ function Table(props) {
                 }
               >
                 Modify User Info
+              </button>
+            </div>
+          </div>
+        ),
+      },
+      {
+        Header: "Log Hours",
+        accessor: "LogHours",
+        Cell: (row) => (
+          <div>
+            <div>
+              <button
+                onClick={async () => handleLogHours(row.row.original.username)}
+              >
+                Log Hours For User
               </button>
             </div>
           </div>
@@ -652,6 +676,23 @@ function Table(props) {
               </DialogActions> */}
             </DialogActions>
           </Dialog>
+          <Dialog
+            open={showLogging}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            maxWidth={1400}
+          >
+            <DialogTitle id="alert-dialog-title">
+              Log hours for: {loggingUser.username}
+            </DialogTitle>
+            <DialogContent>
+              <LogUserHoursForm
+                loggingUserName={loggingUser.username}
+                setShowLog={setShowLogging}
+              />
+            </DialogContent>
+            <DialogActions></DialogActions>
+          </Dialog>
         </Box>
       </Flex>
     </div>
@@ -792,7 +833,22 @@ function GroupTable(props) {
                   handleModifyGroup(row.row.original.username)
                 }
               >
-                Modify User Info
+                Modify Group Info
+              </button>
+            </div>
+          </div>
+        ),
+      },
+      {
+        Header: "Log Hours",
+        accessor: "LogHours",
+        Cell: (row) => (
+          <div>
+            <div>
+              <button
+                onClick={async () => handleLogHours(row.row.original.username)}
+              >
+                Log Hours For Group
               </button>
             </div>
           </div>
