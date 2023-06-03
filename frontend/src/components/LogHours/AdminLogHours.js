@@ -289,11 +289,11 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
       // putData("logged_hours-TEST", item);
       console.log(volunteerData.username);
       console.log(parseFloat(volunteerData.totalHours));
-      console.log(parseFloat(hourlog.hours));
+      console.log(parseFloat(item.hours));
       console.log(volunteerData.volunteerTable);
       changeHours(
         volunteerData.username,
-        volunteerData.totalHours + parseFloat(hourlog.hours),
+        volunteerData.totalHours + parseFloat(item.hours),
         volunteerData.volunteerTable
       );
     }
