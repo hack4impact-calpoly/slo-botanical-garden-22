@@ -12,6 +12,8 @@ API.configure(currentConfig);
 // import { AdminSetUserPasswordRequest } from "aws-sdk/clients/cognitoidentityserviceprovider";
 
 async function resetPassCall() {
+  console.log("In reset Pass");
+  // let apiName = "AdminQueries0feb2cd2";
   let apiName = "AdminQueries";
   let path = "/adminResetUserPassword";
   let myInit = {

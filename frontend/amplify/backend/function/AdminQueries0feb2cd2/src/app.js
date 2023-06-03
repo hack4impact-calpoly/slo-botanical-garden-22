@@ -300,6 +300,7 @@ app.post("/adminResetUserPassword", async (req, res, next) => {
   //   err.statusCode = 400;
   //   return next(err);
   // }
+  console.log("In cognito endpoint");
 
   try {
     const response = await adminResetUserPassword();

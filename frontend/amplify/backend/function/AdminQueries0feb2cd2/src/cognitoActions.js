@@ -24,6 +24,8 @@ async function adminResetUserPassword() {
   //   UserPoolId: 'STRING_VALUE',
   // };
 
+  console.log("In adminRest Cognito Action");
+
   var params = {
     Password: "NewPass123!" /* required */,
     UserPoolId: "us-east-1_U7tBrwTLb" /* required */,
