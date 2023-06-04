@@ -306,7 +306,7 @@ export default function LogUserHours({
       getToast();
     } else {
       item.username = volunteerData.username;
-      // putData("logged_hours-TEST", item);
+      putData("logged_hours_empty_2_TEST", item);
       console.log(volunteerData.username);
       console.log(parseFloat(volunteerData.totalHours));
       console.log(parseFloat(item.hours));

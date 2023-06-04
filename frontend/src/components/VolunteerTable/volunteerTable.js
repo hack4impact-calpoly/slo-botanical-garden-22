@@ -709,6 +709,8 @@ function GroupTable(props) {
 
   const [showModify, setShowModify] = useState(false);
   const [modifyingGroup, setModifyingGroup] = useState("");
+  const [showLogging, setShowLogging] = useState(false);
+  const [loggingUser, setLoggingUser] = useState("");
 
   const handleClickOpenDelete = (username) => {
     setUserToDelete(username);
@@ -760,6 +762,12 @@ function GroupTable(props) {
       // setCurrentUser(groupInfo);
     });
     setShowModify(true);
+  };
+
+  const handleLogHours = async (username) => {
+    setShowLogging(true);
+    setLoggingUser({ username: username });
+    console.log(`logging for ${username}`);
   };
 
   const columns = React.useMemo(
@@ -1072,6 +1080,23 @@ function GroupTable(props) {
                 </Button>
               </DialogActions> */}
             </DialogActions>
+          </Dialog>
+          <Dialog
+            open={showLogging}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            maxWidth={1400}
+          >
+            <DialogTitle id="alert-dialog-title">
+              Log hours for: {loggingUser.username}
+            </DialogTitle>
+            <DialogContent>
+              <LogUserHoursForm
+                loggingUserName={loggingUser.username}
+                setShowLog={setShowLogging}
+              />
+            </DialogContent>
+            <DialogActions></DialogActions>
           </Dialog>
         </Box>
       </Flex>
