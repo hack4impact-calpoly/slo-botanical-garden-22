@@ -96,7 +96,7 @@ function VolunteerTable() {
 
     if (searchInput.length > 0) {
       let temp = data.filter((person) => {
-        return person["First Name"].includes(searchInput);
+        return person["First Name"].toLowerCase().includes(searchInput);
       });
       setFilteredData(temp);
       console.log(filteredData);
