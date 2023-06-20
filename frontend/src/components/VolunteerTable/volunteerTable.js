@@ -61,6 +61,9 @@ function VolunteerTable() {
   const [volunteers, setVolunteers] = React.useState([]);
   const [group, setGroup] = React.useState([]);
   const [csvReady, setCSVReady] = React.useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredData, setFilteredData] = React.useState([]);
+
   const csvLog = useRef();
 
   const reloadData = () => {
@@ -75,6 +78,8 @@ function VolunteerTable() {
 
   useEffect(() => {
     reloadData();
+    console.log("reload");
+    console.log(volunteers);
   }, [reloadPage]);
 
   useEffect(() => {
@@ -84,6 +89,21 @@ function VolunteerTable() {
   }, [filteredLoggedHours]);
 
   const data = volunteers;
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setSearchInput(e.target.value);
+    console.log(searchInput);
+
+    if (searchInput.length > 0) {
+      let temp = data.filter((person) => {
+        return person["First Name"].toLowerCase().includes(searchInput);
+      });
+      setFilteredData(temp);
+      console.log(filteredData);
+    }
+  };
+
   const groupData = group;
   // console.log("VolunteerInfo 1");
   // console.log(data);
@@ -95,6 +115,7 @@ function VolunteerTable() {
 
   if (!loggedHours || !currentUserInfo || !data || !groupData) return null;
 
+  // do use effect here
   return (
     <>
       {/* {console.log("VolunteerInfo")}
@@ -102,6 +123,7 @@ function VolunteerTable() {
       {console.log(groupData)}
       {console.log(loggedHours)} */}
       <Navbar />
+
       <div
         style={{
           textAlign: "center",
@@ -139,6 +161,18 @@ function VolunteerTable() {
         >
           Group
         </Checkbox>
+      </div>
+      <div
+        style={{ textAlign: "center", paddingLeft: "20%", paddingTop: "10px" }}
+      >
+        <input
+          style={{ background: "white", padding: "5px", fontSize: "15px" }}
+          borderColor="black"
+          type="search"
+          placeholder="Search here"
+          onChange={handleChange}
+          value={searchInput}
+        />
       </div>
       <Flex
         p={10}
@@ -269,13 +303,22 @@ function VolunteerTable() {
           />
           {console.log(loggedHours)}
         </VStack>
-        {indiv && (
-          <Table
-            data={data}
-            reloadPage={reloadPage}
-            setReloadPage={setReloadPage}
-          />
-        )}
+        {indiv ? (
+          searchInput.length > 0 ? (
+            <Table
+              data={filteredData}
+              reloadPage={reloadPage}
+              setReloadPage={setReloadPage}
+            />
+          ) : (
+            <Table
+              data={data}
+              reloadPage={reloadPage}
+              setReloadPage={setReloadPage}
+            />
+          )
+        ) : null}
+
         {groupTable && (
           <GroupTable
             data={groupData}
