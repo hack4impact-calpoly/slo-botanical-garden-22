@@ -9,16 +9,21 @@ import Button from "@material-ui/core/Button";
 import { GlobalContext } from "../../GlobalState";
 import { putData, getRandomId, fetchUser, changeHours } from "../../dynoFuncs";
 
-export default function AdminHourLog({ reloadPage, setReloadPage }) {
+export default function LogUserHours({
+  // reloadPage,
+  // setReloadPage,
+  loggingUserName,
+  setShowLog,
+}) {
   const [updateStatus, setUpdateStatus] = useState(false); // eslint-disable-line
   const { currentUserInfo } = useContext(GlobalContext); // eslint-disable-line
 
   const styles = `
   body
   {
-      background: #f8edeb;
+      background: #1e502f;
       font-family: "Century Gothic", Verdana, monospace;
-      color: #1e502f;
+      color: #1e502f;;
       margin: 0px;
       font-weight: bold;
       line-height: 1;
@@ -28,7 +33,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
   {
     padding: 3%;
     font-family: "Century Gothic", Verdana, monospace;
-    border: none;
+    border-color: #556453;
     border-radius: 10px;
   }
 
@@ -78,7 +83,6 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
       min-width: 170px;
   }
 
-
   .littlerbox
   {
       box-sizing: border-box;
@@ -95,6 +99,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
       font-weight: bold;
       max-width: 200px;
   }
+
   input
   {
       font-family: "Century Gothic", Verdana, monospace;
@@ -132,7 +137,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
       min-width: 170px;
       max-width: 200px;
       border-radius: 5px;
-      border: none;
+      
     }
 
     .activity {
@@ -156,8 +161,21 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
       max-width: 200px;
       padding: 5px;
       border-radius: 5px;
+      border-color: #556453;
     }
 
+    #buttons {
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .textInputs {
+        padding: 5px 10px;
+        border: 2px solid #556453;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+    }
   `;
 
   const styleSheet = document.createElement("style");
@@ -166,7 +184,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
   const [allFieldsRequired, setAllFieldsRequired] = useState(false);
   const [hoursNumber, setHoursNumber] = useState(false);
   const [numVolNumber, setNumVolNumber] = useState(false);
-  const [hourlog, setHourLog] = React.useState();
+  const [hourlog, setHourLog] = useState({});
   const [openStatus, setStatus] = React.useState(false);
 
   async function checkVolunteer(volunteer) {
@@ -228,7 +246,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
     putData("logged_hours-TEST", hourlog);
     // Note: Since not connecting the hours to a specific user, there is no volunteer table to update
     setStatus(false);
-    setReloadPage(reloadPage + 1);
+    // setReloadPage(reloadPage + 1);
   };
 
   function getToast() {
@@ -277,6 +295,8 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
 
     const volunteerData = await checkVolunteer(item.volunteer);
 
+    console.log("ITEM?");
+    console.log(item);
     console.log("Volunteer Data");
     console.log(volunteerData);
     setHourLog(item);
@@ -286,7 +306,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
       getToast();
     } else {
       item.username = volunteerData.username;
-      // putData("logged_hours-TEST", item);
+      putData("logged_hours_empty_2_TEST", item);
       console.log(volunteerData.username);
       console.log(parseFloat(volunteerData.totalHours));
       console.log(parseFloat(item.hours));
@@ -298,7 +318,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
       );
     }
 
-    setReloadPage(reloadPage + 1);
+    // setReloadPage(reloadPage + 1);
     console.log("Item in Logged Hours Admin");
     console.log(item);
 
@@ -309,19 +329,21 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
     document.getElementById("hoursA").value = "";
     document.getElementById("volunteerCountA").value = "";
     document.getElementById("volunteerName").value = "";
+    setShowLog(false);
   }
 
   return (
     <div className="dabox">
-      <div>
-        <h3 className="formtitle">Log Hours: </h3>
-      </div>
-      <div>
+      <div className="wholeStyle">
         <div className="boxesholder">
           <div className="boxcols">
             <div className="lilbox">
               <label>Volunteer Username: </label>
-              <textarea id="volunteerName" />
+              <textarea
+                id="volunteerName"
+                className="textInputs"
+                placeholder={loggingUserName}
+              ></textarea>
             </div>
             <h1> </h1>
             <h1> </h1>
@@ -343,7 +365,7 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
             <h1> </h1>
             <div className="lilbox">
               <label>Hours: </label>
-              <textarea id="hoursA" />
+              <textarea id="hoursA" className="textInputs" />
             </div>
             <h1> </h1>
             <h1> </h1>
@@ -351,38 +373,61 @@ export default function AdminHourLog({ reloadPage, setReloadPage }) {
           <div className="boxcols">
             <div className="lilbox">
               <label>Supervisor: </label>
-              <textarea id="supervisorA" />
+              <textarea id="supervisorA" className="textInputs" />
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <label>Number of Volunteers: </label>
-              <textarea id="volunteerCountA" type="number" />
+              <textarea
+                id="volunteerCountA"
+                type="number"
+                className="textInputs"
+              />
             </div>
             <h1> </h1>
             <h1> </h1>
             <div className="lilbox">
               <div className="date">
                 <label>Date: </label>
-                <input type="date" id="dateA" />
+                <input type="date" id="dateA" className="textInputs" />
               </div>
             </div>
           </div>
           <div className="boxcols">
             <div className="lilbox">
               <label>Description: </label>
-              <textarea id="descriptionA" rows="10" cols="20" name="text" />
-            </div>
-            <h1> </h1>
-            <h1> </h1>
-            <div className="lilbox">
-              <input
-                id="submit"
-                type="submit"
-                value="Submit"
-                onClick={submitForm}
+              <textarea
+                id="descriptionA"
+                rows="10"
+                cols="20"
+                name="text"
+                className="textInputs"
               />
             </div>
+            <h1> </h1>
+            <h1> </h1>
+          </div>
+        </div>
+        <div id="buttons">
+          <div className="lilbox">
+            <input
+              id="submit"
+              type="button"
+              value="Cancel"
+              onClick={(e) => {
+                console.log("cancel");
+                setShowLog(false);
+              }}
+            />
+          </div>
+          <div className="lilbox">
+            <input
+              id="submit"
+              type="submit"
+              value="Submit"
+              onClick={submitForm}
+            />
           </div>
         </div>
       </div>
